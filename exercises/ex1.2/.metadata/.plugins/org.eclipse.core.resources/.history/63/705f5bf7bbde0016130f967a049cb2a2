@@ -1,0 +1,66 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include "sys/alt_timestamp.h"
+
+#define ROWS 100
+#define COLS 100
+
+void init_matrices(int a[][], int b[][], int c[][]) {
+	int i, j;
+
+	// set element in each of the three matrices
+	for(i = 0; i < COLS; i++) {
+		for(j = 0; j < ROWS; j++) {
+			a[i][j] = i;
+			b[i][j] = j;
+			c[i][j] = 0;
+		}
+	}
+}
+
+void multiply(int m1[][], int m2[][], int prod[][]) {
+	int i, j, k;
+	int sum;
+
+	// make sure that we have a square matrix
+	assert(ROWS == COLS);
+
+	// compute product
+	for(i = 0; i < COLS; i++) {
+		for(j = 0; j < ROWS; j++) {
+			sum = 0;
+
+			for(k = 0; k < ROWS; k++) {
+				sum += m1[i][k] * m2[k][j];
+			}
+
+			prod[i][j] = sum;
+		}
+	}
+}
+
+
+int main(void) {
+	int a [ROWS][COLS];
+	int b [ROWS][COLS];
+	int c [ROWS][COLS];
+
+	int start_time, end_time;	// timer values
+
+	init_matrices(a, b, c);		// initialize matrices
+
+	// start timer
+	start_time = (int) alt_timestamp();
+
+	// calculate
+	multiply(a, b, c);
+
+	// stop timer
+	end_time = (int) alt_timestamp();
+
+	printf("Time taken: %d clock ticks\n", end_time - start_time);
+	printf("            %f seconds\n", (float)(end_time - start_time) / (float)alt_timestamp_freq());
+
+	return 0;
+}

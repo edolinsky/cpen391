@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;exOnePointTwo/matrixMultiplier.c&apos; to &apos;exOnePointTwo.c&apos;" description="Rename resource &apos;matrixMultiplier.c&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="matrixMultiplier.c" name="exOnePointTwo.c" stamp="1484793148165" updateReferences="true"/>
+</session>
