@@ -1,0 +1,17 @@
+Analysis & Synthesis Status : Successful - Fri Jan 20 16:22:22 2017
+Quartus Prime Version : 15.1.0 Build 185 10/21/2015 SJ Lite Edition
+Revision Name : exOnePointTwo
+Top-level Entity Name : exOnePointTwo
+Family : Cyclone V
+Logic utilization (in ALMs) : N/A
+Total registers : 2599
+Total pins : 57
+Total virtual pins : 0
+Total block memory bits : 98,368
+Total DSP Blocks : 0
+Total HSSI RX PCSs : 0
+Total HSSI PMA RX Deserializers : 0
+Total HSSI TX PCSs : 0
+Total HSSI PMA TX Serializers : 0
+Total PLLs : 1
+Total DLLs : 0
