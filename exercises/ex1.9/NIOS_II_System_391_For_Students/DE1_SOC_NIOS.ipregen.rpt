@@ -1,0 +1,553 @@
+IP Upgrade report for DE1_SOC_NIOS
+Mon Jan 23 14:36:39 2017
+Quartus Prime Version 15.1.0 Build 185 10/21/2015 SJ Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. IP Upgrade Summary
+  3. Failed Upgrade IP Components
+  4. IP Upgrade Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 1991-2015 Altera Corporation. All rights reserved.
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, the Altera Quartus Prime License Agreement,
+the Altera MegaCore Function License Agreement, or other 
+applicable license agreement, including, without limitation, 
+that your use is for the sole purpose of programming logic 
+devices manufactured by Altera and sold by Altera or its 
+authorized distributors.  Please refer to the applicable 
+agreement for further details.
+
+
+
++----------------------------------------------------------------------------+
+; IP Upgrade Summary                                                         ;
++------------------------------+---------------------------------------------+
+; IP Components Upgrade Status ; Passed - Mon Jan 23 14:36:39 2017           ;
+; Quartus Prime Version        ; 15.1.0 Build 185 10/21/2015 SJ Lite Edition ;
+; Revision Name                ; DE1_SOC_NIOS                                ;
+; Top-level Entity Name        ; DE1_SOC_NIOS                                ;
+; Family                       ; Cyclone V                                   ;
++------------------------------+---------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Failed Upgrade IP Components                                                                                                                                           ;
++-------------+----------------+---------+---------------------------------------+----------------------+-----------------+----------------------------------------------+
+; Entity Name ; Component Name ; Version ; Original Source File                  ; Generation File Path ; New Source File ; Message                                      ;
++-------------+----------------+---------+---------------------------------------+----------------------+-----------------+----------------------------------------------+
+; nios_system ; Qsys           ; 15.0    ; nios_system/synthesis/nios_system.qip ; nios_system.qsys     ;                 ; Error upgrading Qsys file "nios_system.qsys" ;
++-------------+----------------+---------+---------------------------------------+----------------------+-----------------+----------------------------------------------+
+
+
++---------------------+
+; IP Upgrade Messages ;
++---------------------+
+Info (11902): Backing up file "nios_system.qsys" to "nios_system.BAK.qsys"
+Info (11902): Backing up file "nios_system/synthesis/nios_system.v" to "nios_system.BAK.v"
+Info (11837): Started upgrading IP component Qsys with file "nios_system.qsys"
+Info: 2017.01.23.14:34:29 Info: Starting to upgrade the IP cores in the Qsys system
+Info: 2017.01.23.14:34:30 Info: Upgrading from core type Nios II (Classic) Processor with version 15.1 to core type Nios II Processor with version 15.1
+Info: 2017.01.23.14:34:30 Info: Migration Successful
+Info: 2017.01.23.14:34:30 Info: Finished upgrading the ip cores
+Info: 2017.01.23.14:34:55 Info: Saving generation log to /home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system
+Info: 2017.01.23.14:34:55 Info: Starting: Create simulation model
+Info: 2017.01.23.14:34:55 Info: Loading NIOS_II_System_391_For_Students
+Info: 2017.01.23.14:34:55 Info: Reading input file
+Info: 2017.01.23.14:34:55 Info: Adding HEX0_1 [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:34:55 Info: Parameterizing module HEX0_1
+Info: 2017.01.23.14:34:55 Info: Adding HEX2_3 [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:34:55 Info: Parameterizing module HEX2_3
+Info: 2017.01.23.14:34:55 Info: Adding HEX4_5 [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:34:55 Info: Parameterizing module HEX4_5
+Info: 2017.01.23.14:34:55 Info: Adding PushButtons [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:34:55 Info: Parameterizing module PushButtons
+Info: 2017.01.23.14:34:55 Info: Adding character_lcd_0 [altera_up_avalon_character_lcd 15.1]
+Info: 2017.01.23.14:34:55 Info: Parameterizing module character_lcd_0
+Info: 2017.01.23.14:34:55 Info: Adding clk_0 [clock_source 15.1]
+Info: 2017.01.23.14:34:55 Info: Parameterizing module clk_0
+Info: 2017.01.23.14:34:55 Info: Adding clocks [altera_up_avalon_sys_sdram_pll 15.1]
+Info: 2017.01.23.14:34:55 Info: Parameterizing module clocks
+Info: 2017.01.23.14:34:55 Info: Adding jtag_uart_0 [altera_avalon_jtag_uart 15.1]
+Info: 2017.01.23.14:34:55 Info: Parameterizing module jtag_uart_0
+Info: 2017.01.23.14:34:55 Info: Adding leds [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:34:55 Info: Parameterizing module leds
+Info: 2017.01.23.14:34:55 Info: Adding nios2_qsys_0 [altera_nios2_gen2 15.1]
+Info: 2017.01.23.14:34:55 Info: Parameterizing module nios2_qsys_0
+Info: 2017.01.23.14:34:55 Info: Adding sdram [altera_avalon_new_sdram_controller 15.1]
+Info: 2017.01.23.14:34:55 Info: Parameterizing module sdram
+Info: 2017.01.23.14:34:55 Info: Adding switches [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:34:55 Info: Parameterizing module switches
+Info: 2017.01.23.14:34:55 Info: Adding timer_0 [altera_avalon_timer 15.1]
+Info: 2017.01.23.14:34:55 Info: Parameterizing module timer_0
+Info: 2017.01.23.14:34:55 Info: Adding timer_1 [altera_avalon_timer 15.1]
+Info: 2017.01.23.14:34:55 Info: Parameterizing module timer_1
+Info: 2017.01.23.14:34:55 Info: Adding to_external_bus_bridge_0 [altera_up_avalon_to_external_bus_bridge 15.1]
+Info: 2017.01.23.14:34:55 Info: Parameterizing module to_external_bus_bridge_0
+Info: 2017.01.23.14:34:55 Info: Building connections
+Info: 2017.01.23.14:34:55 Info: Parameterizing connections
+Info: 2017.01.23.14:34:55 Info: Validating
+Info: 2017.01.23.14:34:56 Info: Done reading input file
+Info: 2017.01.23.14:34:57 Info: nios_system.PushButtons: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: 2017.01.23.14:34:57 Info: nios_system.switches: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: 2017.01.23.14:34:58 Info: nios_system: Generating nios_system "nios_system" for SIM_VERILOG
+Info: 2017.01.23.14:35:01 Info: Inserting clock-crossing logic between cmd_demux.src0 and cmd_mux.sink0
+Info: 2017.01.23.14:35:01 Info: Inserting clock-crossing logic between cmd_demux.src4 and cmd_mux_004.sink0
+Info: 2017.01.23.14:35:01 Info: Inserting clock-crossing logic between cmd_demux_001.src0 and cmd_mux.sink1
+Info: 2017.01.23.14:35:01 Info: Inserting clock-crossing logic between cmd_demux_001.src4 and cmd_mux_004.sink1
+Info: 2017.01.23.14:35:01 Info: Inserting clock-crossing logic between rsp_demux.src0 and rsp_mux.sink0
+Info: 2017.01.23.14:35:01 Info: Inserting clock-crossing logic between rsp_demux.src1 and rsp_mux_001.sink0
+Info: 2017.01.23.14:35:01 Info: Inserting clock-crossing logic between rsp_demux_004.src0 and rsp_mux.sink4
+Info: 2017.01.23.14:35:01 Info: Inserting clock-crossing logic between rsp_demux_004.src1 and rsp_mux_001.sink4
+Info: 2017.01.23.14:35:08 Info: HEX0_1: Starting RTL generation for module 'nios_system_HEX0_1'
+2017.01.23.14:35:08 Info: HEX0_1:   Generation command is [exec /usr/bin/Altera/15.1/quartus/linux64/perl/bin/perl -I /usr/bin/Altera/15.1/quartus/linux64/perl/lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/europa -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/perl_lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/common -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=nios_system_HEX0_1 --dir=/tmp/alt7189_6023902734188198655.dir/0001_HEX0_1_gen/ --quartus_dir=/usr/bin/Altera/15.1/quartus --verilog --config=/tmp/alt7189_6023902734188198655.dir/0001_HEX0_1_gen//nios_system_HEX0_1_component_configuration.pl  --do_build_sim=1    --sim_dir=/tmp/alt7189_6023902734188198655.dir/0001_HEX0_1_gen
+Info: 2017.01.23.14:35:08 Info: HEX0_1: Done RTL generation for module 'nios_system_HEX0_1'
+Info: 2017.01.23.14:35:08 Info: HEX0_1: "nios_system" instantiated altera_avalon_pio "HEX0_1"
+Info: 2017.01.23.14:35:08 Info: PushButtons: Starting RTL generation for module 'nios_system_PushButtons'
+Info: 2017.01.23.14:35:08 Info: PushButtons:   Generation command is [exec /usr/bin/Altera/15.1/quartus/linux64/perl/bin/perl -I /usr/bin/Altera/15.1/quartus/linux64/perl/lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/europa -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/perl_lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/common -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=nios_system_PushButtons --dir=/tmp/alt7189_6023902734188198655.dir/0002_PushButtons_gen/ --quartus_dir=/usr/bin/Altera/15.1/quartus --verilog --config=/tmp/alt7189_6023902734188198655.dir/0002_PushButtons_gen//nios_system_PushButtons_component_configuration.pl  --do_build_sim=1    --sim_dir=/tmp/alt7189_6023902734188198655.dir/0002_PushButtons_gen
+Info: 2017.01.23.14:35:08 Info: PushButtons: Done RTL generation for module 'nios_system_PushButtons'
+Info: 2017.01.23.14:35:08 Info: PushButtons: "nios_system" instantiated altera_avalon_pio "PushButtons"
+Info: 2017.01.23.14:35:08 Info: character_lcd_0: Starting Generation of Character LCD
+Info: 2017.01.23.14:35:08 Info: character_lcd_0: "nios_system" instantiated altera_up_avalon_character_lcd "character_lcd_0"
+Info: 2017.01.23.14:35:09 Info: clocks: "nios_system" instantiated altera_up_avalon_sys_sdram_pll "clocks"
+Info: 2017.01.23.14:35:09 Info: jtag_uart_0: Starting RTL generation for module 'nios_system_jtag_uart_0'
+Info: 2017.01.23.14:35:09 Info: jtag_uart_0:   Generation command is [exec /usr/bin/Altera/15.1/quartus/linux64/perl/bin/perl -I /usr/bin/Altera/15.1/quartus/linux64/perl/lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/europa -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/perl_lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/common -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=nios_system_jtag_uart_0 --dir=/tmp/alt7189_6023902734188198655.dir/0004_jtag_uart_0_gen/ --quartus_dir=/usr/bin/Altera/15.1/quartus --verilog --config=/tmp/alt7189_6023902734188198655.dir/0004_jtag_uart_0_gen//nios_system_jtag_uart_0_component_configuration.pl  --do_build_sim=1    --sim_dir=/tmp/alt7189_6023902734188198655.dir/0004_jtag_uart_0_gen
+Info: 2017.01.23.14:35:09 Info: jtag_uart_0: Done RTL generation for module 'nios_system_jtag_uart_0'
+Info: 2017.01.23.14:35:09 Info: jtag_uart_0: "nios_system" instantiated altera_avalon_jtag_uart "jtag_uart_0"
+Info: 2017.01.23.14:35:09 Info: leds: Starting RTL generation for module 'nios_system_leds'
+Info: 2017.01.23.14:35:09 Info: leds:   Generation command is [exec /usr/bin/Altera/15.1/quartus/linux64/perl/bin/perl -I /usr/bin/Altera/15.1/quartus/linux64/perl/lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/europa -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/perl_lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/common -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=nios_system_leds --dir=/tmp/alt7189_6023902734188198655.dir/0005_leds_gen/ --quartus_dir=/usr/bin/Altera/15.1/quartus --verilog --config=/tmp/alt7189_6023902734188198655.dir/0005_leds_gen//nios_system_leds_component_configuration.pl  --do_build_sim=1    --sim_dir=/tmp/alt7189_6023902734188198655.dir/0005_leds_gen
+Info: 2017.01.23.14:35:09 Info: leds: Done RTL generation for module 'nios_system_leds'
+Info: 2017.01.23.14:35:09 Info: leds: "nios_system" instantiated altera_avalon_pio "leds"
+Info: 2017.01.23.14:35:09 Info: nios2_qsys_0: "nios_system" instantiated altera_nios2_gen2 "nios2_qsys_0"
+Info: 2017.01.23.14:35:09 Info: sdram: Starting RTL generation for module 'nios_system_sdram'
+Info: 2017.01.23.14:35:09 Info: sdram:   Generation command is [exec /usr/bin/Altera/15.1/quartus/linux64/perl/bin/perl -I /usr/bin/Altera/15.1/quartus/linux64/perl/lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/europa -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/perl_lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/common -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_new_sdram_controller -- /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_new_sdram_controller/generate_rtl.pl --name=nios_system_sdram --dir=/tmp/alt7189_6023902734188198655.dir/0006_sdram_gen/ --quartus_dir=/usr/bin/Altera/15.1/quartus --verilog --config=/tmp/alt7189_6023902734188198655.dir/0006_sdram_gen//nios_system_sdram_component_configuration.pl  --do_build_sim=1    --sim_dir=/tmp/alt7189_6023902734188198655.dir/0006_sdram_gen
+Info: 2017.01.23.14:35:10 Info: sdram: Done RTL generation for module 'nios_system_sdram'
+Info: 2017.01.23.14:35:10 Info: sdram: "nios_system" instantiated altera_avalon_new_sdram_controller "sdram"
+Info: 2017.01.23.14:35:10 Info: switches: Starting RTL generation for module 'nios_system_switches'
+Info: 2017.01.23.14:35:10 Info: switches:   Generation command is [exec /usr/bin/Altera/15.1/quartus/linux64/perl/bin/perl -I /usr/bin/Altera/15.1/quartus/linux64/perl/lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/europa -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/perl_lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/common -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=nios_system_switches --dir=/tmp/alt7189_6023902734188198655.dir/0007_switches_gen/ --quartus_dir=/usr/bin/Altera/15.1/quartus --verilog --config=/tmp/alt7189_6023902734188198655.dir/0007_switches_gen//nios_system_switches_component_configuration.pl  --do_build_sim=1    --sim_dir=/tmp/alt7189_6023902734188198655.dir/0007_switches_gen
+Info: 2017.01.23.14:35:10 Info: switches: Done RTL generation for module 'nios_system_switches'
+Info: 2017.01.23.14:35:10 Info: switches: "nios_system" instantiated altera_avalon_pio "switches"
+Info: 2017.01.23.14:35:10 Info: timer_0: Starting RTL generation for module 'nios_system_timer_0'
+Info: 2017.01.23.14:35:10 Info: timer_0:   Generation command is [exec /usr/bin/Altera/15.1/quartus/linux64//perl/bin/perl -I /usr/bin/Altera/15.1/quartus/linux64//perl/lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/europa -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/perl_lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/common -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer -- /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer/generate_rtl.pl --name=nios_system_timer_0 --dir=/tmp/alt7189_6023902734188198655.dir/0008_timer_0_gen/ --quartus_dir=/usr/bin/Altera/15.1/quartus --verilog --config=/tmp/alt7189_6023902734188198655.dir/0008_timer_0_gen//nios_system_timer_0_component_configuration.pl  --do_build_sim=1    --sim_dir=/tmp/alt7189_6023902734188198655.dir/0008_timer_0_gen
+Info: 2017.01.23.14:35:10 Info: timer_0: Done RTL generation for module 'nios_system_timer_0'
+Info: 2017.01.23.14:35:10 Info: timer_0: "nios_system" instantiated altera_avalon_timer "timer_0"
+Info: 2017.01.23.14:35:10 Info: to_external_bus_bridge_0: Starting Generation of Avalon to External Bus Bridge
+Info: 2017.01.23.14:35:10 Info: to_external_bus_bridge_0: "nios_system" instantiated altera_up_avalon_to_external_bus_bridge "to_external_bus_bridge_0"
+Info: 2017.01.23.14:35:12 Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:35:12 Info: avalon_st_adapter_001: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:35:12 Info: avalon_st_adapter_002: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:35:12 Info: avalon_st_adapter_003: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:35:12 Info: avalon_st_adapter_004: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:35:12 Info: avalon_st_adapter_005: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:35:12 Info: avalon_st_adapter_006: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:35:12 Info: avalon_st_adapter_007: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:35:13 Info: avalon_st_adapter_008: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:35:13 Info: avalon_st_adapter_009: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:35:13 Info: avalon_st_adapter_010: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:35:13 Info: avalon_st_adapter_011: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:35:13 Info: avalon_st_adapter_012: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:35:14 Info: mm_interconnect_0: "nios_system" instantiated altera_mm_interconnect "mm_interconnect_0"
+Info: 2017.01.23.14:35:14 Info: irq_mapper: "nios_system" instantiated altera_irq_mapper "irq_mapper"
+Info: 2017.01.23.14:35:14 Info: irq_synchronizer: "nios_system" instantiated altera_irq_clock_crosser "irq_synchronizer"
+Info: 2017.01.23.14:35:14 Info: rst_controller: "nios_system" instantiated altera_reset_controller "rst_controller"
+Info: 2017.01.23.14:35:14 Info: sys_pll: Generating simgen model
+Error: 2017.01.23.14:35:22 Error: sys_pll: Execution of script /tmp/alt7189_6023902734188198655.dir/0013_sys_pll_gen
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: *******************************************************************
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: Running Quartus Prime Shell
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: Version 15.1.0 Build 185 10/21
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: Copyright (C) 1991-2015 Altera Corporation. All rights reserved.
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: Your use of Altera Corporation's design tools, logic functions
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: and other software and tools, and its AMPP partner logic
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: functions, and any output files from any of the foregoing
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: (including device programming or simulation files), and any
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: associated documentation or information are expressly subject
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: to the terms and conditions of the Altera Program License
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: Subscription Agreement, the Altera Quartus Prime License Agreement,
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: the Altera MegaCore Function License Agreement, or other
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: applicable license agreement, including, without limitation,
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: that your use is for the sole purpose of programming logic
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: devices manufactured by Altera and sold by Altera or its
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: authorized distributors.  Please refer to the applicable
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: agreement for further details.
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: Processing started: Mon Jan 23 14:35:21 2017
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: Command: quartus_sh -t /tmp/alt7189_6023902734188198655.dir/0013_sys_pll_gen
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info (23030): Evaluation of Tcl script /tmp/alt7189_6023902734188198655.dir/0013_sys_pll_gen
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: Quartus Prime Shell was successful. 0 errors, 0 warnings
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: Peak virtual memory: 984 megabytes
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: Processing ended: Mon Jan 23 14:35:21 2017
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: Elapsed time: 00:00:00
+Error: 2017.01.23.14:35:22 Error: sys_pll: Info: Total CPU time (on all processors): 00:00:01
+Error: 2017.01.23.14:35:22 Error: sys_pll: Inconsistency detected by ld.so: dl-close.c: 811: _dl_close: Assertion `map->l_init_called' failed!
+Error: 2017.01.23.14:35:54 Error: sys_pll: Execution of script run_simgen_cmd.tcl failed
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: *******************************************************************
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Running Quartus Prime Shell
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Version 15.1.0 Build 185 10/21
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Copyright (C) 1991-2015 Altera Corporation. All rights reserved.
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Your use of Altera Corporation's design tools, logic functions
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: and other software and tools, and its AMPP partner logic
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: functions, and any output files from any of the foregoing
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: (including device programming or simulation files), and any
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: associated documentation or information are expressly subject
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: to the terms and conditions of the Altera Program License
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Subscription Agreement, the Altera Quartus Prime License Agreement,
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: the Altera MegaCore Function License Agreement, or other
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: applicable license agreement, including, without limitation,
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: that your use is for the sole purpose of programming logic
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: devices manufactured by Altera and sold by Altera or its
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: authorized distributors.  Please refer to the applicable
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: agreement for further details.
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Processing started: Mon Jan 23 14:35:29 2017
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Command: quartus_sh -t run_simgen_cmd.tcl
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: *******************************************************************
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Running Quartus Prime Analysis & Synthesis
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Version 15.1.0 Build 185 10/21
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Copyright (C) 1991-2015 Altera Corporation. All rights reserved.
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Your use of Altera Corporation's design tools, logic functions
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: and other software and tools, and its AMPP partner logic
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: functions, and any output files from any of the foregoing
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: (including device programming or simulation files), and any
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: associated documentation or information are expressly subject
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: to the terms and conditions of the Altera Program License
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Subscription Agreement, the Altera Quartus Prime License Agreement,
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: the Altera MegaCore Function License Agreement, or other
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: applicable license agreement, including, without limitation,
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: that your use is for the sole purpose of programming logic
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: devices manufactured by Altera and sold by Altera or its
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: authorized distributors.  Please refer to the applicable
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: agreement for further details.
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Processing started: Mon Jan 23 14:35:36 2017
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Command: quartus_map nios_system_clocks_sys_pll.qpf --simgen --ini=disable_check_quartus_compatibility_qsys_only=on --simgen_parameter=CBX_HDL_LANGUAGE=VERILOG
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (20034): Auto device selection is not supported for Cyclone V device family. The default device, 5CGXFC7C7F23C8, is set.
+Error: 2017.01.23.14:35:54 Error: sys_pll: Warning (20028): Parallel compilation is not licensed and has been disabled
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12021): Found 1 design units, including 1 entities, in source file nios_system_clocks_sys_pll.v
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12023): Found entity 1: nios_system_clocks_sys_pll File: /tmp/alt7189_6023902734188198655.dir/0013_sys_pll_gen
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12127): Elaborating entity "nios_system_clocks_sys_pll" for the top level hierarchy
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12128): Elaborating entity "altera_pll" for hierarchy "altera_pll:altera_pll_i" File: /tmp/alt7189_6023902734188198655.dir/0013_sys_pll_gen
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (10008): Verilog HDL or VHDL information: EDA Netlist Writer cannot regroup multidimensional array "wire_to_nowhere_64" into its bus
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12130): Elaborated megafunction instantiation "altera_pll:altera_pll_i" File: /tmp/alt7189_6023902734188198655.dir/0013_sys_pll_gen
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12133): Instantiated megafunction "altera_pll:altera_pll_i" with the following parameter: File: /tmp/alt7189_6023902734188198655.dir/0013_sys_pll_gen
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "fractional_vco_multiplier" = "false"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "reference_clock_frequency" = "50.0 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "operation_mode" = "direct"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "number_of_clocks" = "2"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency0" = "50.000000 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift0" = "0 ps"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle0" = "50"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency1" = "50.000000 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift1" = "-3000 ps"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle1" = "50"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency2" = "0 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift2" = "0 ps"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle2" = "50"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency3" = "0 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift3" = "0 ps"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle3" = "50"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency4" = "0 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift4" = "0 ps"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle4" = "50"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency5" = "0 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift5" = "0 ps"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle5" = "50"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency6" = "0 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift6" = "0 ps"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle6" = "50"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency7" = "0 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift7" = "0 ps"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle7" = "50"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency8" = "0 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift8" = "0 ps"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle8" = "50"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency9" = "0 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift9" = "0 ps"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle9" = "50"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency10" = "0 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift10" = "0 ps"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle10" = "50"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency11" = "0 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift11" = "0 ps"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle11" = "50"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency12" = "0 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift12" = "0 ps"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle12" = "50"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency13" = "0 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift13" = "0 ps"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle13" = "50"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency14" = "0 MHz"
+2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift14" = "0 ps"
+2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle14" = "50"
+2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency15" = "0 MHz"
+2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift15" = "0 ps"
+2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle15" = "50"
+2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency16" = "0 MHz"
+2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift16" = "0 ps"
+2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle16" = "50"
+2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "output_clock_frequency17" = "0 MHz"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "phase_shift17" = "0 ps"
+2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "duty_cycle17" = "50"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "pll_type" = "General"
+2017.01.23.14:35:54 Error: sys_pll: Info (12134): Parameter "pll_subtype" = "General"
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (281010): Generating sgate simulator netlist using Simgen
+2017.01.23.14:35:54 Error: sys_pll: SIMGEN_PROGRESS Start of Model generation -- 0% complete
+Error: 2017.01.23.14:35:54 Error: sys_pll: SIMGEN_PROGRESS Phase 1 : Internal Objects created -- 25% complete
+Error: 2017.01.23.14:35:54 Error: sys_pll: SIMGEN_PROGRESS Phase 2 : Connections between internal objects made -- 60% complete
+Error: 2017.01.23.14:35:54 Error: sys_pll: SIMGEN_PROGRESS Phase 3 : Netlist generated -- 100% complete
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 1 warning
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Peak virtual memory: 1166 megabytes
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Processing ended: Mon Jan 23 14:35:52 2017
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Elapsed time: 00:00:16
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Total CPU time (on all processors): 00:00:41
+Error: 2017.01.23.14:35:54 Error: sys_pll: Inconsistency detected by ld.so: dl-close.c: 811: _dl_close: Assertion `map->l_init_called' failed!
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info (23030): Evaluation of Tcl script run_simgen_cmd.tcl was successful
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Quartus Prime Shell was successful. 0 errors, 0 warnings
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Peak virtual memory: 972 megabytes
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Processing ended: Mon Jan 23 14:35:53 2017
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Elapsed time: 00:00:24
+Error: 2017.01.23.14:35:54 Error: sys_pll: Info: Total CPU time (on all processors): 00:00:48
+Error: 2017.01.23.14:35:54 Error: sys_pll: Inconsistency detected by ld.so: dl-close.c: 811: _dl_close: Assertion `map->l_init_called' failed!
+Info: 2017.01.23.14:35:54 Info: sys_pll: Simgen was successful
+Info: 2017.01.23.14:35:54 Info: sys_pll: "clocks" instantiated altera_pll "sys_pll"
+Error: 2017.01.23.14:35:54 Error: Generation stopped, 124 or more modules remaining
+Info: 2017.01.23.14:35:54 Info: nios_system: Done "nios_system" with 40 modules, 21 files
+Error: 2017.01.23.14:35:54 Error: qsys-generate failed with exit code 1: 154 Errors, 0 Warnings
+Info: 2017.01.23.14:35:54 Info: Finished: Create simulation model
+Info: 2017.01.23.14:35:54 Info: Starting: Create Modelsim Project.
+Info: 2017.01.23.14:35:54 Info: sim-script-gen --spd=/home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/nios_system.spd --output-directory=/home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/simulation
+Info: 2017.01.23.14:35:54 Info: Doing: ip-make-simscript --spd=/home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/nios_system.spd --output-directory=/home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/simulation
+Info: 2017.01.23.14:36:00 Info: Generating the following file(s) for MODELSIM simulator in /home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/simulation
+Info: 2017.01.23.14:36:00 Info:     mentor
+Info: 2017.01.23.14:36:00 Info: Generating the following file(s) for VCS simulator in /home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/simulation
+Info: 2017.01.23.14:36:00 Info:     synopsys/vcs
+Info: 2017.01.23.14:36:00 Info: Generating the following file(s) for VCSMX simulator in /home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/simulation
+Info: 2017.01.23.14:36:00 Info:     synopsys/vcsmx
+Info: 2017.01.23.14:36:00 Info:     synopsys/vcsmx
+Info: 2017.01.23.14:36:00 Info: Generating the following file(s) for NCSIM simulator in /home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/simulation
+Info: 2017.01.23.14:36:00 Info:     cadence
+Info: 2017.01.23.14:36:00 Info:     cadence
+Info: 2017.01.23.14:36:00 Info:     cadence
+Info: 2017.01.23.14:36:00 Info:     16 .cds.lib files in cadence/cds_libs
+Info: 2017.01.23.14:36:00 Info: Generating the following file(s) for RIVIERA simulator in /home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/simulation
+Info: 2017.01.23.14:36:00 Info:     aldec
+Info: 2017.01.23.14:36:00 Info: For information on how to simulate your IP, see the explanatory comments in the simulator-specific subdirectories under /home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/simulation
+Info: 2017.01.23.14:36:00 Info: Finished: Create Modelsim Project.
+Info: 2017.01.23.14:36:00 Info: Starting: Create block symbol file (.bsf)
+Info: 2017.01.23.14:36:00 Info: Loading NIOS_II_System_391_For_Students
+Info: 2017.01.23.14:36:00 Info: Reading input file
+Info: 2017.01.23.14:36:00 Info: Adding HEX0_1 [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:36:00 Info: Parameterizing module HEX0_1
+Info: 2017.01.23.14:36:00 Info: Adding HEX2_3 [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:36:00 Info: Parameterizing module HEX2_3
+Info: 2017.01.23.14:36:00 Info: Adding HEX4_5 [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:36:00 Info: Parameterizing module HEX4_5
+Info: 2017.01.23.14:36:00 Info: Adding PushButtons [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:36:00 Info: Parameterizing module PushButtons
+Info: 2017.01.23.14:36:00 Info: Adding character_lcd_0 [altera_up_avalon_character_lcd 15.1]
+Info: 2017.01.23.14:36:00 Info: Parameterizing module character_lcd_0
+Info: 2017.01.23.14:36:00 Info: Adding clk_0 [clock_source 15.1]
+Info: 2017.01.23.14:36:00 Info: Parameterizing module clk_0
+Info: 2017.01.23.14:36:00 Info: Adding clocks [altera_up_avalon_sys_sdram_pll 15.1]
+Info: 2017.01.23.14:36:00 Info: Parameterizing module clocks
+Info: 2017.01.23.14:36:00 Info: Adding jtag_uart_0 [altera_avalon_jtag_uart 15.1]
+Info: 2017.01.23.14:36:00 Info: Parameterizing module jtag_uart_0
+Info: 2017.01.23.14:36:00 Info: Adding leds [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:36:00 Info: Parameterizing module leds
+Info: 2017.01.23.14:36:00 Info: Adding nios2_qsys_0 [altera_nios2_gen2 15.1]
+Info: 2017.01.23.14:36:00 Info: Parameterizing module nios2_qsys_0
+Info: 2017.01.23.14:36:00 Info: Adding sdram [altera_avalon_new_sdram_controller 15.1]
+Info: 2017.01.23.14:36:00 Info: Parameterizing module sdram
+Info: 2017.01.23.14:36:00 Info: Adding switches [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:36:00 Info: Parameterizing module switches
+Info: 2017.01.23.14:36:00 Info: Adding timer_0 [altera_avalon_timer 15.1]
+Info: 2017.01.23.14:36:00 Info: Parameterizing module timer_0
+Info: 2017.01.23.14:36:00 Info: Adding timer_1 [altera_avalon_timer 15.1]
+Info: 2017.01.23.14:36:00 Info: Parameterizing module timer_1
+Info: 2017.01.23.14:36:00 Info: Adding to_external_bus_bridge_0 [altera_up_avalon_to_external_bus_bridge 15.1]
+Info: 2017.01.23.14:36:00 Info: Parameterizing module to_external_bus_bridge_0
+Info: 2017.01.23.14:36:00 Info: Building connections
+Info: 2017.01.23.14:36:00 Info: Parameterizing connections
+Info: 2017.01.23.14:36:00 Info: Validating
+Info: 2017.01.23.14:36:01 Info: Done reading input file
+Info: 2017.01.23.14:36:02 Info: nios_system.PushButtons: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: 2017.01.23.14:36:02 Info: nios_system.switches: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: 2017.01.23.14:36:08 Info: qsys-generate succeeded.
+Info: 2017.01.23.14:36:08 Info: Finished: Create block symbol file (.bsf)
+Info: 2017.01.23.14:36:08 Info:
+Info: 2017.01.23.14:36:08 Info: Starting: Create HDL design files for synthesis
+Info: 2017.01.23.14:36:08 Info: Loading NIOS_II_System_391_For_Students
+Info: 2017.01.23.14:36:08 Info: Reading input file
+Info: 2017.01.23.14:36:08 Info: Adding HEX0_1 [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:36:08 Info: Parameterizing module HEX0_1
+Info: 2017.01.23.14:36:08 Info: Adding HEX2_3 [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:36:08 Info: Parameterizing module HEX2_3
+Info: 2017.01.23.14:36:08 Info: Adding HEX4_5 [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:36:08 Info: Parameterizing module HEX4_5
+Info: 2017.01.23.14:36:08 Info: Adding PushButtons [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:36:08 Info: Parameterizing module PushButtons
+Info: 2017.01.23.14:36:08 Info: Adding character_lcd_0 [altera_up_avalon_character_lcd 15.1]
+Info: 2017.01.23.14:36:08 Info: Parameterizing module character_lcd_0
+Info: 2017.01.23.14:36:08 Info: Adding clk_0 [clock_source 15.1]
+Info: 2017.01.23.14:36:08 Info: Parameterizing module clk_0
+Info: 2017.01.23.14:36:08 Info: Adding clocks [altera_up_avalon_sys_sdram_pll 15.1]
+Info: 2017.01.23.14:36:08 Info: Parameterizing module clocks
+Info: 2017.01.23.14:36:08 Info: Adding jtag_uart_0 [altera_avalon_jtag_uart 15.1]
+Info: 2017.01.23.14:36:08 Info: Parameterizing module jtag_uart_0
+Info: 2017.01.23.14:36:08 Info: Adding leds [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:36:08 Info: Parameterizing module leds
+Info: 2017.01.23.14:36:08 Info: Adding nios2_qsys_0 [altera_nios2_gen2 15.1]
+Info: 2017.01.23.14:36:08 Info: Parameterizing module nios2_qsys_0
+Info: 2017.01.23.14:36:08 Info: Adding sdram [altera_avalon_new_sdram_controller 15.1]
+Info: 2017.01.23.14:36:08 Info: Parameterizing module sdram
+Info: 2017.01.23.14:36:08 Info: Adding switches [altera_avalon_pio 15.1]
+Info: 2017.01.23.14:36:08 Info: Parameterizing module switches
+Info: 2017.01.23.14:36:08 Info: Adding timer_0 [altera_avalon_timer 15.1]
+Info: 2017.01.23.14:36:08 Info: Parameterizing module timer_0
+Info: 2017.01.23.14:36:08 Info: Adding timer_1 [altera_avalon_timer 15.1]
+Info: 2017.01.23.14:36:08 Info: Parameterizing module timer_1
+Info: 2017.01.23.14:36:08 Info: Adding to_external_bus_bridge_0 [altera_up_avalon_to_external_bus_bridge 15.1]
+Info: 2017.01.23.14:36:08 Info: Parameterizing module to_external_bus_bridge_0
+Info: 2017.01.23.14:36:08 Info: Building connections
+Info: 2017.01.23.14:36:08 Info: Parameterizing connections
+Info: 2017.01.23.14:36:08 Info: Validating
+Info: 2017.01.23.14:36:08 Info: Done reading input file
+Info: 2017.01.23.14:36:09 Info: nios_system.PushButtons: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: 2017.01.23.14:36:09 Info: nios_system.switches: PIO inputs are not hardwired in test bench. Undefined values will be read from PIO inputs during simulation.
+Info: 2017.01.23.14:36:10 Info: nios_system: Generating nios_system "nios_system" for QUARTUS_SYNTH
+Info: 2017.01.23.14:36:11 Info: Inserting clock-crossing logic between cmd_demux.src0 and cmd_mux.sink0
+Info: 2017.01.23.14:36:11 Info: Inserting clock-crossing logic between cmd_demux.src4 and cmd_mux_004.sink0
+Info: 2017.01.23.14:36:11 Info: Inserting clock-crossing logic between cmd_demux_001.src0 and cmd_mux.sink1
+Info: 2017.01.23.14:36:11 Info: Inserting clock-crossing logic between cmd_demux_001.src4 and cmd_mux_004.sink1
+Info: 2017.01.23.14:36:11 Info: Inserting clock-crossing logic between rsp_demux.src0 and rsp_mux.sink0
+Info: 2017.01.23.14:36:11 Info: Inserting clock-crossing logic between rsp_demux.src1 and rsp_mux_001.sink0
+Info: 2017.01.23.14:36:11 Info: Inserting clock-crossing logic between rsp_demux_004.src0 and rsp_mux.sink4
+Info: 2017.01.23.14:36:11 Info: Inserting clock-crossing logic between rsp_demux_004.src1 and rsp_mux_001.sink4
+Info: 2017.01.23.14:36:15 Info: HEX0_1: Starting RTL generation for module 'nios_system_HEX0_1'
+Info: 2017.01.23.14:36:15 Info: HEX0_1:   Generation command is [exec /usr/bin/Altera/15.1/quartus/linux64/perl/bin/perl -I /usr/bin/Altera/15.1/quartus/linux64/perl/lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/europa -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/perl_lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/common -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=nios_system_HEX0_1 --dir=/tmp/alt7189_6023902734188198655.dir/0015_HEX0_1_gen/ --quartus_dir=/usr/bin/Altera/15.1/quartus --verilog --config=/tmp/alt7189_6023902734188198655.dir/0015_HEX0_1_gen/
+Info: 2017.01.23.14:36:15 Info: HEX0_1: Done RTL generation for module 'nios_system_HEX0_1'
+Info: 2017.01.23.14:36:15 Info: HEX0_1: "nios_system" instantiated altera_avalon_pio "HEX0_1"
+Info: 2017.01.23.14:36:15 Info: PushButtons: Starting RTL generation for module 'nios_system_PushButtons'
+Info: 2017.01.23.14:36:15 Info: PushButtons:   Generation command is [exec /usr/bin/Altera/15.1/quartus/linux64/perl/bin/perl -I /usr/bin/Altera/15.1/quartus/linux64/perl/lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/europa -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/perl_lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/common -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=nios_system_PushButtons --dir=/tmp/alt7189_6023902734188198655.dir/0016_PushButtons_gen/ --quartus_dir=/usr/bin/Altera/15.1/quartus --verilog --config=/tmp/alt7189_6023902734188198655.dir/0016_PushButtons_gen/
+Info: 2017.01.23.14:36:15 Info: PushButtons: Done RTL generation for module 'nios_system_PushButtons'
+Info: 2017.01.23.14:36:15 Info: PushButtons: "nios_system" instantiated altera_avalon_pio "PushButtons"
+Info: 2017.01.23.14:36:15 Info: character_lcd_0: Starting Generation of Character LCD
+Info: 2017.01.23.14:36:15 Info: character_lcd_0: "nios_system" instantiated altera_up_avalon_character_lcd "character_lcd_0"
+Info: 2017.01.23.14:36:16 Info: clocks: "nios_system" instantiated altera_up_avalon_sys_sdram_pll "clocks"
+Info: 2017.01.23.14:36:16 Info: jtag_uart_0: Starting RTL generation for module 'nios_system_jtag_uart_0'
+Info: 2017.01.23.14:36:16 Info: jtag_uart_0:   Generation command is [exec /usr/bin/Altera/15.1/quartus/linux64/perl/bin/perl -I /usr/bin/Altera/15.1/quartus/linux64/perl/lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/europa -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/perl_lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/common -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=nios_system_jtag_uart_0 --dir=/tmp/alt7189_6023902734188198655.dir/0018_jtag_uart_0_gen/ --quartus_dir=/usr/bin/Altera/15.1/quartus --verilog --config=/tmp/alt7189_6023902734188198655.dir/0018_jtag_uart_0_gen/
+Info: 2017.01.23.14:36:16 Info: jtag_uart_0: Done RTL generation for module 'nios_system_jtag_uart_0'
+Info: 2017.01.23.14:36:16 Info: jtag_uart_0: "nios_system" instantiated altera_avalon_jtag_uart "jtag_uart_0"
+Info: 2017.01.23.14:36:16 Info: leds: Starting RTL generation for module 'nios_system_leds'
+Info: 2017.01.23.14:36:16 Info: leds:   Generation command is [exec /usr/bin/Altera/15.1/quartus/linux64/perl/bin/perl -I /usr/bin/Altera/15.1/quartus/linux64/perl/lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/europa -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/perl_lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/common -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=nios_system_leds --dir=/tmp/alt7189_6023902734188198655.dir/0019_leds_gen/ --quartus_dir=/usr/bin/Altera/15.1/quartus --verilog --config=/tmp/alt7189_6023902734188198655.dir/0019_leds_gen/
+Info: 2017.01.23.14:36:16 Info: leds: Done RTL generation for module 'nios_system_leds'
+Info: 2017.01.23.14:36:16 Info: leds: "nios_system" instantiated altera_avalon_pio "leds"
+Info: 2017.01.23.14:36:16 Info: nios2_qsys_0: "nios_system" instantiated altera_nios2_gen2 "nios2_qsys_0"
+Info: 2017.01.23.14:36:16 Info: sdram: Starting RTL generation for module 'nios_system_sdram'
+Info: 2017.01.23.14:36:16 Info: sdram:   Generation command is [exec /usr/bin/Altera/15.1/quartus/linux64/perl/bin/perl -I /usr/bin/Altera/15.1/quartus/linux64/perl/lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/europa -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/perl_lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/common -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_new_sdram_controller -- /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_new_sdram_controller/generate_rtl.pl --name=nios_system_sdram --dir=/tmp/alt7189_6023902734188198655.dir/0020_sdram_gen/ --quartus_dir=/usr/bin/Altera/15.1/quartus --verilog --config=/tmp/alt7189_6023902734188198655.dir/0020_sdram_gen/
+Info: 2017.01.23.14:36:17 Info: sdram: Done RTL generation for module 'nios_system_sdram'
+Info: 2017.01.23.14:36:17 Info: sdram: "nios_system" instantiated altera_avalon_new_sdram_controller "sdram"
+Info: 2017.01.23.14:36:17 Info: switches: Starting RTL generation for module 'nios_system_switches'
+Info: 2017.01.23.14:36:17 Info: switches:   Generation command is [exec /usr/bin/Altera/15.1/quartus/linux64/perl/bin/perl -I /usr/bin/Altera/15.1/quartus/linux64/perl/lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/europa -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/perl_lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/common -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=nios_system_switches --dir=/tmp/alt7189_6023902734188198655.dir/0021_switches_gen/ --quartus_dir=/usr/bin/Altera/15.1/quartus --verilog --config=/tmp/alt7189_6023902734188198655.dir/0021_switches_gen/
+Info: 2017.01.23.14:36:17 Info: switches: Done RTL generation for module 'nios_system_switches'
+Info: 2017.01.23.14:36:17 Info: switches: "nios_system" instantiated altera_avalon_pio "switches"
+Info: 2017.01.23.14:36:17 Info: timer_0: Starting RTL generation for module 'nios_system_timer_0'
+Info: 2017.01.23.14:36:17 Info: timer_0:   Generation command is [exec /usr/bin/Altera/15.1/quartus/linux64//perl/bin/perl -I /usr/bin/Altera/15.1/quartus/linux64//perl/lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/europa -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/perl_lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/common -I /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer -- /usr/bin/Altera/15.1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_timer/generate_rtl.pl --name=nios_system_timer_0 --dir=/tmp/alt7189_6023902734188198655.dir/0022_timer_0_gen/ --quartus_dir=/usr/bin/Altera/15.1/quartus --verilog --config=/tmp/alt7189_6023902734188198655.dir/0022_timer_0_gen/
+Info: 2017.01.23.14:36:17 Info: timer_0: Done RTL generation for module 'nios_system_timer_0'
+Info: 2017.01.23.14:36:17 Info: timer_0: "nios_system" instantiated altera_avalon_timer "timer_0"
+Info: 2017.01.23.14:36:17 Info: to_external_bus_bridge_0: Starting Generation of Avalon to External Bus Bridge
+Info: 2017.01.23.14:36:17 Info: to_external_bus_bridge_0: "nios_system" instantiated altera_up_avalon_to_external_bus_bridge "to_external_bus_bridge_0"
+Info: 2017.01.23.14:36:18 Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:36:18 Info: avalon_st_adapter_001: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:36:18 Info: avalon_st_adapter_002: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:36:18 Info: avalon_st_adapter_003: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:36:18 Info: avalon_st_adapter_004: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:36:18 Info: avalon_st_adapter_005: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:36:18 Info: avalon_st_adapter_006: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:36:18 Info: avalon_st_adapter_007: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:36:18 Info: avalon_st_adapter_008: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:36:18 Info: avalon_st_adapter_009: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:36:18 Info: avalon_st_adapter_010: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:36:19 Info: avalon_st_adapter_011: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:36:19 Info: avalon_st_adapter_012: Inserting error_adapter: error_adapter_0
+Info: 2017.01.23.14:36:20 Info: mm_interconnect_0: "nios_system" instantiated altera_mm_interconnect "mm_interconnect_0"
+Info: 2017.01.23.14:36:20 Info: irq_mapper: "nios_system" instantiated altera_irq_mapper "irq_mapper"
+Info: 2017.01.23.14:36:20 Info: irq_synchronizer: "nios_system" instantiated altera_irq_clock_crosser "irq_synchronizer"
+Info: 2017.01.23.14:36:20 Info: rst_controller: "nios_system" instantiated altera_reset_controller "rst_controller"
+Info: 2017.01.23.14:36:20 Info: sys_pll: "clocks" instantiated altera_pll "sys_pll"
+Info: 2017.01.23.14:36:20 Info: reset_from_locked: "clocks" instantiated altera_up_avalon_reset_from_locked_signal "reset_from_locked"
+Info: 2017.01.23.14:36:20 Info: cpu: Starting RTL generation for module 'nios_system_nios2_qsys_0_cpu'
+Info: 2017.01.23.14:36:20 Info: cpu:   Generation command is [exec /usr/bin/Altera/15.1/quartus/linux64//eperlcmd -I /usr/bin/Altera/15.1/quartus/linux64//perl/lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/europa -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin/perl_lib -I /usr/bin/Altera/15.1/quartus/sopc_builder/bin -I /usr/bin/Altera/15.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/cpu_lib -I /usr/bin/Altera/15.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/nios_lib -I /usr/bin/Altera/15.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2 -I /usr/bin/Altera/15.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2 -- /usr/bin/Altera/15.1/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/generate_rtl.epl --name=nios_system_nios2_qsys_0_cpu --dir=/tmp/alt7189_6023902734188198655.dir/0029_cpu_gen/ --quartus_bindir=/usr/bin/Altera/15.1/quartus/linux64/ --verilog --config=/tmp/alt7189_6023902734188198655.dir/0029_cpu_gen/
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:20 (*) Starting Nios II generation
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:20 (*)   Checking for plaintext license.
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:26 (*)   Plaintext license not found.
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:26 (*)   Checking for encrypted license (non-evaluation).
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:31 (*)   Encrypted license not found.  Defaulting to OCP evaluation license (produces a time-limited SOF)
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:31 (*)   Elaborating CPU configuration settings
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:31 (*)   Creating all objects for CPU
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:31 (*)     Testbench
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:31 (*)     Instruction decoding
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:31 (*)       Instruction fields
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:32 (*)       Instruction decodes
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:32 (*)       Signals for RTL simulation waveforms
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:32 (*)       Instruction controls
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:32 (*)     Pipeline frontend
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:32 (*)     Pipeline backend
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:35 (*)   Generating RTL from CPU objects
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:37 (*)   Creating encrypted RTL
+Info: 2017.01.23.14:36:38 Info: cpu: # 2017.01.23 14:36:38 (*) Done Nios II generation
+Info: 2017.01.23.14:36:38 Info: cpu: Done RTL generation for module 'nios_system_nios2_qsys_0_cpu'
+Info: 2017.01.23.14:36:38 Info: cpu: "nios2_qsys_0" instantiated altera_nios2_gen2_unit "cpu"
+Info: 2017.01.23.14:36:38 Info: nios2_qsys_0_data_master_translator: "mm_interconnect_0" instantiated altera_merlin_master_translator "nios2_qsys_0_data_master_translator"
+Info: 2017.01.23.14:36:38 Info: jtag_uart_0_avalon_jtag_slave_translator: "mm_interconnect_0" instantiated altera_merlin_slave_translator "jtag_uart_0_avalon_jtag_slave_translator"
+Info: 2017.01.23.14:36:38 Info: nios2_qsys_0_data_master_agent: "mm_interconnect_0" instantiated altera_merlin_master_agent "nios2_qsys_0_data_master_agent"
+Info: 2017.01.23.14:36:38 Info: jtag_uart_0_avalon_jtag_slave_agent: "mm_interconnect_0" instantiated altera_merlin_slave_agent "jtag_uart_0_avalon_jtag_slave_agent"
+Info: 2017.01.23.14:36:38 Info: jtag_uart_0_avalon_jtag_slave_agent_rsp_fifo: "mm_interconnect_0" instantiated altera_avalon_sc_fifo "jtag_uart_0_avalon_jtag_slave_agent_rsp_fifo"
+Info: 2017.01.23.14:36:38 Info: router: "mm_interconnect_0" instantiated altera_merlin_router "router"
+Info: 2017.01.23.14:36:38 Info: router_002: "mm_interconnect_0" instantiated altera_merlin_router "router_002"
+Info: 2017.01.23.14:36:38 Info: router_003: "mm_interconnect_0" instantiated altera_merlin_router "router_003"
+Info: 2017.01.23.14:36:38 Info: router_004: "mm_interconnect_0" instantiated altera_merlin_router "router_004"
+Info: 2017.01.23.14:36:38 Info: nios2_qsys_0_instruction_master_limiter: "mm_interconnect_0" instantiated altera_merlin_traffic_limiter "nios2_qsys_0_instruction_master_limiter"
+Info: 2017.01.23.14:36:38 Info: Reusing file /home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/synthesis/submodules
+Info: 2017.01.23.14:36:38 Info: character_lcd_0_avalon_lcd_slave_burst_adapter: "mm_interconnect_0" instantiated altera_merlin_burst_adapter "character_lcd_0_avalon_lcd_slave_burst_adapter"
+Info: 2017.01.23.14:36:38 Info: Reusing file /home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/synthesis/submodules
+Info: 2017.01.23.14:36:38 Info: cmd_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: 2017.01.23.14:36:38 Info: cmd_demux_001: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux_001"
+Info: 2017.01.23.14:36:38 Info: cmd_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: 2017.01.23.14:36:38 Info: rsp_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "rsp_demux"
+Info: 2017.01.23.14:36:38 Info: rsp_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: 2017.01.23.14:36:38 Info: Reusing file /home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/synthesis/submodules
+Info: 2017.01.23.14:36:38 Info: character_lcd_0_avalon_lcd_slave_rsp_width_adapter: "mm_interconnect_0" instantiated altera_merlin_width_adapter "character_lcd_0_avalon_lcd_slave_rsp_width_adapter"
+Info: 2017.01.23.14:36:38 Info: Reusing file /home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/synthesis/submodules
+Info: 2017.01.23.14:36:38 Info: Reusing file /home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/synthesis/submodules
+Info: 2017.01.23.14:36:38 Info: crosser: "mm_interconnect_0" instantiated altera_avalon_st_handshake_clock_crosser "crosser"
+Info: 2017.01.23.14:36:38 Info: Reusing file /home/erik/School/cpen391/g15/exercises/ex1.9/NIOS_II_System_391_For_Students/nios_system/synthesis/submodules
+Info: 2017.01.23.14:36:38 Info: avalon_st_adapter: "mm_interconnect_0" instantiated altera_avalon_st_adapter "avalon_st_adapter"
+Info: 2017.01.23.14:36:38 Info: avalon_st_adapter_001: "mm_interconnect_0" instantiated altera_avalon_st_adapter "avalon_st_adapter_001"
+Info: 2017.01.23.14:36:38 Info: avalon_st_adapter_002: "mm_interconnect_0" instantiated altera_avalon_st_adapter "avalon_st_adapter_002"
+Info: 2017.01.23.14:36:38 Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
+Info: 2017.01.23.14:36:38 Info: error_adapter_0: "avalon_st_adapter_001" instantiated error_adapter "error_adapter_0"
+Info: 2017.01.23.14:36:38 Info: error_adapter_0: "avalon_st_adapter_002" instantiated error_adapter "error_adapter_0"
+Info: 2017.01.23.14:36:38 Info: nios_system: Done "nios_system" with 43 modules, 75 files
+Info: 2017.01.23.14:36:39 Info: qsys-generate succeeded.
+2017.01.23.14:36:39 Info: Finished: Create HDL design files for synthesis
+Info (11904): Restoring file "nios_system.BAK.qsys" to "nios_system.qsys"
+Error (14923): Error upgrading Qsys file "nios_system.qsys"
+Error (11890): Unable to automatically upgrade Qsys component. Please manually upgrade "nios_system.qsys" in Qsys
+Error (23031): Evaluation of Tcl script /usr/bin/Altera/15.1/quartus/common/tcl/internal/ip_regen/ip_regen.tcl unsuccessful
+Error: Quartus Prime Shell was unsuccessful. 146 errors, 0 warnings
+    Error: Peak virtual memory: 1270 megabytes
+    Error: Processing ended: Mon Jan 23 14:36:40 2017
+    Error: Elapsed time: 00:02:50
+    Error: Total CPU time (on all processors): 00:05:02
+
+

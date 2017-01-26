@@ -1,0 +1,28 @@
+
+WORK > DEFAULT
+DEFAULT:                  ./libraries/work/                    
+work:                     ./libraries/work/                    
+sys_pll:                  ./libraries/sys_pll/                 
+rst_controller:           ./libraries/rst_controller/          
+irq_synchronizer:         ./libraries/irq_synchronizer/        
+irq_mapper:               ./libraries/irq_mapper/              
+mm_interconnect_0:        ./libraries/mm_interconnect_0/       
+to_external_bus_bridge_0: ./libraries/to_external_bus_bridge_0/
+timer_0:                  ./libraries/timer_0/                 
+switches:                 ./libraries/switches/                
+sdram:                    ./libraries/sdram/                   
+nios2_qsys_0:             ./libraries/nios2_qsys_0/            
+leds:                     ./libraries/leds/                    
+jtag_uart_0:              ./libraries/jtag_uart_0/             
+clocks:                   ./libraries/clocks/                  
+character_lcd_0:          ./libraries/character_lcd_0/         
+PushButtons:              ./libraries/PushButtons/             
+HEX0_1:                   ./libraries/HEX0_1/                  
+altera_ver:               ./libraries/altera_ver/              
+lpm_ver:                  ./libraries/lpm_ver/                 
+sgate_ver:                ./libraries/sgate_ver/               
+altera_mf_ver:            ./libraries/altera_mf_ver/           
+altera_lnsim_ver:         ./libraries/altera_lnsim_ver/        
+cyclonev_ver:             ./libraries/cyclonev_ver/            
+cyclonev_hssi_ver:        ./libraries/cyclonev_hssi_ver/       
+cyclonev_pcie_hip_ver:    ./libraries/cyclonev_pcie_hip_ver/   

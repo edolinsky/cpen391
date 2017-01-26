@@ -1,0 +1,27 @@
+set_global_assignment -entity "nios_system" -library "lib_nios_system" -name IP_TOOL_NAME "Qsys"
+set_global_assignment -entity "nios_system" -library "lib_nios_system" -name IP_TOOL_VERSION "15.1"
+set_global_assignment -entity "nios_system" -library "lib_nios_system" -name IP_TOOL_ENV "Qsys"
+set_global_assignment -library "lib_nios_system" -name SPD_FILE [file join $::quartus(sip_path) "../nios_system.spd"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "../../nios_system.qsys"]
+
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "nios_system.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/altera_reset_controller.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/altera_reset_synchronizer.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/altera_reset_controller.sdc"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/altera_irq_clock_crosser.sv"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/nios_system_irq_mapper.sv"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/nios_system_mm_interconnect_0.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/nios_system_to_external_bus_bridge_0.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/nios_system_timer_0.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/nios_system_switches.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/nios_system_sdram.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/nios_system_nios2_qsys_0.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/nios_system_leds.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/nios_system_jtag_uart_0.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/nios_system_clocks.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/nios_system_clocks_sys_pll.vo"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/altera_up_character_lcd_communication.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/altera_up_character_lcd_initialization.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/nios_system_character_lcd_0.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/nios_system_PushButtons.v"]
+set_global_assignment -library "lib_nios_system" -name MISC_FILE [file join $::quartus(sip_path) "submodules/nios_system_HEX0_1.v"]

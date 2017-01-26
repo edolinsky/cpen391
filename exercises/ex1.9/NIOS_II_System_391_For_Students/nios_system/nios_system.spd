@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<simPackage>
+ <file
+   path="simulation/submodules/nios_system_clocks_sys_pll.vo"
+   type="VERILOG"
+   library="sys_pll" />
+ <file
+   path="simulation/submodules/altera_reset_controller.v"
+   type="VERILOG"
+   library="rst_controller" />
+ <file
+   path="simulation/submodules/altera_reset_synchronizer.v"
+   type="VERILOG"
+   library="rst_controller" />
+ <file
+   path="simulation/submodules/altera_reset_controller.sdc"
+   type="SDC"
+   library="rst_controller" />
+ <file
+   path="simulation/submodules/altera_irq_clock_crosser.sv"
+   type="SYSTEM_VERILOG"
+   library="irq_synchronizer" />
+ <file
+   path="simulation/submodules/nios_system_irq_mapper.sv"
+   type="SYSTEM_VERILOG"
+   library="irq_mapper" />
+ <file
+   path="simulation/submodules/nios_system_mm_interconnect_0.v"
+   type="VERILOG"
+   library="mm_interconnect_0" />
+ <file
+   path="simulation/submodules/nios_system_to_external_bus_bridge_0.v"
+   type="VERILOG"
+   library="to_external_bus_bridge_0" />
+ <file
+   path="simulation/submodules/nios_system_timer_0.v"
+   type="VERILOG"
+   library="timer_0" />
+ <file
+   path="simulation/submodules/nios_system_switches.v"
+   type="VERILOG"
+   library="switches" />
+ <file
+   path="simulation/submodules/nios_system_sdram.v"
+   type="VERILOG"
+   library="sdram" />
+ <file
+   path="simulation/submodules/nios_system_nios2_qsys_0.v"
+   type="VERILOG"
+   library="nios2_qsys_0" />
+ <file
+   path="simulation/submodules/nios_system_leds.v"
+   type="VERILOG"
+   library="leds" />
+ <file
+   path="simulation/submodules/nios_system_jtag_uart_0.v"
+   type="VERILOG"
+   library="jtag_uart_0" />
+ <file
+   path="simulation/submodules/nios_system_clocks.v"
+   type="VERILOG"
+   library="clocks" />
+ <file
+   path="simulation/submodules/altera_up_character_lcd_communication.v"
+   type="VERILOG"
+   library="character_lcd_0" />
+ <file
+   path="simulation/submodules/altera_up_character_lcd_initialization.v"
+   type="VERILOG"
+   library="character_lcd_0" />
+ <file
+   path="simulation/submodules/nios_system_character_lcd_0.v"
+   type="VERILOG"
+   library="character_lcd_0" />
+ <file
+   path="simulation/submodules/nios_system_PushButtons.v"
+   type="VERILOG"
+   library="PushButtons" />
+ <file
+   path="simulation/submodules/nios_system_HEX0_1.v"
+   type="VERILOG"
+   library="HEX0_1" />
+ <file path="simulation/nios_system.v" type="VERILOG" />
+ <topLevel name="nios_system" />
+ <deviceFamily name="cyclonev" />
+</simPackage>
