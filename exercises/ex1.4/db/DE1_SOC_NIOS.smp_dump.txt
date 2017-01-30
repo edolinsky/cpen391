@@ -73,132 +73,6 @@ RxState.RxData_state 0 0 1 1
 RxState.RxParity_state 0 1 0 1 
 RxState.RxStop_state 1 0 0 1 
 
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_6850:RS232|DCDState
-Name DCDState.DCD_State_Reset DCDState.DCD_State_Int DCDState.DCD_State_Idle 
-DCDState.DCD_State_Idle 0 0 0 
-DCDState.DCD_State_Int 0 1 1 
-DCDState.DCD_State_Reset 1 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_6850:RS232|ACIA_TX:TxDev|TxState
-Name TxState.Tx2Stop_State TxState.TxParity_State TxState.TxData_State TxState.TxStart_State TxState.Tx1Stop_State 
-TxState.Tx1Stop_State 0 0 0 0 0 
-TxState.TxStart_State 0 0 0 1 1 
-TxState.TxData_State 0 0 1 0 1 
-TxState.TxParity_State 0 1 0 0 1 
-TxState.Tx2Stop_State 1 0 0 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_6850:RS232|ACIA_RX:RxDev|RxState
-Name RxState.RxStop_state RxState.RxParity_state RxState.RxData_state RxState.RxStart_State 
-RxState.RxStart_State 0 0 0 0 
-RxState.RxData_state 0 0 1 1 
-RxState.RxParity_state 0 1 0 1 
-RxState.RxStop_state 1 0 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_BaudRate_Generator:Bluetooth_baud|ACIA_6850:inst|DCDState
-Name DCDState.DCD_State_Reset DCDState.DCD_State_Int DCDState.DCD_State_Idle 
-DCDState.DCD_State_Idle 0 0 0 
-DCDState.DCD_State_Int 0 1 1 
-DCDState.DCD_State_Reset 1 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_BaudRate_Generator:Bluetooth_baud|ACIA_6850:inst|ACIA_TX:TxDev|TxState
-Name TxState.Tx2Stop_State TxState.TxParity_State TxState.TxData_State TxState.TxStart_State TxState.Tx1Stop_State 
-TxState.Tx1Stop_State 0 0 0 0 0 
-TxState.TxStart_State 0 0 0 1 1 
-TxState.TxData_State 0 0 1 0 1 
-TxState.TxParity_State 0 1 0 0 1 
-TxState.Tx2Stop_State 1 0 0 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_BaudRate_Generator:Bluetooth_baud|ACIA_6850:inst|ACIA_RX:RxDev|RxState
-Name RxState.RxStop_state RxState.RxParity_state RxState.RxData_state RxState.RxStart_State 
-RxState.RxStart_State 0 0 0 0 
-RxState.RxData_state 0 0 1 1 
-RxState.RxParity_state 0 1 0 1 
-RxState.RxStop_state 1 0 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_BaudRate_Generator:GPS_baud|ACIA_6850:inst|DCDState
-Name DCDState.DCD_State_Reset DCDState.DCD_State_Int DCDState.DCD_State_Idle 
-DCDState.DCD_State_Idle 0 0 0 
-DCDState.DCD_State_Int 0 1 1 
-DCDState.DCD_State_Reset 1 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_BaudRate_Generator:GPS_baud|ACIA_6850:inst|ACIA_TX:TxDev|TxState
-Name TxState.Tx2Stop_State TxState.TxParity_State TxState.TxData_State TxState.TxStart_State TxState.Tx1Stop_State 
-TxState.Tx1Stop_State 0 0 0 0 0 
-TxState.TxStart_State 0 0 0 1 1 
-TxState.TxData_State 0 0 1 0 1 
-TxState.TxParity_State 0 1 0 0 1 
-TxState.Tx2Stop_State 1 0 0 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_BaudRate_Generator:GPS_baud|ACIA_6850:inst|ACIA_RX:RxDev|RxState
-Name RxState.RxStop_state RxState.RxParity_state RxState.RxData_state RxState.RxStart_State 
-RxState.RxStart_State 0 0 0 0 
-RxState.RxData_state 0 0 1 1 
-RxState.RxParity_state 0 1 0 1 
-RxState.RxStop_state 1 0 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_BaudRate_Generator:Touchscreen_baud|ACIA_6850:inst|DCDState
-Name DCDState.DCD_State_Reset DCDState.DCD_State_Int DCDState.DCD_State_Idle 
-DCDState.DCD_State_Idle 0 0 0 
-DCDState.DCD_State_Int 0 1 1 
-DCDState.DCD_State_Reset 1 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_BaudRate_Generator:Touchscreen_baud|ACIA_6850:inst|ACIA_TX:TxDev|TxState
-Name TxState.Tx2Stop_State TxState.TxParity_State TxState.TxData_State TxState.TxStart_State TxState.Tx1Stop_State 
-TxState.Tx1Stop_State 0 0 0 0 0 
-TxState.TxStart_State 0 0 0 1 1 
-TxState.TxData_State 0 0 1 0 1 
-TxState.TxParity_State 0 1 0 0 1 
-TxState.Tx2Stop_State 1 0 0 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_BaudRate_Generator:Touchscreen_baud|ACIA_6850:inst|ACIA_RX:RxDev|RxState
-Name RxState.RxStop_state RxState.RxParity_state RxState.RxData_state RxState.RxStart_State 
-RxState.RxStart_State 0 0 0 0 
-RxState.RxData_state 0 0 1 1 
-RxState.RxParity_state 0 1 0 1 
-RxState.RxStop_state 1 0 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_BaudRate_Generator:RS232_baud|ACIA_6850:inst|DCDState
-Name DCDState.DCD_State_Reset DCDState.DCD_State_Int DCDState.DCD_State_Idle 
-DCDState.DCD_State_Idle 0 0 0 
-DCDState.DCD_State_Int 0 1 1 
-DCDState.DCD_State_Reset 1 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_BaudRate_Generator:RS232_baud|ACIA_6850:inst|ACIA_TX:TxDev|TxState
-Name TxState.Tx2Stop_State TxState.TxParity_State TxState.TxData_State TxState.TxStart_State TxState.Tx1Stop_State 
-TxState.Tx1Stop_State 0 0 0 0 0 
-TxState.TxStart_State 0 0 0 1 1 
-TxState.TxData_State 0 0 1 0 1 
-TxState.TxParity_State 0 1 0 0 1 
-TxState.Tx2Stop_State 1 0 0 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_BaudRate_Generator:RS232_baud|ACIA_6850:inst|ACIA_RX:RxDev|RxState
-Name RxState.RxStop_state RxState.RxParity_state RxState.RxData_state RxState.RxStart_State 
-RxState.RxStart_State 0 0 0 0 
-RxState.RxData_state 0 0 1 1 
-RxState.RxParity_state 0 1 0 1 
-RxState.RxStop_state 1 0 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_6850:GPS|DCDState
-Name DCDState.DCD_State_Reset DCDState.DCD_State_Int DCDState.DCD_State_Idle 
-DCDState.DCD_State_Idle 0 0 0 
-DCDState.DCD_State_Int 0 1 1 
-DCDState.DCD_State_Reset 1 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_6850:GPS|ACIA_TX:TxDev|TxState
-Name TxState.Tx2Stop_State TxState.TxParity_State TxState.TxData_State TxState.TxStart_State TxState.Tx1Stop_State 
-TxState.Tx1Stop_State 0 0 0 0 0 
-TxState.TxStart_State 0 0 0 1 1 
-TxState.TxData_State 0 0 1 0 1 
-TxState.TxParity_State 0 1 0 0 1 
-TxState.Tx2Stop_State 1 0 0 0 1 
-
-State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_6850:GPS|ACIA_RX:RxDev|RxState
-Name RxState.RxStop_state RxState.RxParity_state RxState.RxData_state RxState.RxStart_State 
-RxState.RxStart_State 0 0 0 0 
-RxState.RxData_state 0 0 1 1 
-RxState.RxParity_state 0 1 0 1 
-RxState.RxStop_state 1 0 0 1 
-
 State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_6850:TouchScreen|DCDState
 Name DCDState.DCD_State_Reset DCDState.DCD_State_Int DCDState.DCD_State_Idle 
 DCDState.DCD_State_Idle 0 0 0 
@@ -228,6 +102,48 @@ DRsize.010 0 0 0 1 0 1
 DRsize.011 0 0 1 0 0 1 
 DRsize.100 0 1 0 0 0 1 
 DRsize.101 1 0 0 0 0 1 
+
+State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_6850:GPS|DCDState
+Name DCDState.DCD_State_Reset DCDState.DCD_State_Int DCDState.DCD_State_Idle 
+DCDState.DCD_State_Idle 0 0 0 
+DCDState.DCD_State_Int 0 1 1 
+DCDState.DCD_State_Reset 1 0 1 
+
+State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_6850:GPS|ACIA_TX:TxDev|TxState
+Name TxState.Tx2Stop_State TxState.TxParity_State TxState.TxData_State TxState.TxStart_State TxState.Tx1Stop_State 
+TxState.Tx1Stop_State 0 0 0 0 0 
+TxState.TxStart_State 0 0 0 1 1 
+TxState.TxData_State 0 0 1 0 1 
+TxState.TxParity_State 0 1 0 0 1 
+TxState.Tx2Stop_State 1 0 0 0 1 
+
+State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_6850:GPS|ACIA_RX:RxDev|RxState
+Name RxState.RxStop_state RxState.RxParity_state RxState.RxData_state RxState.RxStart_State 
+RxState.RxStart_State 0 0 0 0 
+RxState.RxData_state 0 0 1 1 
+RxState.RxParity_state 0 1 0 1 
+RxState.RxStop_state 1 0 0 1 
+
+State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_6850:RS232|DCDState
+Name DCDState.DCD_State_Reset DCDState.DCD_State_Int DCDState.DCD_State_Idle 
+DCDState.DCD_State_Idle 0 0 0 
+DCDState.DCD_State_Int 0 1 1 
+DCDState.DCD_State_Reset 1 0 1 
+
+State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_6850:RS232|ACIA_TX:TxDev|TxState
+Name TxState.Tx2Stop_State TxState.TxParity_State TxState.TxData_State TxState.TxStart_State TxState.Tx1Stop_State 
+TxState.Tx1Stop_State 0 0 0 0 0 
+TxState.TxStart_State 0 0 0 1 1 
+TxState.TxData_State 0 0 1 0 1 
+TxState.TxParity_State 0 1 0 0 1 
+TxState.Tx2Stop_State 1 0 0 0 1 
+
+State Machine - |DE1_SOC_NIOS|OnChipM68xxIO:inst|ACIA_6850:RS232|ACIA_RX:RxDev|RxState
+Name RxState.RxStop_state RxState.RxParity_state RxState.RxData_state RxState.RxStart_State 
+RxState.RxStart_State 0 0 0 0 
+RxState.RxData_state 0 0 1 1 
+RxState.RxParity_state 0 1 0 1 
+RxState.RxStop_state 1 0 0 1 
 
 State Machine - |DE1_SOC_NIOS|NIOS_II_SYSTEM:inst3|nios_system:NiosII|nios_system_character_lcd_0:character_lcd_0|altera_up_character_lcd_initialization:Char_LCD_Init|s_lcd_initialize
 Name s_lcd_initialize.LCD_INIT_STATE_3_DONE s_lcd_initialize.LCD_INIT_STATE_2_CHECK_DONE s_lcd_initialize.LCD_INIT_STATE_1_SEND_COMMAND s_lcd_initialize.LCD_INIT_STATE_0_WAIT_POWER_UP 

@@ -19,7 +19,7 @@ typedef struct {
 	int x, y;
 } Point;
 
-// RS232 funtions
+// RS232 functions
 void Init_RS232(void);
 int putcharRS232(int c);
 int getcharRS232(void);
@@ -34,15 +34,16 @@ Point GetRelease(void);
 
 int main() {
 	printf("Hello from Nios II!\n");
-	leds = 0xff;
 
-	Init_RS232();
+	//Init_RS232();
 	Init_Touch();
-	char chars[] = { 'H', 'e', 'l', 'l', 'o', ' ', 'W', 'o', 'r', 'l', 'd' };
 
-	int i = 0;
-	for (i = 0; i < 11; i++) {
-		putcharRS232(chars[i]);
+	Point p;
+	while(1) {
+		p = GetPress();
+		printf("%d, %d", p.x, p.y);
+		p = GetRelease();
+		printf("%d, %d", p.x, p.y);
 	}
 
 	return 0;
@@ -65,8 +66,8 @@ void Init_RS232(void) {
 	// set RTS low, use 8 bits of data, no parity, 1 stop bit,
 	// transmitter interrupt disabled
 	// program baud rate generator to use 115k baud
-	RS232_CONTROL = 0x15;
-	RS232_BAUD = 0x1;
+	RS232_CONTROL = 0x55;
+	RS232_BAUD = 0x01;
 }
 
 int putcharRS232(int c) {
@@ -108,17 +109,20 @@ void Init_Touch(void) {
 	// send touchscreen controller an "enable touch" command
 
 	// setting up the 6850
-	TOUCH_CONTROL = 0x15;
-	TOUCH_BAUD = 0x7;
+	TOUCH_CONTROL = 0x95;
+	TOUCH_BAUD = 0x07;
 
 	// now that it is set up, we talk to the touch controller through rx & tx
+	char s = TOUCH_STATUS;
+	while(TOUCH_STATUS & 0x02 == 0x00);
+	//Wait_Ready_W(TOUCH_STATUS);
 	TOUCH_TXDATA = 0x55;
+	while(TOUCH_STATUS & 0x02 == 0x00);
 	TOUCH_TXDATA = 0x01;
+	while(TOUCH_STATUS & 0x02 == 0x00);
 	TOUCH_TXDATA = 0x12; // TOUCH_ENABLE
 
-	while (TOUCH_RXDATA != 0x00); // 0x00 means OK
-
-	printf("touch screen initialized and OK");
+	printf("touch screen initialized\n");
 }
 
 /*****************************************************************************
@@ -127,15 +131,16 @@ void Init_Touch(void) {
 int ScreenTouched(void) {
 	// return TRUE if any data received from 6850 connected to touchscreen
 	// or FALSE otherwise
-	return (TOUCH_STATUS & 0x01);
+	return (TOUCH_STATUS & 0x01 == 0x01);
 }
 
 /*****************************************************************************
  ** wait for screen to be touched
  *****************************************************************************/
 void WaitForTouch() {
-	while (!ScreenTouched())
+	while (!ScreenTouched()) {
 		;
+	}
 }
 
 /*****************************************************************************
@@ -145,6 +150,24 @@ Point GetPress(void) {
 	Point p1;
 	// wait for a pen down command then return the X,Y coord of the point
 	// calibrated correctly so that it maps to a pixel on screen
+
+	char bytes[4];
+
+	WaitForTouch();
+	char rxData = TOUCH_RXDATA;
+	while(!((rxData & 128) && (rxData & 1))) { // wait for start of down packet
+		rxData = TOUCH_RXDATA;
+	}
+
+	int i;
+	for (i = 0; i < 4; i++) {
+		while(TOUCH_STATUS & 0x02 == 0x00);
+		bytes[i] = TOUCH_RXDATA;
+	}
+
+	p1.x = bytes[0] + bytes[1];
+	p1.y = bytes[2] + bytes[3];
+
 	return p1;
 }
 
@@ -155,6 +178,25 @@ Point GetRelease(void) {
 	Point p1;
 	// wait for a pen up command then return the X,Y coord of the point
 	// calibrated correctly so that it maps to a pixel on screen
+
+	char bytes[4];
+
+	WaitForTouch();
+	char rxData = TOUCH_RXDATA;
+
+	while(!((rxData & 128) && !(rxData & 1))) { // wait for start of up packet
+		rxData = TOUCH_RXDATA;
+	}
+
+	int i;
+	for (i = 0; i < 4; i++) {
+		while(TOUCH_STATUS & 0x02 == 0x00);
+		bytes[i] = TOUCH_RXDATA;
+	}
+
+	p1.x = bytes[0] + bytes[1];
+	p1.y = bytes[2] + bytes[3];
+
 	return p1;
 }
 
