@@ -119,6 +119,8 @@ void Init_Touch(void) {
 	while((TOUCH_STATUS & 0x02) == 0x00);
 	TOUCH_TXDATA = 0x12; // TOUCH_ENABLE
 
+	while(TOUCH_RXDATA != 0x00); // wait for OK
+
 	printf("touch screen initialized\n");
 }
 
