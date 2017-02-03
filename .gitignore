@@ -4,3 +4,6 @@
 *.objdump
 *.a
 *.d
+Makefile
+create-this-app
+cpen391_bsp/
