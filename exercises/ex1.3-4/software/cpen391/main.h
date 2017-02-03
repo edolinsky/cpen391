@@ -10,6 +10,9 @@
 
 #define USLEEP_SEC 1000000
 
+#define TRUE 1
+#define FALSE 0
+
 // General purpose functions
 int getChar(volatile unsigned char* status, volatile unsigned char* rx);
 int putChar(volatile unsigned char* status, volatile unsigned char* tx, int c);

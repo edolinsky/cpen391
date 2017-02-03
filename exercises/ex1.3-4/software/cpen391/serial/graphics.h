@@ -22,6 +22,9 @@
 ***********************************************************************************************/
 #define WAIT_FOR_GRAPHICS while((GraphicsStatusReg & 0x0001) != 0x0001);
 
+#define XRES 800
+#define YRES 480
+
 // #defined constants representing values we write to the graphics 'command' register to get
 // it to draw something. You will add more values as you add hardware to the graphics chip
 // Note DrawHLine, DrawVLine and DrawLine at the moment do nothing - you will modify these

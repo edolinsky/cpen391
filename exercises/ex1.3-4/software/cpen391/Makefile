@@ -146,6 +146,11 @@ C_SRCS += main.c
 C_SRCS += serial/touch.c
 C_SRCS += serial/bluetooth.c
 C_SRCS += serial/graphics.c
+C_SRCS += fonts/fonts.c
+C_SRCS += fonts/OutGraphicsCharFont1.c
+C_SRCS += fonts/OutGraphicsCharFont2.c
+C_SRCS += serial/fill.c
+C_SRCS += serial/colourPallette.c
 CXX_SRCS :=
 ASM_SRCS :=
 
