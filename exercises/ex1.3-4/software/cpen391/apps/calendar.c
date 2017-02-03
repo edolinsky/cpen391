@@ -5,6 +5,8 @@
  *      Author: reidoliveira
  */
 
+#include "../serial/graphics.h"
 
-
-
+void displayCalendar() {
+	screenFill(WHITE);
+}

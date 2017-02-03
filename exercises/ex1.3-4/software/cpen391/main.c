@@ -27,6 +27,7 @@ int main() {
 	 printf("release %d, %d\n", p.x, p.y);
 	 }
 	 */
+	displayCalendar();
 
 }
 
