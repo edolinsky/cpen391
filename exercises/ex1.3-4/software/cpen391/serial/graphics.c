@@ -118,7 +118,8 @@ void Line(int x1, int y1, int x2, int y2, int Colour) {
  }
 
 void screenFill(int colour) {
-	for (int i = 0; i < YRES; i++) {
-		HLine(0, 1024*i, XRES, colour);
+	int i;
+	for (i = 0; i < YRES; i++) {
+		HLine(0, i, XRES, colour);
 	}
 }
