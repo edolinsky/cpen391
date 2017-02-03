@@ -10,11 +10,12 @@
 #include "serial/bluetooth.h"
 #include "serial/touch.h"
 #include "serial/graphics.h"
+#include "apps/calendar.h"
 
 int main() {
 	printf("Hello from Nios II!\n");
 
-	initBluetooth();
+	//initBluetooth();
 
 	/*// use to test touch screen
 	 initTouch();
@@ -26,7 +27,7 @@ int main() {
 	 printf("release %d, %d\n", p.x, p.y);
 	 }
 	 */
-	return 0;
+
 }
 
 int getChar(volatile unsigned char* status, volatile unsigned char* rx) {

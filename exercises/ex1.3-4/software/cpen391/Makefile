@@ -151,6 +151,7 @@ C_SRCS += fonts/OutGraphicsCharFont1.c
 C_SRCS += fonts/OutGraphicsCharFont2.c
 C_SRCS += serial/fill.c
 C_SRCS += serial/colourPallette.c
+C_SRCS += apps/calendar.c
 CXX_SRCS :=
 ASM_SRCS :=
 
