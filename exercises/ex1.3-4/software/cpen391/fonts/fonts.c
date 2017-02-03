@@ -11,7 +11,7 @@
 // you could use this to create new fonts if you wish but be aware of the size of each font in terms of data
 //
 
-const unsigned short int Font5x7[95][7] = {
+const unsigned char Font5x7[95][7] = {
 								{0x0,0x0,0x0,0x0,0x0,0x0,0x0},	 		// ' '
 								{0x4,0x4,0x4,0x4,0x0,0x0,0x4}, 			// '!'
 								{0xa,0xa,0xa,0x0,0x0,0x0,0x0}, 			// '"'
@@ -111,7 +111,7 @@ const unsigned short int Font5x7[95][7] = {
 								{0,0x8,0x15,2,0,0,0},					// '~'
 							   } ;
 /************************************************************************************************************/
-const unsigned int Font10x14[][14] = {
+const unsigned short int Font10x14[][14] = {
 	{0,0,0,0,0,0,0,0,0,0,0,0,0,0},	 															// ' '
 	{0x30,0x30,0x30,0x30,0x30,0x30,0x30,0x30,0x30,0x30,0,0,0x30,0x30}, 								// '!'
 	{0xcc,0xcc,0xcc,0xcc,0,0,0,0,0,0,0,0,0,0}, 													// '"'

@@ -9,5 +9,9 @@
 #define CALENDAR_H_
 
 void displayCalendar();
+void drawHLine(int x, int y, int length, int colour);
+void drawVLine(int x, int y, int length, int colour);
+void writeMonth(int month);
+void fillDays(int startDay);
 
 #endif /* CALENDAR_H_ */

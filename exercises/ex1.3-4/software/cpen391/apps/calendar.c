@@ -7,15 +7,32 @@
 
 #include "../serial/graphics.h"
 #include "../main.h"
+#include "../fonts/fonts.h"
+#include "calendar.h"
 
 #define LINE_WIDTH 3
 #define DAYS 7
-#define ADJUST 10
+#define ADJUST 10 // bit of a hack
+#define ASCII_ZERO 48
+
+char * months[] = {
+		"January",
+		"February",
+		"March",
+		"April",
+		"May",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October"
+		"November"
+		"December"};
 
 int dayHeight;
 
 void displayCalendar() {
-	dayHeight = YRES / 4;
+	dayHeight = YRES / 6;
 
 	// background
 	screenFill(WHITE);
@@ -33,6 +50,7 @@ void displayCalendar() {
 		drawVLine((i * dayDiv) + ADJUST, monthLine, YRES - monthLine, BLACK);
 	}
 
+	writeMonth(1);
 	fillDays(1);
 
 }
@@ -58,14 +76,22 @@ void drawVLine(int x, int y, int length, int colour) {
 	}
 }
 
-void fillDays(int startDay) {
-//	int dayDiv = XRES/DAYS/2;
-//	int i;
-//	for (i = 1; i <= DAYS - 1; i++) {
-//		OutGraphicsCharFont2a((i * dayDiv) + ADJUST, dayHeight, BLACK, WHITE,
-//				(int)'A', FALSE);
-//	}
+void writeMonth(int month) {
+	char *name = months[month-1];
+	int length = 7; // hack
+	int i;
+	for(i = 0; i < length; i++) {
+		OutGraphicsCharFont2a(i*15 + 100, dayHeight - 24, BLACK, WHITE, // magic nums are hacks
+				name[i], FALSE);
+	}
+}
 
-	OutGraphicsCharFont2a(50, 50, BLACK, WHITE,
-			65, FALSE);
+void fillDays(int startDay) {
+	int dayDiv = XRES/DAYS;
+	int start = dayDiv/2;
+	int i;
+	for (i = 0; i < DAYS; i++) {
+		OutGraphicsCharFont2a(start + (i * dayDiv) + ADJUST, dayHeight - 5, BLACK, WHITE,
+				ASCII_ZERO + startDay + i, FALSE);
+	}
 }
