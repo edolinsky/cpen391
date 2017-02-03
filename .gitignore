@@ -4,6 +4,10 @@
 *.objdump
 *.a
 *.d
+*.cproject
+*.project
+*.force_relink
+.settings/
 Makefile
 create-this-app
 cpen391_bsp/
