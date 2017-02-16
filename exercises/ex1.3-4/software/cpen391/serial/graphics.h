@@ -50,4 +50,12 @@
 #define CYAN 6
 #define MAGENTA 7
 
+void WriteAPixel(int x, int y, int Colour);
+int ReadAPixel(int x, int y);
+void ProgramPalette(int PaletteNumber, int RGB);
+void HLine(int x1, int y1, int length, int Colour);
+void VLine(int x1, int y1, int length, int Colour);
+void Line(int x1, int y1, int x2, int y2, int Colour);
+void screenFill(int colour);
+
 #endif /* GRAPHICS_H_ */

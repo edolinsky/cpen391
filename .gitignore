@@ -12,3 +12,6 @@ Makefile
 create-this-app
 cpen391_bsp/
 cpen391-reid/
+*.db_info
+*.rdr.flock
+*.qws
