@@ -50,10 +50,10 @@ void filledRectangle(int x1, int y1, int x2, int y2, int colour);
 void filledRectangleWithBorder(int x1, int y1, int x2, int y2, int colour,
 		int bordercolour);
 void triangle(int x1, int y1, int x2, int y2, int x3, int y3, int colour);
-void writeString5x7(int x, int y, char* string, int length, int colour, int bg,
-		int erase);
-void writeString10x14(int x, int y, char* string, int length, int colour, int bg,
-		int erase);
+void writeString5x7(int x, int y, char* string, int length, int colour, int bg);
+void eraseString5x7(int x, int y, int length, int colour);
+void writeString10x14(int x, int y, char* string, int length, int colour, int bg);
+void eraseString10x14(int x, int y, int length, int colour);
 void graphicsDemo(void);
 
 #endif /* GRAPHICS_H_ */
