@@ -8,7 +8,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "graphics.h"
+#include "colours.h"
 #include "../main.h"
+#include "../fonts/fonts.h"
 
 /*******************************************************************************************
 * This function writes a single pixel to the x,y coords specified using the specified colour
@@ -133,7 +135,7 @@ void eraseString5x7(int x, int y, int length, int colour) {
 
 	int i;
 	for(i = 0; i < length; i++) {
-		OutGraphicsCharFont1(x + (FONT1_WIDTH*i), y, colour, colour, '', TRUE);
+		OutGraphicsCharFont1(x + (FONT1_WIDTH*i), y, colour, colour, ' ', TRUE);
 	}
 }
 
@@ -149,7 +151,7 @@ void eraseString10x14(int x, int y, int length, int colour) {
 
 	int i;
 	for(i = 0; i < length; i++) {
-		OutGraphicsCharFont2a(x + (FONT2_WIDTH*i), y, colour, colour, '', TRUE);
+		OutGraphicsCharFont2a(x + (FONT2_WIDTH*i), y, colour, colour, ' ', TRUE);
 	}
 }
 
