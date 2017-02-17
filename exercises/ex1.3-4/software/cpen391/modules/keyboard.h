@@ -12,9 +12,9 @@
 #define MARGIN 30
 #define MAX_CHARACTERS 120
 
-void drawKeyboard();
-void drawUi();
-void drawKeys();
+char* keyboard(void);
+void drawUi(void);
+void drawKeys(void);
 void type(int letter);
 
 #endif /* KEYBOARD_H_ */

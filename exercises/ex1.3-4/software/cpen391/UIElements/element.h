@@ -17,6 +17,8 @@
 #include <math.h>
 #include <string.h>
 
+#define BREAK_KEY -1
+
 typedef enum{
 	TEXT_LARGE,
 	TEXT_SMALL

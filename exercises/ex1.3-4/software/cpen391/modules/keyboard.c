@@ -30,6 +30,7 @@ void drawKeys() {
 
 	int i;
 	int c = 0;
+	// qwertyuiop
 	for (i = 0; i < 10; i++) {
 		Element *bt = createElement(MARGIN + i * KEYSIZE, TEXTAREA, KEYSIZE,
 				KEYSIZE, GRAY);
@@ -44,6 +45,7 @@ void drawKeys() {
 	}
 
 	int offset = 40;
+	// asdfghjkl
 	for (i = 0; i < 9; i++) {
 		Element *bt = createElement(offset + MARGIN + i * KEYSIZE, TEXTAREA + KEYSIZE,
 				KEYSIZE, KEYSIZE, GRAY);
@@ -58,6 +60,7 @@ void drawKeys() {
 	}
 
 	offset = 100;
+	// zxcvbnm
 	for (i = 0; i < 7; i++) {
 		Element *bt = createElement(offset + MARGIN + i * KEYSIZE, TEXTAREA + 2*KEYSIZE,
 				KEYSIZE, KEYSIZE, GRAY);
@@ -71,14 +74,27 @@ void drawKeys() {
 		addElementToList(bt);
 	}
 
-	Element *bt = createElement(300, 410, 200, 60, GRAY);
+	// space bar
+	int sb_start = XRES/2-2*KEYSIZE;
+	int sb_width = 4*KEYSIZE;
+	Element *sb = createElement(sb_start, TEXTAREA+3*KEYSIZE, sb_width, KEYSIZE, GRAY);
 	char c4[2] = {array[c], '\0'};
-	setElementAction(bt, &type);
-	bt->hasArg = 1;
-	bt->arg1 = (int) array[c];
-	bt->action = &type;
+	setElementText(sb, c4);
+	setElementAction(sb, &type);
+	sb->hasArg = 1;
+	sb->arg1 = (int) array[c];
+	sb->action = &type;
 	c++;
-	addElementToList(bt);
+	addElementToList(sb);
+
+	// enter key
+	Element *enter = createElement(sb_start + sb_width, TEXTAREA+3*KEYSIZE, 2*KEYSIZE, KEYSIZE, GRAY);
+	setElementText(enter, "ENTER");
+	setElementAction(enter, &type);
+	enter->hasArg = 1;
+	enter->arg1 = BREAK_KEY;
+	c++;
+	addElementToList(enter);
 }
 
 void type(int letter) {
@@ -87,7 +103,6 @@ void type(int letter) {
 		return;
 	}
 
-	printf("%c", (char) letter);
 	// print char
 	OutGraphicsCharFont2a(pos.x, pos.y, BLACK, GRAY, letter, FALSE);
 

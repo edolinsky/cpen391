@@ -21,10 +21,14 @@ int main(){
 
 	// set up the touch screen
 	initElements();
-	//initTouch();
-	drawKeyboard();
+	initTouch();
 
-	printf("Done");
+	while (1) {
+		char *chars = keyboard();
+		printf("%s\n", chars);
+
+	}
+
 	return 0;
 }
 
