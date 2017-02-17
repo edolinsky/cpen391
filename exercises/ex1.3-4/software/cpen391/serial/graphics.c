@@ -90,10 +90,13 @@ void Line(int x1, int y1, int x2, int y2, int Colour) {
 // shapes and routines
 
 void screenFill(int colour) {
-	int i;
-	for (i = 0; i < YRES; i++) {
-		HLine(0, i, XRES, colour);
-	}
+	WAIT_FOR_GRAPHICS;
+	GraphicsX1Reg = 0;
+	GraphicsY1Reg = 0;
+	GraphicsX2Reg = XRES - 1;
+	GraphicsY2Reg = YRES - 1;
+	GraphicsColourReg = colour;
+	GraphicsCommandReg = FillScreen;
 }
 
 void rectangle(int x1, int y1, int x2, int y2, int colour) {
