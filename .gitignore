@@ -16,3 +16,4 @@ cpen391_bsp/
 *.db_info
 *.rdr.flock
 *.qws
+*.idea
