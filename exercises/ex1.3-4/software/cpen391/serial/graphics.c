@@ -52,74 +52,87 @@ void ProgramPalette(int PaletteNumber, int RGB) {
 This function draw a horizontal line, 1 pixel at a time starting at the x,y coords specified
 *********************************************************************************************/
 void HLine(int x1, int y1, int length, int Colour) {
-	int i;
-	for(i = x1; i < x1+length; i++ )
-	WriteAPixel(i, y1, Colour);
+	WAIT_FOR_GRAPHICS;
+	GraphicsX1Reg = x1;
+	GraphicsY1Reg = y1;
+	GraphicsX2Reg = x1 + length - 1;
+	GraphicsColourReg = Colour;
+	GraphicsCommandReg = DrawHLine;
 }
 
 /*********************************************************************************************
 This function draw a vertical line, 1 pixel at a time starting at the x,y coords specified
 *********************************************************************************************/
 void VLine(int x1, int y1, int length, int Colour) {
-	int i;
-	for(i = y1; i < y1+length; i++ )
-	WriteAPixel(x1, i, Colour);
+	WAIT_FOR_GRAPHICS;
+	GraphicsX1Reg = x1;
+	GraphicsY1Reg = y1;
+	GraphicsY2Reg = y1 + length - 1;
+	GraphicsColourReg = Colour;
+	GraphicsCommandReg = DrawVLine;
 }
 
 /*******************************************************************************
 ** Implementation of Bresenhams line drawing algorithm
 *******************************************************************************/
 void Line(int x1, int y1, int x2, int y2, int Colour) {
-	int x = x1;
-	int y = y1;
-	int dx = abs(x2 - x1);
-	int dy = abs(y2 - y1);
-
-	int s1 = sign(x2 - x1);
-	int s2 = sign(y2 - y1);
-	int i, temp, interchange = 0, error ;
-
-	// if x1=x2 and y1=y2 then it is a line of zero length so we are done
-	if(dx == 0 && dy == 0) {
-		return ;
-	} else { // must be a complex line so use Bresenhams algorithm
-	// swap delta x and delta y depending upon slop of line
-		if(dy > dx) {
-			temp = dx ;
-			dx = dy ;
-			dy = temp ;
-			interchange = 1 ;
-		}
-
-		// initialise the error term to compensate for non-zero intercept
-		error = (dy << 1) - dx ; // error = (2 * dy) - dx
-
-		// main loop
-		for(i = 1; i <= dx; i++) {
-			WriteAPixel(x, y, Colour);
-
-			while(error >= 0) {
-				if(interchange == 1)
-				x += s1 ;
-				else
-				y += s2 ;
-				error -= (dx << 1) ; // error = error – (dx * 2)
-			}
-
-			if(interchange == 1) {
-				y += s2 ;
-			}
-			else {
-				x += s1 ;
-			}
-			error += (dy << 1) ; // error = error + (dy * 2)
-		}
-	}
+	WAIT_FOR_GRAPHICS;
+	GraphicsX1Reg = x1;
+	GraphicsY1Reg = y1;
+	GraphicsX2Reg = x2;
+	GraphicsY2Reg = y2;
+	GraphicsColourReg = Colour;
+	GraphicsCommandReg = DrawLine;
  }
+
+// shapes and routines
 
 void screenFill(int colour) {
 	int i;
 	for (i = 0; i < YRES; i++) {
 		HLine(0, i, XRES, colour);
 	}
+}
+
+void rectangle(int x1, int y1, int x2, int y2, int colour) {
+	HLine(x1, y1, x2-x1, colour);
+	HLine(x1, y2, x2-x1, colour);
+	VLine(x1, y1, y2-y1, colour);
+	VLine(x2, y1, y2-y1, colour);
+}
+
+void filledRectangle(int x1, int y1, int x2, int y2, int colour) {
+	int i;
+	for(i = 0; i < y2 - y1; i++) {
+		HLine(x1, y1 + i, x2-x1, colour);
+	}
+}
+
+void filledRectangleWithBorder(int x1, int y1, int x2, int y2, int colour,
+		int bordercolour) {
+
+	filledRectangle(x1, y1, x2, y2, colour);
+	rectangle(x1, y1, x2, y2, bordercolour);
+}
+
+void triangle(int x1, int y1, int x2, int y2, int x3, int y3, int colour) {
+	Line(x1, y1, x2, y2, colour);
+	Line(x1, y1, x3, y3, colour);
+	Line(x2, y2, x3, y3, colour);
+}
+
+void graphicsDemo() {
+
+//	screenFill(WHITE);
+
+	filledRectangleWithBorder(100, 100, 600, 400, CYAN, RED);
+	rectangle(0, 0, 200, 200, BLACK);
+	filledRectangle(500, 400, 700, 450, BLACK);
+	triangle(200, 0, 300, 100, 100, 100, BLACK);
+
+	Line(0, 0, 800, 100, BLUE);
+	Line(0, 0, 800, 200, RED);
+	Line(0, 0, 800, 300, BLUE);
+	Line(0, 0, 800, 400, RED);
+	Line(0, 0, 800, 480, BLUE);
 }

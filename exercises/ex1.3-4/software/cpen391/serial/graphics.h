@@ -57,5 +57,11 @@ void HLine(int x1, int y1, int length, int Colour);
 void VLine(int x1, int y1, int length, int Colour);
 void Line(int x1, int y1, int x2, int y2, int Colour);
 void screenFill(int colour);
+void rectangle(int x1, int y1, int x2, int y2, int colour);
+void filledRectangle(int x1, int y1, int x2, int y2, int colour);
+void filledRectangleWithBorder(int x1, int y1, int x2, int y2, int colour,
+		int bordercolour);
+void triangle(int x1, int y1, int x2, int y2, int x3, int y3, int colour);
+void graphicsDemo(void);
 
 #endif /* GRAPHICS_H_ */
