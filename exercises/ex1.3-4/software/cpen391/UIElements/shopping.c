@@ -1,4 +1,3 @@
-#include "todo.h"
 #include <stdio.h>
 #include "../serial/touch.h"
 #include "../serial/graphics.h"
@@ -24,9 +23,7 @@ void drawShopping(void){
 
 	elementsCleanup();
 	// Shade out the background
-	for(i = 0; i < 480; i ++){
-		HLine(0, i, 800, GRAY);
-	}
+	screenFill(GRAY);
 
 	// Write title
 	for(i = 0; i < 14; i++){
@@ -47,24 +44,12 @@ void drawShopping(void){
 	setElementText(addButton, add);
 	addElementToList(addButton);
 
-//	// Page down button
-//	Element *nextPage = createElement(750, 430, 50, 50, DIM_GRAY);
-//	setElementAction(nextPage, &nextPage); // have to make a next page function
-//	addElementToList(nextPage);
-//
-//	// Previous page button
-//	Element *prevPage = createElement(750, 110, 50, 50, DIM_GRAY);
-//	setElementAction(prevPage, &previousPage); // have to make a previous page function
-//	addElementToList(prevPage);
-
-	//drawArrows();
-
 	// No line checks rn
 	for (i = 0; i < 6; i++){
 
 		if(shoppinglist[i]!=NULL){
 
-			Element *item = createElement(listLeft, listStart + i*55, 600, 50, GRAY);
+			Element *item = createElement(listLeft, listStart + i*55, 700, 50, GRAY);
 			setElementText(item, shoppinglist[i]);
 			item->hasArg = 1;
 			item->arg1 = (int) i;
@@ -107,36 +92,4 @@ void addToShoppingList(char *string){
 		}
 	}
 
-}
-
-void drawArrows(){
-	int i;
-	for(i = 0; i < 6; i++){
-		Line(750+i*1, 430, 775+i*1, 480, WHITE);
-	}
-
-	for(i = 0; i < 6; i++){
-		Line(800+i*1, 430, 775+i*1, 480, WHITE);
-	}
-
-	for(i = 0; i < 6; i++){
-		Line(750+i*1, 160, 775+i*1, 110, WHITE);
-	}
-
-	for(i = 0; i < 6; i++){
-		Line(800+i*1, 160, 775+i*1, 110, WHITE);
-	}
-
-	for(i = 160; i < 430; i++){
-		HLine(750, i, 50, SILVER);
-	}
-}
-
-void drawCheckbox(int x, int y){
-	int side = 15;
-
-	VLine(x, y, side, BLACK);
-	VLine(x + side, y, side, BLACK);
-	HLine(x, y, side, BLACK);
-	HLine(x, y+side, side, BLACK);
 }

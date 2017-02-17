@@ -1,26 +1,31 @@
-#include "todo.h"
+#include <stdio.h>
+#include "../serial/touch.h"
 #include "../serial/graphics.h"
+#include "../serial/colours.h"
+#include "shopping.h"
+#include "element.h"
 
-char *todoList[30];
+#include "todo.h"
+
+char *notes[30];
+int colours[] = {5,6,7,8,5,6,7,8};
 
 void drawTodo(void){
-	char title[] = "To-do List";
-	char add[] = "add event";
+	char title[] = "Notes";
+	char add[] = "add note";
 	char back[] = "back";
+	char next[] = "next";
 	int listStart = 100;
-	int listLeft = 50;
-	// Shade out the background
+	int listLeft = 100;
 	int i;
-	for(i = 0; i < 479; i ++){
-		//HLine(int x1, int y1, int length, int Colour)
-		HLine(0, i, 799, GRAY);
-	}
+
+	elementsCleanup();
+	// Shade out the background
+	screenFill(GRAY);
 
 	// Write title
-	for(i = 0; i < 10; i++){
-		//OutGraphicsCharFont2a(int x, int y, int colour, int backgroundcolour, int c, int Erase);
-		// This is not right spacing or placement (using 10x14)
-		OutGraphicsCharFont2a(350+i*10, 75, BLACK, WHITE, title[i], 0);
+	for(i = 0; i < 14; i++){
+		OutGraphicsCharFont2a(350+i*10, 25, BLACK, WHITE, title[i], 0);
 	}
 
 	initElements();
@@ -28,110 +33,74 @@ void drawTodo(void){
 	// Create back button
 	Element *backButton = createElement(0, 0, 100, 50, DIM_GRAY);
 	setElementAction(backButton, &drawMenu);
+	setElementText(backButton, back);
 	addElementToList(backButton);
 
 	// Create add button
 	Element *addButton = createElement(700, 0, 100, 50, DIM_GRAY);
-	setElementAction(addButton, &newEntry);
+	setElementAction(addButton, &newNote); // have to make an add to list feature
+	setElementText(addButton, add);
 	addElementToList(addButton);
 
-	Element *prevButton = createElement(750, 110, 50, 50, DIM_GRAY);
-	setElementAction(prevButton, &newEntry);
-	addElementToList(prevButton);
+	// No line checks rn
+	for (i = 0; i < 4; i++){
 
-	Element *nextButton = createElement(750, 430, 50, 50, DIM_GRAY);
-	setElementAction(nextButton, &newEntry);
-	addElementToList(nextButton);
+		if(notes[i]!=NULL){
 
-	refresh();
-
-	// Write the name of the add button
-	for(i = 0; i < 10; i++){
-		//OutGraphicsCharFont2a(int x, int y, int colour, int backgroundcolour, int c, int Erase);
-		// This is not right spacing or placement (using 10x14)
-		OutGraphicsCharFont2a(720+i*8, 25, BLACK, RED, add[i], 0);
-	}
-
-	// Write name of the back button
-	for(i = 0; i < 10; i++){
-		//OutGraphicsCharFont2a(int x, int y, int colour, int backgroundcolour, int c, int Erase);
-		// This is not right spacing or placement (using 10x14)
-		OutGraphicsCharFont2a(25+i*8, 25, BLACK, RED, back[i], 0);
-	}
-
-	/*
-	// TODO: CODE TO WRITE OUT LIST GOES HERE
-	// each item needs a button, printed + wrapped string,
-	int lines = 0;
-	for(i = 0; i < 30 && lines < 26; i++){
-		if(todoList[i] != NULL){
-			// print that shit boi
-			int j;
-
-			// TODO: add button at the start of the first line
-
-			// find null element?
-			while(todoList[i][j] != '\0'){
-				OutGraphicsCharFont2a(listLeft+j*8, listStart+14*lines, BLACK, WHITE, todoList[i][j], 0);
-				j++;
-
-				// check if we're at the end of the screen
-				// TODO: prevent word splits
-				if(j > 75){
-					lines++;
-				}
-			}
-			// New line
-			lines++;
+			Element *item = createElement(listLeft+25*i+130*i, listStart, 130, 130, colours[i]);
+			setElementText(item, notes[i]);
+			item->hasArg = 1;
+			item->arg1 = (int) i;
+			item->action = &removeFromNotes;
+			addElementToList(item);
 		}
 	}
-	*/
 
-	// TODO: add next page button so we can see the
-	drawArrows();
+	for (i = 4; i < 8; i++){
+
+			if(notes[i]!=NULL){
+
+				Element *item = createElement(listLeft+25*(i-4)+130*(i-4), listStart+150, 130, 130, colours[i]);
+				setElementText(item, notes[i]);
+				item->hasArg = 1;
+				item->arg1 = (int) i;
+				item->action = &removeFromNotes;
+				addElementToList(item);
+			}
+		}
+
+
+	// TODO: add next page button so we can see all the list
+
 	// Listen to touch screen
-	listenToTouches();
-}
-
-// This function is def broken
-void newEntry(void){
-	char *input;
-
-	initElements();
-
-	// need to update the keyboard to output the typed string
-	// have to limit to 150 chars
-	input = keyboard();
-
-	//assuming I can just draw over the drawn keyboard
-	Element *backButton = createElement(0, 0, 100, 50, RED);
-	setElementAction(backButton, &drawMenu);
-
-	//assuming I can just draw over the drawn keyboard
-	Element *submitButton = createElement(7000, 0, 100, 50, RED);
-	setElementAction(submitButton, &addToTODOList); //need to pass argument, idk how
-
 	refresh();
-
 	listenToTouches();
 }
 
-// Remove element from the array, reprint the screen
-void removeFromTODOList(int j){
-	todoList[j] = NULL;
+
+void newNote(void){
+	char *typed = keyboard();
+	char *val = strcpy(val, typed);
+	addToNotes(val);
 	drawTodo();
 }
 
-void addToTODOList(char *string){
+void removeFromNotes(int j){
+	char* name = notes[j];
+	notes[j] = NULL;
+	free(name);
+	drawTodo();
+}
+
+void addToNotes(char *string){
 	int i;
 
 	// put the string in first available spot in the array
 	for(i = 0; i < 30; i++){
-		if(todoList[i] == NULL){
-			todoList[i] = string;
+		if(notes[i] == NULL){
+			notes[i] = string;
 			break;
 		}
 	}
 
-	// if we got here, don't add anything
 }

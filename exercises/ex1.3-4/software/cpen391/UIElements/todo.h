@@ -9,7 +9,7 @@
 
 
 void drawTodo(void);
-void newEntry(void);
-void removeFromTODOList(int j);
-void addToTODOList(char *string);
+void newNote(void);
+void removeFromNotes(int j);
+void addToNotes(char *string);
 
