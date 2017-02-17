@@ -1,5 +1,5 @@
-db/
-incremental_db/
+exercises/*/db/
+exercises/*/incremental_db/
 *.o
 *.elf
 *.map
