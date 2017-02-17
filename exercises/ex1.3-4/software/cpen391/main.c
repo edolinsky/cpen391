@@ -24,8 +24,10 @@ int main(){
 	initTouch();
 
 	while (1) {
-		char *chars = keyboard();
-		printf("%s\n", chars);
+		screenFill(BLUE);
+		usleep(1000000);
+		screenFill(RED);
+		usleep(1000000);
 
 	}
 
