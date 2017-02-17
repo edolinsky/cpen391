@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <deploy
- date="2017.01.30.17:06:13"
- outputDirectory="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/">
+ date="2017.02.15.16:42:59"
+ outputDirectory="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/">
  <perimeter>
   <parameter
      name="AUTO_DEVICE_FAMILY"
@@ -48,33 +48,33 @@
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="" />
   <generatedFiles>
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/alt_sld_fab.v"
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/alt_sld_fab.v"
        type="VERILOG" />
   </generatedFiles>
   <childGeneratedFiles>
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab.v"
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab.v"
        type="VERILOG" />
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_presplit.sv"
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_presplit.sv"
        type="SYSTEM_VERILOG"
        attributes="TOP_LEVEL_FILE" />
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_splitter.sv"
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_splitter.sv"
        type="SYSTEM_VERILOG"
        attributes="TOP_LEVEL_FILE" />
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_sldfabric.vhd"
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_sldfabric.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_ident.sv"
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_ident.sv"
        type="SYSTEM_VERILOG"
        attributes="TOP_LEVEL_FILE" />
   </childGeneratedFiles>
   <sourceFiles>
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/alt_sld_fab_wrapper_hw.tcl" />
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/alt_sld_fab_wrapper_hw.tcl" />
   </sourceFiles>
   <childSourceFiles>
    <file
@@ -165,24 +165,24 @@
   <parameter name="MIRROR" value="0" />
   <generatedFiles>
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab.v"
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab.v"
        type="VERILOG" />
   </generatedFiles>
   <childGeneratedFiles>
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_presplit.sv"
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_presplit.sv"
        type="SYSTEM_VERILOG"
        attributes="TOP_LEVEL_FILE" />
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_splitter.sv"
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_splitter.sv"
        type="SYSTEM_VERILOG"
        attributes="TOP_LEVEL_FILE" />
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_sldfabric.vhd"
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_sldfabric.vhd"
        type="VHDL"
        attributes="" />
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_ident.sv"
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_ident.sv"
        type="SYSTEM_VERILOG"
        attributes="TOP_LEVEL_FILE" />
   </childGeneratedFiles>
@@ -251,7 +251,7 @@
   <parameter name="RECEIVE_WIDTHS" value="24 25 25" />
   <generatedFiles>
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_presplit.sv"
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_presplit.sv"
        type="SYSTEM_VERILOG"
        attributes="TOP_LEVEL_FILE" />
   </generatedFiles>
@@ -281,7 +281,7 @@
   <parameter name="ADD_INTERFACE_ASGN" value="0" />
   <generatedFiles>
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_splitter.sv"
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_splitter.sv"
        type="SYSTEM_VERILOG"
        attributes="TOP_LEVEL_FILE" />
   </generatedFiles>
@@ -322,7 +322,7 @@
   <parameter name="FORCE_IR_CAPTURE_FEATURE" value="1" />
   <generatedFiles>
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_sldfabric.vhd"
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_sldfabric.vhd"
        type="VHDL"
        attributes="" />
   </generatedFiles>
@@ -350,7 +350,7 @@
   <parameter name="DESIGN_HASH" value="2eb4a92ef96a9249d63f" />
   <generatedFiles>
    <file
-       path="/home/reidoliveira/ubc/year3t2/ex1.3-redo/ex1.3-redo/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_ident.sv"
+       path="/home/reidoliveira/ubc/year3/t2/cpen391/exercises/ex1.3-4/db/ip/sld57baccdf/submodules/alt_sld_fab_alt_sld_fab_ident.sv"
        type="SYSTEM_VERILOG"
        attributes="TOP_LEVEL_FILE" />
   </generatedFiles>
