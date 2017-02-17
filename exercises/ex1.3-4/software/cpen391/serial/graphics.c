@@ -7,7 +7,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "colours.h"
 #include "graphics.h"
 #include "../main.h"
 
@@ -122,10 +121,25 @@ void triangle(int x1, int y1, int x2, int y2, int x3, int y3, int colour) {
 	Line(x2, y2, x3, y3, colour);
 }
 
+void writeString5x7(int x, int y, char* string, int length, int colour, int bg,
+		int erase) {
+
+	int i;
+	for(i = 0; i < length; i++) {
+		OutGraphicsCharFont1(x + (FONT1_WIDTH*i), y, colour, bg, string[i], erase);
+	}
+}
+
+void writeString10x14(int x, int y, char* string, int length, int colour, int bg,
+		int erase) {
+
+	int i;
+	for(i = 0; i < length; i++) {
+		OutGraphicsCharFont2a(x + (FONT2_WIDTH*i), y, colour, bg, string[i], erase);
+	}
+}
+
 void graphicsDemo() {
-
-//	screenFill(WHITE);
-
 	filledRectangleWithBorder(100, 100, 600, 400, CYAN, RED);
 	rectangle(0, 0, 200, 200, BLACK);
 	filledRectangle(500, 400, 700, 450, BLACK);
