@@ -91,8 +91,16 @@ def get_calendar():
 
     # If 'application/text' was requested, we reply with a simple tsv file
     if wants_text:
-        resp = ""
-        
+        resp = "{}    {}    {}    {}    {}    {}    {}\n".format(
+            (start_sunday + datetime.timedelta(0)).day,
+            (start_sunday + datetime.timedelta(1)).day,
+            (start_sunday + datetime.timedelta(2)).day,
+            (start_sunday + datetime.timedelta(3)).day,
+            (start_sunday + datetime.timedelta(4)).day,
+            (start_sunday + datetime.timedelta(5)).day,
+            (start_sunday + datetime.timedelta(6)).day
+        )
+
         for item in calendar_blob['items']:
             if item['kind'] == 'calendar#event':
                 start_time = dateutil.parser.parse(item['start']['dateTime'])
