@@ -5,9 +5,9 @@
 #include "../serial/touch.h"
 #include "../serial/graphics.h"
 #include "../serial/colours.h"
-#include "../UIElements/button.h"
+#include "../UIElements/element.h"
 
 void drawKeyboard();
-void type(char letter);
+void type(int letter);
 
-#endif
+#endif /* KEYBOARD_H_ */

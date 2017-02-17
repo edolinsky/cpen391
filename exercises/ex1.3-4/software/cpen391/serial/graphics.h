@@ -35,13 +35,8 @@
 #define GetAPixel 0xB
 #define ProgramPaletteColour 0x10
 
-// defined constants representing colours pre-programmed into colour palette
-// there are 256 colours but only 8 are shown below, we write these to the colour registers
-//
-// the header files "Colours.h" contains constants for all 256 colours
-// while the course file “ColourPaletteData.c” contains the 24 bit RGB data
-// that is pre-programmed into the palette
-
+#define FONT1_WIDTH 5
+#define FONT2_WIDTH 10
 
 void WriteAPixel(int x, int y, int Colour);
 int ReadAPixel(int x, int y);
@@ -55,6 +50,10 @@ void filledRectangle(int x1, int y1, int x2, int y2, int colour);
 void filledRectangleWithBorder(int x1, int y1, int x2, int y2, int colour,
 		int bordercolour);
 void triangle(int x1, int y1, int x2, int y2, int x3, int y3, int colour);
+void writeString5x7(int x, int y, char* string, int length, int colour, int bg);
+void eraseString5x7(int x, int y, int length, int colour);
+void writeString10x14(int x, int y, char* string, int length, int colour, int bg);
+void eraseString10x14(int x, int y, int length, int colour);
 void graphicsDemo(void);
 
 #endif /* GRAPHICS_H_ */

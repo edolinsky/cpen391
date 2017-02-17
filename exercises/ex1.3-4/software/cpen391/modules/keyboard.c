@@ -1,12 +1,8 @@
 #include "keyboard.h"
 
 void drawKeyboard() {
-	int x, y;
-	for (x = 0; x < 800; x++) {
-		for (y = 0; y < 480; y++) {
-			WriteAPixel(x, y, WHITE);
-		}
-	}
+
+	screenFill(RED);
 
 	char array[27] = { 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a',
 			's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b',
@@ -17,47 +13,62 @@ void drawKeyboard() {
 	int i;
 	int c = 0;
 	for (i = 0; i < 10; i++) {
-		Button *btn3 = createButton(xMargin + xPos + 55, 230, 55, 55, GRAY);
+		Element *bt = createElement(xMargin + xPos + 55, 230, 55, 55, GRAY);
 		xPos += xMargin + 55;
-		setButtonAction(btn3, &type);
-		setButtonCharacter(btn3, array[c]);
+		char c1[2] = {array[c], '\0'};
+		setElementText(bt, c1);
+		setElementAction(bt, &type);
+		bt->hasArg = 1;
+		bt->arg1 = (int) array[c];
+		bt->action = &type;
 		c++;
-		drawButton(btn3);
+		addElementToList(bt);
 	}
 
 	xPos = 60;
 	for (i = 0; i < 9; i++) {
-		Button *btn3 = createButton(xMargin + xPos + 55, 290, 55, 55, GRAY);
+		Element *bt = createElement(xMargin + xPos + 55, 290, 55, 55, GRAY);
 		xPos += xMargin + 55;
-		setButtonAction(btn3, &type);
-		setButtonCharacter(btn3, array[c]);
+		char c2[2] = {array[c], '\0'};
+		setElementText(bt, c2);
+		setElementAction(bt, &type);
+		bt->hasArg = 1;
+		bt->arg1 = (int) array[c];
+		bt->action = &type;
 		c++;
-		drawButton(btn3);
+		addElementToList(bt);
 	}
 
 	xPos = 100;
 	for (i = 0; i < 7; i++) {
-		Button *btn3 = createButton(xMargin + xPos + 55, 350, 55, 55, GRAY);
+		Element *bt = createElement(xMargin + xPos + 55, 350, 55, 55, GRAY);
 		xPos += xMargin + 55;
-		setButtonAction(btn3, &type);
-		setButtonCharacter(btn3, array[c]);
+		char c3[2] = {array[c], '\0'};
+		setElementText(bt, c3);
+		setElementAction(bt, &type);
+		bt->hasArg = 1;
+		bt->arg1 = (int) array[c];
+		bt->action = &type;
 		c++;
-		drawButton(btn3);
+		addElementToList(bt);
 	}
 
-	Button *btn3 = createButton(300, 410, 200, 60, GRAY);
+	Element *bt = createElement(300, 410, 200, 60, GRAY);
 	xPos += xMargin + 70;
-	setButtonAction(btn3, &type);
-	setButtonCharacter(btn3, array[c]);
+//	char c4[2] = {array[c], '\0'};
+	setElementText(bt, "the quick brown fox jumped over the lazy dog");
+	setElementAction(bt, &type);
+	bt->hasArg = 1;
+	bt->arg1 = (int) array[c];
+	bt->action = &type;
 	c++;
-	drawButton(btn3);
+	addElementToList(bt);
 
+	refresh();
 	listenToTouches();
 }
 
-
-void type(char letter) {
-	printf("%c",letter);
+void type(int letter) {
+	printf("%c", (char) letter);
 }
-
 
