@@ -1,10 +1,10 @@
-LIBRARY ieee; 
+LIBRARY ieee;
 USE ieee.Std_Logic_1164.all;
-use ieee.Std_Logic_arith.all; 
-use ieee.Std_Logic_signed.all;  
+use ieee.Std_Logic_arith.all;
+use ieee.Std_Logic_signed.all;
    
-entity GraphicsController is  
-	Port (  
+entity GraphicsController is
+	Port (
  
 -- Signals from NIOS Bridge (i.e. CPU) interface signals
 		AddressIn 										: in  Std_Logic_Vector(15 downto 0);			-- CPU address bus
@@ -55,7 +55,18 @@ architecture bhvr of GraphicsController is
 -- X1,Y1 and X2,Y2 can be used to represent coords, e.g. draw a pixel or draw a line from x1,y1 to x2,y2
 -- CPU writes values to these registers and the graphcis controller will do the rest
 
-	Signal 	X1, Y1, X2, Y2, Colour, BackGroundColour, Command 		: Std_Logic_Vector(15 downto 0);	
+	Signal 	X1, Y1, X2, Y2, Colour, BackGroundColour, Command 		: Std_Logic_Vector(15 downto 0);
+	
+	-- signals for drawing horizontal and vertical lines
+	Signal 	Inc_X, Inc_Y : Std_Logic;
+	
+	-- signals for Bresenhams algorithm
+	Signal	X1_Data, Y1_Data : Std_Logic_Vector(15 downto 0);
+	Signal	LoadX1Data, LoadY1Data : Std_Logic;
+	
+	Signal	dx, dy, dx_Data, dy_Data, s1, s2, s1_Data, s2_Data: Std_Logic_Vector(15 downto 0);
+	Signal	interchange, interchange_Data, error, error_Data, i, i_Data : std_Logic_Vector(15 downto 0);
+	Signal	dx_Load_H, dy_Load_H, s1_Load_H, s2_Load_H, interchange_Load_H, error_Load_H, i_Load_H : Std_Logic;
 
 -- 16 bit register that can be read by NIOS. It holds the 8 bit pallette number of the pixel that we read (see reading pixels)
 	
@@ -122,6 +133,10 @@ architecture bhvr of GraphicsController is
 	constant ReadPixel1							 	: Std_Logic_Vector(7 downto 0) := X"07";		-- State for reading a pixel
 	constant ReadPixel2							 	: Std_Logic_Vector(7 downto 0) := X"08";		-- State for reading a pixel
 	constant PalletteReProgram						: Std_Logic_Vector(7 downto 0) := X"09";		-- State for programming a pallette
+	constant DrawLine1								: Std_Logic_Vector(7 downto 0) := X"0A";
+	constant MainLoop									: Std_Logic_Vector(7 downto 0) := X"0B";
+	constant CalculateError							: Std_Logic_Vector(7 downto 0) := X"0C";
+	constant LoopEnd									: Std_Logic_Vector(7 downto 0) := X"0D";
 
 	-- add any extra states you need here for example to draw lines etc.
 -------------------------------------------------------------------------------------------------------------------------------------------------
@@ -245,6 +260,10 @@ Begin
 				if(LDS_L = '0') then
 					X1(7 downto 0) <= DataInFromCPU(7 downto 0);
 				end if ;
+			elsif(Inc_X = '1') then
+				X1 <= X1 + 1;
+			elsif(LoadX1Data = '1') then
+				X1 <= X1_Data;
 			end if;
 		end if;
 	end process;
@@ -268,6 +287,10 @@ Begin
 				if(LDS_L = '0') then
 					Y1(7 downto 0) <= DataInFromCPU(7 downto 0);
 				end if;
+			elsif(Inc_Y = '1') then
+				Y1 <= Y1 + 1;
+			elsif(LoadY1Data = '1') then
+				Y1 <= Y1_Data;
 			end if;
 		end if;
 	end process;
@@ -438,6 +461,7 @@ Begin
 	
 	process(CurrentState, CommandWritten_H, Command, X1, X2, Y1, Y2, Colour, VSync_L,
 				BackGroundColour, AS_L, Sram_DataIn, CLK, Colour_Latch)
+		variable x2minusx1, y2minusy1: Std_Logic_Vector(15 downto 0);
 	begin
 	
 	----------------------------------------------------------------------------------------------------------------------------------
@@ -464,6 +488,19 @@ Begin
 		Sig_ColourPalletteAddr			<= X"00";				-- default address to the colour pallette
 		Sig_ColourPalletteData			<= X"00000000" ;		-- default 00RRGGBB value to the colour pallette
 		Sig_ColourPallette_WE_H			<= '0'; 					-- default is NO write to the colour pallette
+		
+		Inc_X								<= '0';
+		Inc_Y								<= '0';
+		
+		LoadX1Data						<= '0';
+		LoadY1Data						<= '0';
+		dx_Load_H						<= '0';
+		dy_Load_H						<= '0';
+		s1_Load_H						<= '0';
+		s2_Load_H						<= '0';
+		interchange_Load_H			<= '0';
+		error_Load_H					<= '0';
+		i_Load_H							<= '0';
 		
 		-------------------------------------------------------------------------------------
 		-- IMPORTANT we have to define what the default NEXT state will be. In this case we the state machine
@@ -561,7 +598,8 @@ Begin
 			-- you will recall that this is the value of the Colour register
 				
 			NextState <= IDLE;		-- return to idle state after writing pixel
-
+				
+				
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		elsif(CurrentState = ReadPixel) then
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -604,21 +642,243 @@ Begin
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		elsif(CurrentState = DrawHline) then
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-			-- TODO in your project
-			NextState <= IDLE;
+			if(X1 < X2) then
+				Inc_X <= '1';
+				NextState <= DrawHLine;
+			else
+				NextState <= IDLE;
+			end if;
+			
+			Sig_AddressOut 	<= Y1(8 downto 0) & X1(9 downto 1);
+			Sig_RW_Out			<= '0';
+			
+			if(X1(0) = '0')	then
+				Sig_UDS_Out_L 	<= '0';
+			else
+				Sig_LDS_Out_L 	<= '0';
+			end if;
 				
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		elsif(CurrentState = DrawVline) then
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------		
-			-- TODO in your project
-			NextState <= IDLE;
+			if(Y1 < Y2) then
+				Inc_Y <= '1';
+				NextState <= DrawVLine;
+			else
+				NextState <= IDLE;
+			end if;
+			
+			Sig_AddressOut 	<= Y1(8 downto 0) & X1(9 downto 1);
+			Sig_RW_Out			<= '0';
+			
+			if(X1(0) = '0')	then
+				Sig_UDS_Out_L 	<= '0';
+			else
+				Sig_LDS_Out_L 	<= '0';
+			end if;
 			
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 		elsif(CurrentState = DrawLine) then
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------		
-			-- TODO in your project
-			NextState <= IDLE;
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			
+			X1_Data <= X1;
+			Y1_Data <= Y1;
+			
+			x2minusx1 := X2 - X1;
+			y2minusy1 := Y2 - Y1;
+			
+			dx_Data <= abs(signed(x2minusx1));
+			dy_Data <= abs(signed(y2minusy1));
+			
+			if(x2minusx1 < 0) then
+				s1_Data <= X"FFFF";
+			elsif(x2minusx1 = 0) then
+				s1_Data <= X"0000";
+			else
+				s1_Data <= X"0001";
+			end if;
+			
+			if(y2minusy1 < 0) then
+				s2_Data <= X"FFFF";
+			elsif(y2minusy1 = 0) then
+				s2_Data <= X"0000";
+			else
+				s2_Data <= X"0001";
+			end if;
+			
+			interchange_Data <= X"0000";
+			
+			LoadX1Data <= '1';
+			LoadY1Data <= '1';
+			dx_Load_H <= '1';
+			dy_Load_H <= '1';
+			s1_Load_H <= '1';
+			s2_Load_H <= '1';
+			interchange_Load_H <= '1';
+			
+			NextState <= DrawLine1;
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	
+		elsif(CurrentState = DrawLine1) then
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			if (dy > dx) then
+				dy_Data <= dx;
+				dx_Data <= dy;
+				interchange_Data <= X"0001";
+				interchange_Load_H <= '1';
+			end if;
+			
+			error_Data <= (dy(14 downto 0) & '0');
+			error_Load_H <= '1';
+			
+			i_Data <= X"0001";
+			i_Load_H <= '1';
+			
+			NextState <= MainLoop;
+			
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		elsif(CurrentState = MainLoop) then
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			
+			-- write pixel
+			Sig_AddressOut 	<= Y1(8 downto 0) & X1(9 downto 1);
+			Sig_RW_Out			<= '0';
+			
+			if(X1(0) = '0') then
+				Sig_UDS_Out_L 	<= '0';
+			else
+				Sig_LDS_Out_L 	<= '0';
+			end if;
+			
+			-- conditions
+			if (i < dx) then 
+				NextState <= CalculateError;
+			else
+				NextState <= IDLE;
+			end if;
+				
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		elsif(CurrentState = CalculateError) then
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			if(error < 0) then
+				NextState <= LoopEnd;
+			else
+				if (interchange = 1) then
+					X1_Data <= X1 + s1;
+					LoadX1Data <= '1';
+				else
+					Y1_Data <= Y1 + s2;
+					LoadY1Data <= '1';
+				end if;
+				
+				error_Data <= error - (dx(14 downto 0) & '0');
+				error_Load_H <= '1';
+				
+				NextState <= CalculateError;
+			end if;
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		elsif(CurrentState = LoopEnd) then
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+			if(interchange = 1) then
+				Y1_Data <= Y1 + s2;
+				LoadY1Data <= '1';
+			else
+				X1_Data <= X1 + s1;
+				LoadX1Data <= '1';
+			end if;
+			
+			error_Data <= error + (dy(14 downto 0) & '0');
+			error_Load_H <= '1';
+			
+			NextState <= MainLoop;
 			
 		end if ;
-	end process;	
+	end process;
+	
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	-- Process for dx
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	process(Clk)
+	Begin
+		if(rising_edge(Clk)) then
+			if(dx_Load_H = '1') then -- if told to store data by state machine
+				dx <= dx_Data; -- copy dx_Data to dx on next rising edge and remember it
+			end if;
+		end if;
+	end process;
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	-- Process for dy
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	process(Clk)
+	Begin
+		if(rising_edge(Clk)) then
+			if(dy_Load_H = '1') then -- if told to store data by state machine
+				dy <= dy_Data; -- copy dy_Data to dy on next rising edge and remember it
+			end if;
+		end if;
+	end process;
+	
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	-- Process for s1
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	process(Clk)
+	Begin
+		if(rising_edge(Clk)) then
+			if(s1_Load_H = '1') then
+				s1 <= s1_Data;
+			end if;
+		end if;
+	end process;
+	
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	-- Process for s2
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	process(Clk)
+	Begin
+		if(rising_edge(Clk)) then
+			if(s2_Load_H = '1') then
+				s2 <= s2_Data;
+			end if;
+		end if;
+	end process;
+	
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	-- Process for interchange
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	process(Clk)
+	Begin
+		if(rising_edge(Clk)) then
+			if(interchange_Load_H = '1') then
+				interchange <= interchange_Data;
+			end if;
+		end if;
+	end process;
+	
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	-- Process for error
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	process(Clk)
+	Begin
+		if(rising_edge(Clk)) then
+			if(error_Load_H = '1') then
+				error <= error_Data;
+			end if;
+		end if;
+	end process;
+	
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	-- Process for i
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	process(Clk)
+	Begin
+		if(rising_edge(Clk)) then
+			if(i_Load_H = '1') then
+				i <= i_Data;
+			end if;
+		end if;
+	end process;
+	
 end;
+
