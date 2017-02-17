@@ -15,8 +15,13 @@
 int main() {
 	printf("Hello from Nios II!\n");
 
-	displayCalendar();
+	screenFill(WHITE);
+//	displayCalendar();
 	graphicsDemo();
+
+//	Line(0, 0, XRES - 1, YRES - 1, BLUE);
+//	Line(XRES - 1, 0, 0, YRES - 1, BLUE);
+	return 0;
 
 }
 

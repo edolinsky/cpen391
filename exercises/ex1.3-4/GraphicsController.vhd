@@ -491,16 +491,25 @@ Begin
 		
 		Inc_X								<= '0';
 		Inc_Y								<= '0';
-		
+		X1_Data							<= X"0000";
+		Y1_Data							<= X"0000";
 		LoadX1Data						<= '0';
 		LoadY1Data						<= '0';
+		
 		dx_Load_H						<= '0';
+		dx_Data							<= X"0000";
 		dy_Load_H						<= '0';
+		dy_Data							<= X"0000";
 		s1_Load_H						<= '0';
+		s1_Data							<= X"0000";
 		s2_Load_H						<= '0';
+		s2_Data							<= X"0000";
 		interchange_Load_H			<= '0';
+		interchange_Data				<= X"0000";
 		error_Load_H					<= '0';
+		error_Data						<= X"0000";
 		i_Load_H							<= '0';
+		i_Data							<= X"0000";
 		
 		-------------------------------------------------------------------------------------
 		-- IMPORTANT we have to define what the default NEXT state will be. In this case we the state machine
@@ -681,9 +690,6 @@ Begin
 		elsif(CurrentState = DrawLine) then
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 			
-			X1_Data <= X1;
-			Y1_Data <= Y1;
-			
 			x2minusx1 := X2 - X1;
 			y2minusy1 := Y2 - Y1;
 			
@@ -707,9 +713,7 @@ Begin
 			end if;
 			
 			interchange_Data <= X"0000";
-			
-			LoadX1Data <= '1';
-			LoadY1Data <= '1';
+
 			dx_Load_H <= '1';
 			dy_Load_H <= '1';
 			s1_Load_H <= '1';
@@ -724,11 +728,14 @@ Begin
 			if (dy > dx) then
 				dy_Data <= dx;
 				dx_Data <= dy;
+				dx_Load_H <= '1';
+				dy_Load_H <= '1';
+				
 				interchange_Data <= X"0001";
 				interchange_Load_H <= '1';
 			end if;
 			
-			error_Data <= (dy(14 downto 0) & '0');
+			error_Data <= (dy(14 downto 0) & '0') - dx;
 			error_Load_H <= '1';
 			
 			i_Data <= X"0001";
@@ -790,6 +797,9 @@ Begin
 			
 			error_Data <= error + (dy(14 downto 0) & '0');
 			error_Load_H <= '1';
+			
+			i_Data <= i + 1;
+			i_Load_H <= '1';
 			
 			NextState <= MainLoop;
 			
