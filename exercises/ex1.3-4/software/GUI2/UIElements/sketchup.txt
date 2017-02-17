@@ -1,0 +1,42 @@
+Main menu:
+- draw menu function
+	- title
+	- three buttons 
+		- each button calls the draw gui function for calendar, shopping list, to do list
+
+Calendar:
+- back button calls draw main menu
+- draw GUI function 
+	- Writes out a grid for days of the week with dates on each grid
+	- Buttons to go left and right in weeks
+	- Title at the top for date
+	- "Add" calendar button
+		- calls keyboard, limit string input, have done button that calls the calendar GUI and adds the event
+	- Tap the day of the week and see a full rundown of events
+		- have scroll button to be able to see all events
+
+Shopping List:
+- back button calls draw main menu
+- Add shopping list entry button - calls keyboard function
+	- keyboard has a button that adds the string to the shopping list, call shopping list GUI function
+	- have running count of how many characters left
+- GUI:
+	- Title
+	- Each element is printed with a check box next to it and the text - limit characters
+		- use textwrap, check if we cut off words between lines
+		- check boxes remove the entry from the list
+	- button to scroll down in more than 10~ish entries 
+	- limit the number of entries?
+	
+To-do list:
+- back button calls draw main menu
+- Add shopping list entry button - calls keyboard function
+	- keyboard has a button that adds the string to the shopping list, call shopping list GUI function
+	- have running count of how many characters left
+- GUI:
+	- Title
+	- Each element is printed with a check box next to it and the text - limit characters
+		- use textwrap, check if we cut off words between lines
+		- check boxes remove the entry from the list
+	- button to scroll down in more than 10~ish entries 
+	- limit the number of entries?

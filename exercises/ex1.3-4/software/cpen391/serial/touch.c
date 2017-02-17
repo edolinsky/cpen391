@@ -60,8 +60,8 @@ Point getPress(void) {
 	int i;
 	for (i = 0; i < 4; i++)
 		bytes[i] = getChar(&TOUCH_STATUS, &TOUCH_RXDATA);
-	p1.x = 480 * ((int) bytes[0] + (int) (bytes[1] << 7)) / 4096.0;
-	p1.y = 800 * ((int) bytes[2] + (int) (bytes[3] << 7)) / 4096.0;
+	p1.x = 800 * ((int) bytes[0] + (int) (bytes[1] << 7)) / 4096.0;
+	p1.y = 480 * ((int) bytes[2] + (int) (bytes[3] << 7)) / 4096.0;
 	return p1;
 }
 
@@ -77,7 +77,7 @@ Point getRelease(void) {
 	int i;
 	for (i = 0; i < 4; i++)
 		bytes[i] = getChar(&TOUCH_STATUS, &TOUCH_RXDATA);
-	p1.x = 480 * ((int) bytes[0] + (int) (bytes[1] << 7)) / 4096.0;
-	p1.y = 800 * ((int) bytes[2] + (int) (bytes[3] << 7)) / 4096.0;
+	p1.x = 800 * ((int) bytes[0] + (int) (bytes[1] << 7)) / 4096.0;
+	p1.y = 480 * ((int) bytes[2] + (int) (bytes[3] << 7)) / 4096.0;
 	return p1;
 }

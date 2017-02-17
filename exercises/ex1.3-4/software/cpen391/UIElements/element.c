@@ -9,7 +9,7 @@
 #include "../serial/graphics.h"
 
 // private functions
-void drawButtonText(Element *e);
+void drawText(Element *e);
 void drawMe(Element *e);
 void destroyElement(Element *e);
 
@@ -36,56 +36,65 @@ void setElementAction(Element *e, void *action) {
 }
 
 void drawMe(Element *e) {
-	filledRectangle(e->x, e->y, e->x + e->width, e->y + e->height,
-			e->elementColour);
+	filledRectangleWithBorder(e->x, e->y, e->x + e->width, e->y + e->height,
+			e->elementColour, BLACK);
 
-	drawButtonText(e);
+	drawText(e);
 }
 
-void drawButtonText(Element *e) {
-	char* text = e->text;
-	int textWidth, textHeight;
-	if (e->textSize == TEXT_SMALL) {
-		textWidth = 5;
-		textHeight = 7;
-	} else {
-		textWidth = 10;
-		textHeight = 14;
-	}
-	int lineLength = e->width / textWidth; // rounded down is what we want
-
-	char line[lineLength];
-	int y = e->y;
-
-	// vertical bounds
-	int pos = 0;
-	while (y < e->y + e->height - textHeight) {
-
-		// create a line
-		int i, length = 0;
-		for (i = 0; i < lineLength; i++) {
-			if (text[pos] == '\0') {
-				break;
-			}
-			line[i] = text[pos++];
-			length++;
-		}
-
-		// print line
-		if (textWidth == FONT1_WIDTH) {
-			writeString5x7(e->x, y, line, length, e->textColour,
-					e->elementColour);
-		} else {
-			writeString10x14(e->x, y, line, length, e->textColour,
-					e->elementColour);
-		}
-
-		// if length isn't lineLength then we finished, otherwise wrap text
-		if (length != lineLength)
-			break;
-
-		y += textHeight;
-	}
+void drawText(Element *e) {
+    char* text = e->text;
+    int textWidth, textHeight;
+    if (e->textSize == TEXT_SMALL) {
+        textWidth = 5;
+        textHeight = 7;
+    } else {
+        textWidth = 10;
+        textHeight = 14;
+    }
+    int lineLength = e->width / textWidth; // rounded down is what we want
+    int maxLines = e->height / textHeight;
+    char line[lineLength];
+    int y = e->y;
+    // vertical bounds
+    int pos = 0;
+    //int isNewWord = 1;
+    int lineCount = 0;
+    while (y < e->y + e->height - textHeight) {
+        // create a line
+        int i, length = 0;
+        for (i = 0; i < lineLength; i++) {
+            if (text[pos] == '\0') { // we are done
+                break;
+            }
+            line[i] = text[pos++];
+            length++;
+        }
+        // print line
+        lineCount++;
+        if (textWidth == FONT1_WIDTH) {
+            // if not a full line then center text horizontally, also center it vertically if its the only line and we're done
+            if (lineCount == 1 && length != lineLength) {
+                writeString5x7(e->x + (textWidth * (lineLength - length) / 2),
+                        y + (textHeight * (maxLines - lineCount) / 2), line, length, e->textColour, e->elementColour);
+            } else {
+                writeString5x7(e->x + (textWidth * (lineLength - length) / 2),
+                        y, line, length, e->textColour, e->elementColour);
+            }
+        } else {
+            if (lineCount == 1 && length != lineLength) {
+                writeString10x14(e->x + (textWidth * (lineLength - length) / 2),
+                        y + (textHeight * (maxLines - lineCount) / 2) , line, length, e->textColour, e->elementColour);
+            } else {
+                writeString10x14(e->x + (textWidth * (lineLength - length) / 2),
+                        y, line, length, e->textColour, e->elementColour);
+            }
+        }
+        // if length isn't lineLength then we finished, otherwise wrap text
+        if (length != lineLength)
+            break;
+        y += textHeight;
+    }
 }
 
 void refresh() {
@@ -150,12 +159,15 @@ void initElements() {
  * need to call this function before exiting
  */
 void elementsCleanup() {
-	ElementNode *node = globalElementList->head;
-	while (node != NULL) {
-		ElementNode *next = node->next;
-		free(node);
-		node = next;
-	}
+    ElementNode *node = globalElementList->head;
+    while (node != NULL) {
+        ElementNode *next = node->next;
+        free(node->e);
+        free(node);
+        node = next;
+    }
+    globalElementList->head = NULL;
+    globalElementList->tail = NULL;
 }
 
 void listenToTouches() {
@@ -171,6 +183,7 @@ void listenToTouches() {
 		if (p.x > e->x && p.x < (e->x + e->width) && p.y > e->y
 				&& p.y < (e->y + e->height)) {
 			if (e->hasArg) {
+				if (e->arg1 == BREAK_KEY) return;
 				(*(e->action))(e->arg1);
 			} else {
 				(*(e->action))();

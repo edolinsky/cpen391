@@ -17,6 +17,8 @@
 #include <math.h>
 #include <string.h>
 
+#define BREAK_KEY -1
+
 typedef enum{
 	TEXT_LARGE,
 	TEXT_SMALL
@@ -39,7 +41,7 @@ typedef struct element{
 
 typedef struct elementNode{
 	Element *e;
-	Element *next;
+	struct elementNode *next;
 }ElementNode;
 
 typedef struct elementList{

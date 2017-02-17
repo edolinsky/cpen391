@@ -137,6 +137,7 @@ architecture bhvr of GraphicsController is
 	constant MainLoop									: Std_Logic_Vector(7 downto 0) := X"0B";
 	constant CalculateError							: Std_Logic_Vector(7 downto 0) := X"0C";
 	constant LoopEnd									: Std_Logic_Vector(7 downto 0) := X"0D";
+	constant ScreenFill								: Std_Logic_Vector(7 downto 0) := X"0E";
 
 	-- add any extra states you need here for example to draw lines etc.
 -------------------------------------------------------------------------------------------------------------------------------------------------
@@ -145,6 +146,7 @@ architecture bhvr of GraphicsController is
 	constant Hline								 		: Std_Logic_Vector(15 downto 0) := X"0001";	-- command to Graphics chip from NIOS is draw Horizontal line
 	constant Vline									 	: Std_Logic_Vector(15 downto 0) := X"0002";	-- command to Graphics chip from NIOS is draw Vertical line
 	constant ALine									 	: Std_Logic_Vector(15 downto 0) := X"0003";	-- command to Graphics chip from NIOS is draw any line
+	constant Fill										: Std_Logic_Vector(15 downto 0) := X"0004";  -- command to Graphics chip from NIOS to fill the screen
 	constant	PutPixel									: Std_Logic_Vector(15 downto 0) := X"000a";	-- command to Graphics chip from NIOS to draw a pixel
 	constant	GetPixel									: Std_Logic_Vector(15 downto 0) := X"000b";	-- command to Graphics chip from NIOS to read a pixel
 	constant ProgramPallette						: Std_Logic_Vector(15 downto 0) := X"0010";	-- command to Graphics chip from NIOS is program one of the pallettes with a new RGB value
@@ -552,7 +554,9 @@ Begin
 			elsif(Command = Vline) then
 				NextState <= DrawVline;
 			elsif(Command = ALine) then
-				NextState <= DrawLine;	
+				NextState <= DrawLine;
+			elsif(Command = Fill) then
+				NextState <= ScreenFill;
 				
 			-- add other code to process any new commands here e.g. draw a circle if you decide to implement that
 			-- or draw a rectangle etc
@@ -802,6 +806,35 @@ Begin
 			i_Load_H <= '1';
 			
 			NextState <= MainLoop;
+			
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+		elsif(CurrentState = ScreenFill) then
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+			NextState <= ScreenFill;
+			if(X1 <= X2) then
+				-- write pixel
+				Sig_AddressOut 	<= Y1(8 downto 0) & X1(9 downto 1);
+				Sig_RW_Out			<= '0';
+				
+				if(X1(0) = '0') then
+					Sig_UDS_Out_L 	<= '0';
+				else
+					Sig_LDS_Out_L 	<= '0';
+				end if;
+				
+				Inc_X <= '1';
+			else
+			
+				if(Y1 < Y2) then 
+					X1_Data <= X"0000";
+					LoadX1Data <= '1';
+					
+					Inc_Y <= '1';
+				else
+					NextState <= IDLE;
+				end if;
+			end if;
 			
 		end if ;
 	end process;

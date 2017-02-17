@@ -7,7 +7,14 @@
 #include "../serial/colours.h"
 #include "../UIElements/element.h"
 
-void drawKeyboard();
+#define TEXTAREA 150
+#define KEYSIZE 75
+#define MARGIN 30
+#define MAX_CHARACTERS 120
+
+char* keyboard(void);
+void drawUi(void);
+void drawKeys(void);
 void type(int letter);
 
 #endif /* KEYBOARD_H_ */

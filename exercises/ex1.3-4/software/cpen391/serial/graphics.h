@@ -36,7 +36,9 @@
 #define ProgramPaletteColour 0x10
 
 #define FONT1_WIDTH 5
+#define FONT1_HEIGHT 7
 #define FONT2_WIDTH 10
+#define FONT2_HEIGHT 14
 
 void WriteAPixel(int x, int y, int Colour);
 int ReadAPixel(int x, int y);
