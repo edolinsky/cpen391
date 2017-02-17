@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request
 from flask import jsonify
 import datetime
+import dateutil.parser
 import requests
 import json
 import sys
@@ -37,6 +38,7 @@ def get_calendar():
     user = request.args.get('user')
     password = request.args.get('password')
     week = request.args.get('week')
+    wants_text = (request.content_type == 'application/text')
 
     # Default to current week if not specified.
     if not week:
@@ -85,25 +87,44 @@ def get_calendar():
         return google_resp.content, google_resp.status_code
 
     # On success, load json content so that we can parse it.
-    google_blob = json.loads(google_resp.content)
+    calendar_blob = json.loads(google_resp.content)
 
-    # Prepare our response from the data returned.
-    resp = {}
-    events = []
+    # If 'application/text' was requested, we reply with a simple tsv file
+    if wants_text:
+        resp = ""
+        
+        for item in calendar_blob['items']:
+            if item['kind'] == 'calendar#event':
+                start_time = dateutil.parser.parse(item['start']['dateTime'])
+                end_time = dateutil.parser.parse(item['end']['dateTime'])
+                resp += "{}    {}:{}    {}:{}    {}\n".format(
+                    start_time.weekday() - 1,       # we want this to be 0-indexed on Sunday, not Monday
+                    start_time.hour, start_time.minute,
+                    end_time.hour, end_time.minute,
+                    item['summary'])
+        
+        return resp
 
-    resp['name'] = google_blob['summary']
-    resp['description'] = google_blob['description']
+    # Otherwise, we respond with JSON
+    else:
+        # Prepare our response from the data returned.
+        resp = {}
+        events = []
 
-    # Iterate over events in the calendar, taking only the info we want.
-    for item in google_blob['items']:
-        if item['kind'] == 'calendar#event':
-            event = {'summary': item['summary'],
-                     'start': item['start'],
-                     'end': item['end']}
-            events.append(event)
+        resp['name'] = calendar_blob['summary']
+        resp['description'] = calendar_blob['description']
 
-    resp['events'] = events
-    return jsonify(resp)
+        # Iterate over events in the calendar, taking only the info we want.
+        for item in calendar_blob['items']:
+            if item['kind'] == 'calendar#event':
+                event = {'summary': item['summary'],
+                        'start': item['start'],
+                        'end': item['end']}
+                events.append(event)
+
+        resp['events'] = events
+        
+        return jsonify(resp)
 
 
 def get_prev_sunday():
@@ -116,4 +137,4 @@ def get_prev_sunday():
     return today - datetime.timedelta(offset)
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', debug=False)
+    app.run('0.0.0.0', debug=False, port=80)
