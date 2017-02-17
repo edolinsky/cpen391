@@ -1,3 +1,5 @@
+exercises/*/db/
+exercises/*/incremental_db/
 *.o
 *.elf
 *.map
@@ -11,7 +13,7 @@
 Makefile
 create-this-app
 cpen391_bsp/
-cpen391-reid/
 *.db_info
 *.rdr.flock
 *.qws
+*.idea
