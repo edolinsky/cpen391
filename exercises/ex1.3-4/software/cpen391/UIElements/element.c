@@ -36,8 +36,8 @@ void setElementAction(Element *e, void *action) {
 }
 
 void drawMe(Element *e) {
-	filledRectangle(e->x, e->y, e->x + e->width, e->y + e->height,
-			e->elementColour);
+	filledRectangleWithBorder(e->x, e->y, e->x + e->width, e->y + e->height,
+			e->elementColour, BLACK);
 
 	drawButtonText(e);
 }

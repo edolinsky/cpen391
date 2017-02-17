@@ -12,18 +12,15 @@
 #include "serial/graphics.h"
 #include "apps/calendar.h"
 #include "serial/colours.h"
-#include "UIElements/button.h"
 #include "modules/keyboard.h"
 #include "main.h"
-
-void type(char letter);
 
 int main(){
 
 	printf("Hello from Nios II!\n");
 
 	// set up the touch screen
-	initButtons();
+	initElements();
 	//initTouch();
 	drawKeyboard();
 
