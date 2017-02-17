@@ -18,20 +18,9 @@
 int main(){
 
 	printf("Hello from Nios II!\n");
-
-	// set up the touch screen
-	initElements();
 	initTouch();
+	drawMenu();
 
-	while (1) {
-		screenFill(BLUE);
-		usleep(1000000);
-		screenFill(RED);
-		usleep(1000000);
-
-	}
-
-	return 0;
 }
 
 

@@ -6,6 +6,7 @@ int charCount;
 
 char* keyboard() {
 	// init typing space
+	elementsCleanup();
 	pos.x = MARGIN;
 	pos.y = MARGIN;
 	charCount = 0;

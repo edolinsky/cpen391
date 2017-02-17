@@ -5,10 +5,11 @@
 #include "../UIElements/element.h"
 #include "../modules/keyboard.h"
 #include "mainmenu.h"
+#include "shopping.h"
 
 
 void drawTodo(void);
 void newEntry(void);
-void removeFromList(int j);
-void addToList(char *string);
+void removeFromTODOList(int j);
+void addToTODOList(char *string);
 

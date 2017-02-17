@@ -31,7 +31,6 @@
 #define DrawHLine 1
 #define DrawVLine 2
 #define DrawLine 3
-#define FillScreen 4
 #define PutAPixel 0xA
 #define GetAPixel 0xB
 #define ProgramPaletteColour 0x10

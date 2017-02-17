@@ -159,12 +159,15 @@ void initElements() {
  * need to call this function before exiting
  */
 void elementsCleanup() {
-	ElementNode *node = globalElementList->head;
-	while (node != NULL) {
-		ElementNode *next = node->next;
-		free(node);
-		node = next;
-	}
+    ElementNode *node = globalElementList->head;
+    while (node != NULL) {
+        ElementNode *next = node->next;
+        free(node->e);
+        free(node);
+        node = next;
+    }
+    globalElementList->head = NULL;
+    globalElementList->tail = NULL;
 }
 
 void listenToTouches() {

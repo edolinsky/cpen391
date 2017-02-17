@@ -1,42 +1,69 @@
 #include "mainmenu.h"
+#include <stdio.h>
+#include "../serial/touch.h"
+#include "../serial/graphics.h"
+#include "../serial/colours.h"
+#include "todo.h"
+#include "shopping.h"
+#include "../apps/calendar.h"
 
 void drawMenu(void){
 	int i;
 	char title[] = "Whiteboard";
+	char firstline[] = "Welcome to";
 	char calendarName[] = "Calendar";
-	char todoName[] = "Todo";
-	char shoppingName[] = "Shopping";
-	// 800-480
+	char todoName[] = "Todo List";
+	char shoppingName[] = "Shopping Lists";
 
 	// Shade out the background
-	for(i = 0; i < 479; i ++){
+	for(i = 0; i < 480; i ++){
 		//HLine(int x1, int y1, int length, int Colour)
-		HLine(0, i, 799, WHITE);
+		HLine(0, i, 800, GRAY);
 	}
 
 	// Write title
 	for(i = 0; i < 10; i++){
-		//OutGraphicsCharFont2a(int x, int y, int colour, int backgroundcolour, int c, int Erase);
-		// This is not right spacing or placement (using 10x14)
-		OutGraphicsCharFont2a(360+i*8, 75, BLACK, WHITE, title[i], 0);
+		OutGraphicsCharFont2a(350+i*10, 75, BLACK, WHITE, title[i], 0);
+	}
+
+	// Write title
+	for(i = 0; i < 10; i++){
+		OutGraphicsCharFont2a(350+i*10, 50, BLACK, WHITE, firstline[i], 0);
 	}
 
 	initElements();
 
 	// Create three buttons
-	//createButton(int x, int y, int width, int height, int colour)
-	// Not in the right place
-	//Button *calendarButton = createButton(300, 200, 200, 100, BLUE);
-	Element *todoButton = createElement(300, 300, 200, 100, BLUE);
-	//Button *shoppingButton = createButton(300, 400, 200, 100, BLUE);
+	Element *calendarButton = 	createElement(100, 100, 600, 100, DIM_GRAY);
+	Element *todoButton = 		createElement(100, 225, 600, 100, DIM_GRAY);
+	Element *shoppingButton = 	createElement(100, 350, 600, 100, DIM_GRAY);
 
 	// Set actions
-	//setButtonAction(calendarButton, void* action); 	// draw calendar gui
-//	setElementAction(todoButton, &drawTodo); 		// draw todo gui
-	//setButtonAction(shoppingButton, void* action);	// draw shopping gui
+	setElementAction(calendarButton, &displayCalendar);
+	setElementAction(todoButton, &drawTodo);
+	setElementAction(shoppingButton, &drawShopping);
 
 	// Draw buttons
+	addElementToList(calendarButton);
+	addElementToList(todoButton);
+	addElementToList(shoppingButton);
+
 	refresh();
+
+	// Write calendar title
+	for(i = 0; i < 8; i++){
+		OutGraphicsCharFont2a(360+i*10, 150, WHITE, WHITE, calendarName[i], 0);
+	}
+
+	// Write to do title
+	for(i = 0; i < 9; i++){
+		OutGraphicsCharFont2a(360+i*10, 275, WHITE, WHITE, todoName[i], 0);
+	}
+
+	// Write shopping title
+	for(i = 0; i < 14; i++){
+		OutGraphicsCharFont2a(330+i*10, 400, WHITE, WHITE, shoppingName[i], 0);
+	}
 
 	listenToTouches();
 }

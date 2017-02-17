@@ -41,7 +41,7 @@ typedef struct element{
 
 typedef struct elementNode{
 	Element *e;
-	Element *next;
+	struct elementNode *next;
 }ElementNode;
 
 typedef struct elementList{

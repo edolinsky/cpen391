@@ -1,9 +1,10 @@
 #include "todo.h"
+#include "../serial/graphics.h"
 
 char *todoList[30];
 
 void drawTodo(void){
-	char title[] = "Shopping List";
+	char title[] = "To-do List";
 	char add[] = "add event";
 	char back[] = "back";
 	int listStart = 100;
@@ -12,25 +13,35 @@ void drawTodo(void){
 	int i;
 	for(i = 0; i < 479; i ++){
 		//HLine(int x1, int y1, int length, int Colour)
-		HLine(0, i, 799, WHITE);
+		HLine(0, i, 799, GRAY);
 	}
 
 	// Write title
 	for(i = 0; i < 10; i++){
 		//OutGraphicsCharFont2a(int x, int y, int colour, int backgroundcolour, int c, int Erase);
 		// This is not right spacing or placement (using 10x14)
-		OutGraphicsCharFont2a(344+i*8, 75, BLACK, WHITE, title[i], 0);
+		OutGraphicsCharFont2a(350+i*10, 75, BLACK, WHITE, title[i], 0);
 	}
 
 	initElements();
 
 	// Create back button
-	Element *backButton = createElement(0, 0, 100, 50, RED);
+	Element *backButton = createElement(0, 0, 100, 50, DIM_GRAY);
 	setElementAction(backButton, &drawMenu);
+	addElementToList(backButton);
 
 	// Create add button
-	Element *addButton = createElement(700, 0, 100, 50, RED);
-	setElementAction(addButton, &newEntry); // have to make an add to list feature
+	Element *addButton = createElement(700, 0, 100, 50, DIM_GRAY);
+	setElementAction(addButton, &newEntry);
+	addElementToList(addButton);
+
+	Element *prevButton = createElement(750, 110, 50, 50, DIM_GRAY);
+	setElementAction(prevButton, &newEntry);
+	addElementToList(prevButton);
+
+	Element *nextButton = createElement(750, 430, 50, 50, DIM_GRAY);
+	setElementAction(nextButton, &newEntry);
+	addElementToList(nextButton);
 
 	refresh();
 
@@ -48,6 +59,7 @@ void drawTodo(void){
 		OutGraphicsCharFont2a(25+i*8, 25, BLACK, RED, back[i], 0);
 	}
 
+	/*
 	// TODO: CODE TO WRITE OUT LIST GOES HERE
 	// each item needs a button, printed + wrapped string,
 	int lines = 0;
@@ -73,9 +85,10 @@ void drawTodo(void){
 			lines++;
 		}
 	}
+	*/
 
 	// TODO: add next page button so we can see the
-
+	drawArrows();
 	// Listen to touch screen
 	listenToTouches();
 }
@@ -96,7 +109,7 @@ void newEntry(void){
 
 	//assuming I can just draw over the drawn keyboard
 	Element *submitButton = createElement(7000, 0, 100, 50, RED);
-	setElementAction(submitButton, &addToList); //need to pass argument, idk how
+	setElementAction(submitButton, &addToTODOList); //need to pass argument, idk how
 
 	refresh();
 
@@ -104,12 +117,12 @@ void newEntry(void){
 }
 
 // Remove element from the array, reprint the screen
-void removeFromList(int j){
+void removeFromTODOList(int j){
 	todoList[j] = NULL;
 	drawTodo();
 }
 
-void addToList(char *string){
+void addToTODOList(char *string){
 	int i;
 
 	// put the string in first available spot in the array

@@ -5,9 +5,14 @@
 #include "../UIElements/element.h"
 #include "mainmenu.h"
 
+#define MAX 30
+#define numItems 6
+
 void drawShopping(void);
-void newEntry(void);
-void removeFromList(int j);
-void addToList(char *string);
+void newItem(void);
+void addToShoppingList(char *string);
+void removeFromShoppingList(int j);
 void drawCheckbox(int x, int y);
 void drawArrows(void);
+void nextPage(void);
+void previousPage(void);
