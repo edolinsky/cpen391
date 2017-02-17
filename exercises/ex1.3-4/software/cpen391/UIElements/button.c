@@ -5,6 +5,11 @@
  *      Author: omar
  */
 #include "button.h"
+#include "../main.h"
+#include "../serial/graphics.h"
+#include "../fonts/fonts.h"
+#include "../serial/colours.h"
+#include <math.h>
 
 Button* createButton(int x, int y, int width, int height, int colour) {
 	Button *bt = malloc(sizeof(Button));
@@ -20,17 +25,21 @@ void* setButtonTitle(Button *bt, char* title) {
 
 }
 
+void setButtonCharacter(Button *bt, char letter) {
+	bt->character = letter;
+}
+
 void* setButtonAction(Button *bt, void* action) {
 	bt->action = action;
 }
 
 void drawButton(Button *bt) {
 	int x, y;
-	for (x = bt->x; x <= bt->x + bt->width; x++) {
-		for (y = bt->y; y <= bt->y + bt->height; y++) {
-			WriteAPixel(x, y, bt->buttonColour);
-		}
+	for (y = bt->y; y <= bt->y + bt->height; y++) {
+		HLine(bt->x, y, bt->width, bt->buttonColour);
 	}
+	OutGraphicsCharFont2a(bt->x + bt->width / 2 - 5, bt->y + bt->height / 2 - 5,
+			WHITE, WHITE, bt->character, FALSE);
 
 	// add the button to the global list so it can respond to touches
 	ButtonNode *newNode = malloc(sizeof(ButtonNode));
@@ -46,7 +55,7 @@ void drawButton(Button *bt) {
 }
 
 void destroyButton(Button *bt) {
-	// do something to un-draw the button
+	// do something to un-draw the button?
 	free(bt);
 }
 
@@ -74,23 +83,19 @@ void buttonsCleanup() {
 void listenToTouches() {
 
 	Point p;
-listen:
+	listen: getPress();
 	p = getRelease();
 	ButtonNode *node = globalButtonList->head;
-	printf("%d, %d\n", p.x, p.y);
 
 	while (node != NULL) {
 		Button *bt = node->bt;
 		// check if the touch is within this buttons bounds
 		if (p.x > bt->x && p.x < (bt->x + bt->width) && p.y > bt->y
 				&& p.y < (bt->y + bt->height)) {
-			(*(bt->action))();
-			printf("Ha!");
+			(*(bt->action))(bt->character);
 			break;
 		}
 		node = node->next;
-		printf("Hello?");
-
 	}
 
 	goto listen;

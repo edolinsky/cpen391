@@ -7,6 +7,7 @@
 
 #include "../serial/graphics.h"
 #include "../main.h"
+#include "../serial/colours.h"
 #include "../fonts/fonts.h"
 #include "calendar.h"
 

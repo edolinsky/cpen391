@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "colours.h"
 #include "graphics.h"
 #include "../main.h"
 

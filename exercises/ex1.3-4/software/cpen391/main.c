@@ -11,25 +11,28 @@
 #include "serial/touch.h"
 #include "serial/graphics.h"
 #include "apps/calendar.h"
+#include "serial/colours.h"
+#include "UIElements/button.h"
+#include "modules/keyboard.h"
+#include "main.h"
 
-int main() {
+void type(char letter);
+
+int main(){
+
 	printf("Hello from Nios II!\n");
 
-	//initBluetooth();
+	// set up the touch screen
+	initButtons();
+	//initTouch();
+	drawKeyboard();
 
-	/*// use to test touch screen
-	 initTouch();
-	 Point p;
-	 while (1) {
-	 p = getPress();
-	 printf("press %d, %d\n", p.x, p.y);
-	 p = getRelease();
-	 printf("release %d, %d\n", p.x, p.y);
-	 }
-	 */
-	displayCalendar();
-
+	printf("Done");
+	return 0;
 }
+
+
+
 
 int getChar(volatile unsigned char* status, volatile unsigned char* rx) {
 	while (!(*status & 0x1))
@@ -66,5 +69,4 @@ int sign(int num) {
 		return 0;
 	}
 }
-
 
