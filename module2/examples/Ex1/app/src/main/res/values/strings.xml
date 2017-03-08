@@ -6,4 +6,5 @@
     <string name="hint_split">Split Between</string>
 
     <string name="button_calculate">Calculate</string>
+    <string name="error_divide_by_zero">Cannot split between zero people!</string>
 </resources>
