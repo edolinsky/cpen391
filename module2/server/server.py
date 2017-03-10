@@ -1,49 +1,60 @@
 import flask
-import flask_login
 import os
 
+from flask import request, jsonify
 from user import User
 
 app = flask.Flask(__name__)
-app.secret_key = os.environ['secret_key']
 
-login_manager = flask_login.LoginManager()
-login_manager.init_app(app)
-
-db_user = os.environ['db_user']
-db_passwd = os.environ['db_passwd']
-db_host = os.environ['db_host']
-db_port = os.environ['db_port']
-db_database = os.environ['db']
+OK = 200
+UNAUTHORIZED = 401
+NOT_FOUND = 404
 
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET'])
 def login():
-    if flask.request.method == 'GET':
-        return '''
-               <form action='login' method='POST'>
-                <input type='text' name='email' id='email' placeholder='email'></input>
-                <input type='password' name='pw' id='pw' placeholder='password'></input>
-                <input type='submit' name='submit'></input>
-               </form>
-               '''
+    user_name = request.args['user']
+    passwd = request.args['password']
 
-    user = User(flask.request.form['email'])
+    user = User(email=user_name)
 
-    if flask.request.form['pw'] == user.is_valid(flask.request.form['pw']):
-        flask_login.login_user(user)
-        return flask.redirect(flask.url_for('protected'))
+    # Validate user/password combination against that in database.
+    if user.is_valid(passwd=passwd):
+
+        # If successful, get user affinity from database.
+        affinity = user.get_affinity()
+        response = jsonify({'user': user_name, 'affinity': affinity})
+        return response, OK
+    else:
+
+        # If unsuccessful, send error message to user.
+        response = jsonify({'user': user_name,
+                            'error': 'User not authorized'})
+        return response, UNAUTHORIZED
 
 
-def logout():
-    flask_login.logout_user()
-    return 'logged out'
+@app.route('/order', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def order():
+    # todo: implement
+
+    # GET -> get order (select)
+    # POST -> place order (insert)
+    # PUT -> update order (insert/update)
+    # DELETE -> cancel order (delete)
+    pass
 
 
 @app.route('/hello')
 def hello_world():
-    return 'Hello World!'
+    return jsonify({'message': 'Hello World!'}), OK
 
 
 if __name__ == '__main__':
+    app.secret_key = os.environ['secret_key']
+    db_user = os.environ['db_user']
+    db_passwd = os.environ['db_passwd']
+    db_host = os.environ['db_host']
+    db_port = os.environ['db_port']
+    db_database = os.environ['db']
+
     app.run()
