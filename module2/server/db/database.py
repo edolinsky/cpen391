@@ -22,6 +22,8 @@ class Database:
                                         host=self.host,
                                         db=self.db,
                                         port=self.port)
+
+            self.cursor = self.conn.cursor
         except MySQLdb.Error:
             print "DB Connection failed."
 
