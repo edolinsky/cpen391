@@ -34,7 +34,7 @@ public class TipCalculator extends AppCompatActivity {
 
         // Parse bill amount.
         Double billAmount;
-        EditText billInput = (EditText) findViewById(R.id.billAmount);
+        EditText billInput = (EditText) findViewById(R.id.billAmount_text);
         try {
             billAmount = Double.parseDouble(billInput.getText().toString());
         } catch (NullPointerException | NumberFormatException ne) {
@@ -43,7 +43,7 @@ public class TipCalculator extends AppCompatActivity {
 
         // Parse tip amount.
         Double tipAmount;
-        EditText tipInput = (EditText) findViewById(R.id.tipPercentage);
+        EditText tipInput = (EditText) findViewById(R.id.tipPercentage_text);
         try {
             tipAmount = Double.parseDouble(tipInput.getText().toString());
         } catch (NullPointerException | NumberFormatException ne) {
@@ -52,7 +52,7 @@ public class TipCalculator extends AppCompatActivity {
 
         // Parse number of people to split bill.
         Long splitFactor;
-        EditText splitInput = (EditText) findViewById(R.id.splitBill);
+        EditText splitInput = (EditText) findViewById(R.id.splitBill_text);
         try {
             splitFactor = Long.parseLong(splitInput.getText().toString());
         } catch (NullPointerException | NumberFormatException ne ) {
