@@ -1,17 +1,17 @@
 import uuid
 
-import server
+import db
 from db.user_db import UserDb
 
 
 class User:
     def __init__(self, email):
         self.email = email
-        self.db = UserDb(user=server.db_user,
-                         passwd=server.db_passwd,
-                         host=server.db_host,
-                         db=server.db_database,
-                         port=server.db_port)
+        self.db = UserDb(user=db.db_user,
+                         passwd=db.db_passwd,
+                         host=db.db_host,
+                         db=db.db_database,
+                         port=db.db_port)
 
     def is_valid(self, passwd):
 
@@ -28,7 +28,10 @@ class User:
         return self.db.user_exists(email=self.email)
 
     def create(self, password, affinity='', restaurant_id=''):
-        user_id = generate_id()
+        user_id = self.generate_id()
+
+        if not affinity:
+            affinity = 'customer'
 
         self.db.create_user(user_id=user_id,
                             email=self.email,
@@ -36,6 +39,6 @@ class User:
                             affinity=affinity,
                             restaurant_id=restaurant_id)
 
-
-def generate_id():
-    return uuid.uuid4()[:-10]
+    @staticmethod
+    def generate_id():
+        return uuid.uuid4()[:-10]

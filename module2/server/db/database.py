@@ -2,7 +2,7 @@ import MySQLdb
 
 
 class Database:
-    def __init__(self, user, passwd, host, db, port='3306'):
+    def __init__(self, user, passwd, host, db, port=3306):
         self.user = user
         self.passwd = passwd
         self.host = host
@@ -18,7 +18,7 @@ class Database:
         """
         try:
             self.conn = MySQLdb.connect(user=self.user,
-                                        password=self.passwd,
+                                        passwd=self.passwd,
                                         host=self.host,
                                         db=self.db,
                                         port=self.port)

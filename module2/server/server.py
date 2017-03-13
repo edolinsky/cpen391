@@ -3,6 +3,7 @@ import os
 
 from flask import request, jsonify
 from user import User
+from menu import Menu
 from restaurant import Restaurant
 
 app = flask.Flask(__name__)
@@ -10,13 +11,14 @@ app = flask.Flask(__name__)
 OK = 200
 CREATED = 201
 
+BAD_REQUEST = 400
 UNAUTHORIZED = 401
 FORBIDDEN = 403
 NOT_FOUND = 404
 
 
 @app.route('/login', methods=['GET', 'POST'])
-def login():
+def login_endpoint():
     user_email = request.args['user']
     passwd = request.args['password']
     affinity = request.args['affinity']
@@ -26,12 +28,12 @@ def login():
 
     # Ensure that email and password are specified.
     if not user_email:
-        response = jsonify({'error': 'Email required.'})
-        return response, UNAUTHORIZED
+        response = jsonify({'error': 'Email not specified.'})
+        return response, BAD_REQUEST
 
     if not passwd:
-        response = jsonify({'error': 'Password required.'})
-        return response, UNAUTHORIZED
+        response = jsonify({'error': 'Password not specified.'})
+        return response, BAD_REQUEST
 
     # GET: User login
     if request.method == 'GET':
@@ -53,7 +55,7 @@ def login():
 
         # Do not allow a user to be created if email already exists
         if user.exists():
-            response = jsonify({'user':user_email,
+            response = jsonify({'user': user_email,
                                 'error': 'User already exists.'})
             return jsonify(response), FORBIDDEN
 
@@ -65,21 +67,58 @@ def login():
                 else:
                     response = jsonify({'user': user_email,
                                         'restaurant_id': restaurant_id,
-                                        'error': 'Specified Restaurant does not exist.'})
+                                        'error': 'Specified restaurant does not exist.'})
                     return response, NOT_FOUND
             else:
                 # Create customer account
                 if not affinity:
                     affinity = 'customer'
+                user.create(password=passwd, affinity=affinity)
 
 
 @app.route('/menu', methods=['GET'])
-def menu():
-    pass
+def menu_endpoint():
+    restaurant_id = request.args['restaurant_id']
+    item_type = request.args['item_type']
+    item_types = ['drink', 'alcoholic', 'appetizer', 'entree', 'dessert', 'merchandise']
+
+    if not restaurant_id:
+        response = jsonify({'error': 'Restaurant ID not specified.'})
+        return response, BAD_REQUEST
+
+    restaurant = Restaurant(restaurant_id)
+    menu = Menu(restaurant_id=restaurant_id)
+
+    # Restaurant must exist to retrieve menu.
+    if not restaurant.exists():
+        response = jsonify({'restaurant_id': restaurant_id,
+                            'error': 'Specified restaurant does not exist.'})
+        return response, BAD_REQUEST
+
+    # Item type is specified; get menu items matching that type.
+    elif item_type:
+
+        # Specified item type exists.
+        if item_type in item_types:
+            submenu = menu.get_submenu(item_type=item_type)
+            return submenu, OK
+
+        # Specified item type does not exist.
+        else:
+            response = jsonify({'restaurant_id': restaurant_id,
+                                'item_type': item_type,
+                                'error': 'Invalid item type.',
+                                'valid_types': item_types})
+            return response, BAD_REQUEST
+
+    # Item type is not specified; get all menu items.
+    else:
+        full_menu = menu.get_menu()
+        return full_menu, OK
 
 
 @app.route('/order', methods=['GET', 'POST', 'PUT', 'DELETE'])
-def order():
+def order_endpoint():
     # todo: implement
 
     if request.method == 'GET':
@@ -106,10 +145,4 @@ def hello_world():
 
 if __name__ == '__main__':
     app.secret_key = os.environ['secret_key']
-    db_user = os.environ['db_user']
-    db_passwd = os.environ['db_passwd']
-    db_host = os.environ['db_host']
-    db_port = os.environ['db_port']
-    db_database = os.environ['db']
-
     app.run()

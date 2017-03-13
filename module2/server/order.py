@@ -18,6 +18,6 @@ class Order:
     def cancel_order(self):
         pass
 
-
-def generate_id():
-    return uuid.uuid4()[-10:]
+    @staticmethod
+    def generate_id():
+        return uuid.uuid4()[-10:]

@@ -3,7 +3,7 @@ from database import Database
 
 
 class UserDb(Database):
-    def __init__(self, user, passwd, host, db, port='3306'):
+    def __init__(self, user, passwd, host, db, port=3306):
         Database.__init__(self,
                           user=user,
                           passwd=passwd,
@@ -43,6 +43,7 @@ class UserDb(Database):
         :return:
         """
         self.connect()
+        self.cursor = self.conn.cursor()
 
         user_affinity = ''
         query = "SELECT affinity FROM user WHERE EMAIL = '{}';".format(email)
@@ -62,6 +63,7 @@ class UserDb(Database):
         :return:
         """
         self.connect()
+        self.cursor = self.conn.cursor()
         exists = '0'
 
         query = "SELECT EXISTS(SELECT * FROM user where EMAIL = '{}')AS USER_EXISTS;".format(email)
@@ -77,7 +79,7 @@ class UserDb(Database):
         else:
             return False
 
-    def create_user(self, user_id, email, password, affinity='', restaurant_id=''):
+    def create_user(self, user_id, email, password, affinity, restaurant_id=''):
         """
         Creates a new user with the given parameters. This assumes that steps have been taken to
         ensure that the user does not already exist, and that the restaurant_id exists.
@@ -88,8 +90,6 @@ class UserDb(Database):
         :param restaurant_id:
         :return:
         """
-        if not affinity:
-            affinity = 'customer'
 
         # Create the user
         query = "INSERT INTO user (id, email, password, affinity) VALUES ('{}', '{}', '{}', '{}');".format(
