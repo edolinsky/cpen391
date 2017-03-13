@@ -5,6 +5,21 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="ky.dolins.ex1.TipCalculator">
 
+    <view
+        class="ky.dolins.ex1.CustomPieChart"
+        android:id="@+id/pieChart"
+        android:layout_width="215dp"
+        android:layout_height="244dp"
+        app:layout_constraintRight_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/calculate"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteY="259dp"
+        tools:layout_editor_absoluteX="169dp"
+        android:layout_marginRight="-384dp" />
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/billAmount"
         android:layout_width="wrap_content"
@@ -16,7 +31,9 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="32dp"
         app:layout_constraintHorizontal_bias="0.503"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
 
         <EditText
             android:id="@+id/billAmount_text"
@@ -38,7 +55,9 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.503">
+        app:layout_constraintHorizontal_bias="0.503"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
 
         <EditText
             android:id="@+id/tipPercentage_text"
@@ -61,7 +80,9 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintHorizontal_bias="0.503">
+        app:layout_constraintHorizontal_bias="0.503"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp">
 
         <EditText
             android:id="@+id/splitBill_text"
@@ -77,35 +98,67 @@
 
     <Button
         android:id="@+id/calculate"
-        android:layout_width="123dp"
-        android:layout_height="56dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:onClick="Calculate"
         android:text="@string/button_calculate"
-        android:layout_marginRight="16dp"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/splitBill"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <LinearLayout
+        android:layout_width="124dp"
+        android:layout_height="247dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="@+id/pieChart"
+        android:layout_marginTop="64dp"
+        app:layout_constraintRight_toLeftOf="@+id/pieChart"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
-        app:layout_constraintVertical_bias="0.568" />
+        android:layout_marginBottom="8dp"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginLeft="32dp"
+        app:layout_constraintVertical_bias="0.492">
 
-    <TextView
-        android:id="@+id/result"
-        android:layout_width="120dp"
-        android:layout_height="41dp"
-        android:layout_marginBottom="32dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="84dp"
-        android:layout_marginTop="8dp"
-        android:text="TextView"
-        android:textAlignment="center"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/calculate"
-        app:layout_constraintHorizontal_bias="0.707"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/splitBill"
-        app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/bill_display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/tip_display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/tax_display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/total_display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="" />
+
+        <TextView
+            android:id="@+id/grandtotal_display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:text="" />
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

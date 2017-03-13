@@ -1,6 +1,7 @@
 package ky.dolins.ex1;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,14 +9,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
 import java.util.Currency;
 import java.util.Locale;
 
 public class TipCalculator extends AppCompatActivity {
 
     private Double total = 0.00;
-    private TextView textView;
     private Locale locale;
+    private CustomPieChart pieChart;
+
+    private TextView billText;
+    private TextView tipText;
+    private TextView taxText;
+    private TextView totalText;
+    private TextView gtotalText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +32,12 @@ public class TipCalculator extends AppCompatActivity {
 
         locale = Locale.getDefault();
 
-        textView = (TextView) findViewById(R.id.result);
-        String totalString = Currency.getInstance(locale).getSymbol() +
-                String.format(locale, "%.2f", total);
-        textView.setText(totalString);
+        billText = (TextView) findViewById(R.id.bill_display);
+        tipText = (TextView) findViewById(R.id.tip_display);
+        taxText = (TextView) findViewById(R.id.tax_display);
+        totalText = (TextView) findViewById(R.id.total_display);
+        gtotalText = (TextView) findViewById(R.id.grandtotal_display);
+        pieChart = (CustomPieChart) findViewById(R.id.pieChart);
     }
 
     public void Calculate(View view) {
@@ -73,12 +83,38 @@ public class TipCalculator extends AppCompatActivity {
         }
 
         // Calculate value of bill per person, and round up to nearest cent
-        total = (billAmount * (1 + tipAmount / 100D)) / Double.valueOf(splitFactor);
+        double taxAmount = billAmount * 0.12;
+        total = ((billAmount * (1 + tipAmount / 100D)) + taxAmount)/ Double.valueOf(splitFactor);
         total = Math.ceil(total * 100D) / 100D;
 
+
+        BigDecimal billAmountD = new BigDecimal(billAmount/splitFactor);
+        BigDecimal taxAmountD = new BigDecimal(taxAmount/splitFactor);
+        BigDecimal tipAmountD = new BigDecimal((billAmount * (tipAmount / 100D)) / splitFactor);
+
         // Display the calculated amount to the user.
-        String totalString = Currency.getInstance(locale).getSymbol() +
+        String billString = "Bill: " + Currency.getInstance(locale).getSymbol() +
+                String.format(locale, "%.2f", billAmountD.floatValue());
+        String tipString = "Tip: " +  Currency.getInstance(locale).getSymbol() +
+                String.format(locale, "%.2f", tipAmountD.floatValue());
+        String taxString = "Tax: " + Currency.getInstance(locale).getSymbol() +
+                String.format(locale, "%.2f", taxAmountD.floatValue());
+        String totalString = "Total: " + Currency.getInstance(locale).getSymbol() +
                 String.format(locale, "%.2f", total);
-        textView.setText(totalString);
+        String gtotalString = "Grand Total: " + Currency.getInstance(locale).getSymbol() +
+                String.format(locale, "%.2f", total*splitFactor);
+        billText.setText(billString);
+        tipText.setText(tipString);
+        taxText.setText(taxString);
+        totalText.setText(totalString);
+        gtotalText.setText(gtotalString);
+
+        billText.setTextColor(Color.argb(255,50,200,70));
+        tipText.setTextColor(Color.BLUE);
+        taxText.setTextColor(Color.RED);
+
+        // display pie chart
+        pieChart.drawChart(new float[]{billAmountD.floatValue(), tipAmountD.floatValue(), taxAmountD.floatValue()});
+
     }
 }
