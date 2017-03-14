@@ -147,7 +147,7 @@ def menu_endpoint(item_type='', restaurant_id=''):
     elif item_type:
 
         # Specified item type exists.
-        if item_type in restaurant.db.item_types:
+        if item_type in menu.db.item_types:
             submenu = menu.get_submenu(item_type=item_type)
             if 'error' in submenu.keys():
                 return jsonify(submenu), SERVER_ERRROR

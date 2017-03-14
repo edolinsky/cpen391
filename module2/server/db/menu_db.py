@@ -3,6 +3,8 @@ from database import Database
 
 
 class MenuDb(Database):
+    item_types = ['drink', 'alcoholic', 'appetizer', 'entree', 'dessert', 'merchandise']
+
     def __init__(self, user, passwd, host, db, port='3306'):
         Database.__init__(self,
                           user=user,
@@ -27,7 +29,8 @@ class MenuDb(Database):
 
         menu_info = {'restaurant_id': restaurant_id}
 
-        query = "SELECT * FROM menu WHERE restaurant_id = '{}';".format(restaurant_id)
+        query = ("SELECT id, description, name, price, type "
+                 "FROM menu WHERE restaurant_id = '{}';").format(restaurant_id)
         try:
             self.cursor.execute(query)
             menu_items = self.cursor.fetchall()
@@ -52,7 +55,8 @@ class MenuDb(Database):
 
         menu_info = {'restaurant_id': restaurant_id}
 
-        query = "SELECT * FROM menu WHERE restaurant_id = '{}' AND type = '{}';".format(restaurant_id, item_type)
+        query = ("SELECT id, description, name, price, type FROM menu "
+                 "WHERE restaurant_id = '{}' AND type = '{}';").format(restaurant_id, item_type)
         try:
             self.cursor.execute(query)
             menu_items = self.cursor.fetchall()
