@@ -57,6 +57,44 @@ class UserDb(Database):
         self.close()
         return user_affinity
 
+    def get_id(self, email):
+        """
+        Retrieve a user's ID given their unique email address.
+        :param email:
+        :return:
+        """
+        self.connect()
+
+        user_id = ''
+        query = "SELECT id FROM user WHERE EMAIL = '{}';".format(email)
+        try:
+            self.cursor.execute(query)
+            user_id = self.cursor.fetchone()['id']
+        except MySQLdb.Error:
+            print "Error: Unable to fetch data."
+
+        self.close()
+        return user_id
+
+    def get_email(self, user_id):
+        """
+        Retrieve a user's email address given a unique user ID.
+        :param user_id:
+        :return:
+        """
+        self.connect()
+
+        user_email = ''
+        query = "SELECT email FROM user WHERE id = '{}';".format(user_id)
+        try:
+            self.cursor.execute(query)
+            user_email = self.cursor.fetchone()['email']
+        except MySQLdb.Error:
+            print "Error: Unable to fetch data."
+
+        self.close()
+        return user_email
+
     def user_exists(self, email):
         """
         Checks database to determine whether the user exists

@@ -14,3 +14,6 @@ class Restaurant:
 
     def exists(self):
         return self.db.restaurant_exists(self.restaurant_id)
+
+    def get_open_orders(self):
+        pass

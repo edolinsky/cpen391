@@ -3,6 +3,8 @@ from database import Database
 
 
 class RestaurantDb(Database):
+    item_types = ['drink', 'alcoholic', 'appetizer', 'entree', 'dessert', 'merchandise']
+
     def __init__(self, user, passwd, host, db, port=3306):
         Database.__init__(self,
                           user=user,
@@ -21,6 +23,8 @@ class RestaurantDb(Database):
         pass
 
     def insert_restaurant(self, name):
+        # insert in restaurant table
+        # create table with name 'restaurant_id'
         pass
 
     def restaurant_exists(self, restaurant_id):
@@ -43,5 +47,5 @@ class RestaurantDb(Database):
         else:
             return False
 
-    def get_all_open_orders(self, restaurant_id):
+    def select_all_open_orders(self, restaurant_id):
         pass

@@ -5,6 +5,7 @@ from flask import request, jsonify
 from user import User
 from menu import Menu
 from restaurant import Restaurant
+from order import Order
 
 app = flask.Flask(__name__)
 
@@ -20,84 +21,114 @@ TEAPOT = 418
 SERVER_ERRROR = 500
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login_endpoint(user_email='', passwd='', affinity='', restaurant_id=''):
-    user_email = request.args.get('user', user_email)
-    passwd = request.args.get('password', passwd)
-    affinity = request.args.get('affinity', affinity)
-    restaurant_id = request.args.get('restaurant_id', restaurant_id)
-
-    user = User(email=user_email)
-
-    # Ensure that email and password are specified.
-    if not user_email:
+@app.route('/login', methods=['POST'])
+def login_endpoint():
+    request_body = request.get_json()
+    if 'user' in request_body:
+        user_email = request_body['user']
+    else:
         response = jsonify({'error': 'Email not specified.'})
         return response, BAD_REQUEST
 
-    if not passwd:
+    if 'password' in request_body:
+        passwd = request_body['password']
+    else:
         response = jsonify({'error': 'Password not specified.'})
         return response, BAD_REQUEST
 
-    # GET: User login
-    if request.method == 'GET':
-        # Validate user/password combination against that in database.
-        if user.is_valid(passwd=passwd):
+    user = User(email=user_email)
 
-            # If successful, get user affinity from database.
-            affinity = user.get_affinity()
-            response = jsonify({'user': user_email, 'affinity': affinity})
+    # Validate user/password combination against that in database.
+    if user.exists() and user.is_valid(passwd=passwd):
+
+        # If successful, get user affinity and id from database.
+        affinity = user.get_affinity()
+        user_id = user.get_id()
+
+        if not affinity or not user_id:
+            response = jsonify({'error': 'Unable to fetch user information.',
+                                'user': user_email})
+            return response, SERVER_ERRROR
+        else:
+            response = jsonify({'user': user_email, 'affinity': affinity, 'id': user_id})
             return response, OK
-        else:
-            # If unsuccessful, send error message to user.
+    else:
+        # If unsuccessful, send error message to user.
+        response = jsonify({'user': user_email,
+                            'error': 'User not authorized'})
+        return response, UNAUTHORIZED
+
+
+@app.route('/signup', methods=['POST'])
+def signup_endpoint():
+
+    # Parse request body and throw errors if required fields are not included.
+    request_body = request.get_json()
+    if 'affinity' in request_body:
+        affinity = request_body['affinity']
+    else:
+        affinity = 'customer'
+
+    if 'user' in request_body:
+        user_email = request_body['user']
+    else:
+        response = jsonify({'error': 'Email not specified.'})
+        return response, BAD_REQUEST
+
+    if 'password' in request_body:
+        passwd = request_body['password']
+    else:
+        response = jsonify({'error': 'Password not specified.'})
+        return response, BAD_REQUEST
+
+    user = User(email=user_email)
+
+    # Do not allow a user to be created if email already exists
+    if user.exists():
+        response = jsonify({'user': user_email,
+                            'error': 'User already exists.'})
+        return response, FORBIDDEN
+
+    # Create staff user.
+    elif affinity == 'staff':
+        try:
+            restaurant_id = request_body['restaurant_id']
+        except KeyError:
             response = jsonify({'user': user_email,
-                                'error': 'User not authorized'})
-            return response, UNAUTHORIZED
+                                'affinity': affinity,
+                                'error': 'Restaurant ID is required to sign up as {}.'.format(affinity)})
+            return response, 400
 
-    # POST: User sign up
-    if request.method == 'POST':
+        restaurant = Restaurant(restaurant_id)
 
-        # Do not allow a user to be created if email already exists
-        if user.exists():
-            response = jsonify({'user': user_email,
-                                'error': 'User already exists.'})
-            return response, FORBIDDEN
-
-        # Create staff user.
-        elif affinity == 'staff':
-            restaurant = Restaurant(restaurant_id)
-
-            # Restaurant exists: create user under restaurant
-            if restaurant_id and restaurant.exists():
-                user_info = user.create(password=passwd, restaurant_id=restaurant_id, affinity=affinity)
-                if 'error' in user_info.keys():
-                    return jsonify(user_info), SERVER_ERRROR
-                else:
-                    return jsonify(user_info), CREATED
-
-            else:
-                response = jsonify({'user': user_email,
-                                    'restaurant_id': restaurant_id,
-                                    'error': 'Specified restaurant does not exist.'})
-                return response, NOT_FOUND
-
-        # Create customer user.
-        else:
-            # Create customer account
-            if not affinity:
-                affinity = 'customer'
-            user_info = user.create(password=passwd, affinity=affinity)
-
+        # Restaurant exists: create user under restaurant
+        if restaurant_id and restaurant.exists():
+            user_info = user.create(password=passwd, restaurant_id=restaurant_id, affinity=affinity)
             if 'error' in user_info.keys():
                 return jsonify(user_info), SERVER_ERRROR
             else:
                 return jsonify(user_info), CREATED
+
+        else:
+            response = jsonify({'user': user_email,
+                                'restaurant_id': restaurant_id,
+                                'error': 'Specified restaurant does not exist.'})
+            return response, NOT_FOUND
+
+    # Create customer user.
+    else:
+        user_info = user.create(password=passwd, affinity=affinity)
+
+        if 'error' in user_info.keys():
+            return jsonify(user_info), SERVER_ERRROR
+        else:
+            return jsonify(user_info), CREATED
 
 
 @app.route('/menu', methods=['GET'])
 def menu_endpoint(item_type='', restaurant_id=''):
     restaurant_id = request.args.get('restaurant_id', restaurant_id)
     item_type = request.args.get('item_type', item_type)
-    item_types = ['drink', 'alcoholic', 'appetizer', 'entree', 'dessert', 'merchandise']
 
     if not restaurant_id:
         response = jsonify({'error': 'Restaurant ID not specified.'})
@@ -116,7 +147,7 @@ def menu_endpoint(item_type='', restaurant_id=''):
     elif item_type:
 
         # Specified item type exists.
-        if item_type in item_types:
+        if item_type in restaurant.db.item_types:
             submenu = menu.get_submenu(item_type=item_type)
             if 'error' in submenu.keys():
                 return jsonify(submenu), SERVER_ERRROR
@@ -128,7 +159,7 @@ def menu_endpoint(item_type='', restaurant_id=''):
             response = jsonify({'restaurant_id': restaurant_id,
                                 'item_type': item_type,
                                 'error': 'Invalid item type.',
-                                'valid_types': item_types})
+                                'valid_types': restaurant.db.item_types})
             return response, BAD_REQUEST
 
     # Item type is not specified; get all menu items.
@@ -142,15 +173,62 @@ def menu_endpoint(item_type='', restaurant_id=''):
 
 @app.route('/order', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def order_endpoint():
-    # todo: implement
+    order_request = flask.request.get_json()
+
+    if 'restaurant_id' in order_request:
+        restaurant_id = order_request['restaurant_id']
+    else:
+        order_request.update({'error': 'Restaurant ID is not specified.'})
+        return jsonify(order_request), BAD_REQUEST
+
+    if 'customer_id' in order_request:
+        customer_id = order_request['customer_id']
+    else:
+        order_request.update({'error': 'Customer ID is not specified.'})
+        return jsonify(order_request), BAD_REQUEST
+
+    if 'table_id' in order_request:
+        table_id = order_request['table_id']
+    else:
+        order_request.update({'error': 'Table ID is not specified.'})
+        return jsonify(order_request), BAD_REQUEST
+
+    # Restaurant must exist.
+    restaurant = Restaurant(restaurant_id=restaurant_id)
+    if not restaurant.exists():
+        order_request.update({'error': 'Specified restaurant does not exist.'})
+        return order_request, BAD_REQUEST
+
+    # Customer must exist.
+    user = User('')
+    user.get_email(customer_id)
+    if not user.exists():
+        order_request.update({'error': 'Specified customer does not exist.'})
+        return order_request, BAD_REQUEST
+
+    # Table must exist and be affiliated with the restaurant.
+    # todo: implement device class & corresponding DB
+
+    order = Order(customer_id=customer_id, restaurant_id=restaurant_id, table_id=table_id)
 
     if request.method == 'GET':
         # GET -> get order (select)
         pass
 
     if request.method == 'POST':
-        # POST -> place order (insert)
-        pass
+        if 'items' not in order_request:
+            order_request.update({'error': 'List of items is not specified.'})
+            return jsonify(order_request), BAD_REQUEST
+
+        elif len(order_request['items']) < 1:
+            order_request.update({'error': 'List of items is empty.'})
+            return jsonify(order_request), BAD_REQUEST
+
+        order_response = order.place_order(order_request)
+        if 'error' in order_response:
+            return jsonify(order_response), SERVER_ERRROR
+        else:
+            return jsonify(order_response), OK
 
     if request.method == 'PUT':
         # PUT -> update order (insert/update)
@@ -158,6 +236,7 @@ def order_endpoint():
 
     if request.method == 'DELETE':
         # DELETE -> cancel order (delete)
+        # Should only be done by staff
         pass
 
 

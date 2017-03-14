@@ -1,5 +1,3 @@
-import uuid
-
 import db
 from db.user_db import UserDb
 
@@ -21,14 +19,19 @@ class User:
             return False
 
     def get_affinity(self):
-
         return self.db.get_affinity(email=self.email)
+
+    def get_id(self):
+        return self.db.get_id(email=self.email)
+
+    def get_email(self, user_id):
+        self.email = self.db.get_email(user_id=user_id)
 
     def exists(self):
         return self.db.user_exists(email=self.email)
 
     def create(self, password, affinity='', restaurant_id=''):
-        user_id = self.generate_id()
+        user_id = self.db.generate_id()
 
         if not affinity:
             affinity = 'customer'
@@ -38,7 +41,3 @@ class User:
                                    password=password,
                                    affinity=affinity,
                                    restaurant_id=restaurant_id)
-
-    @staticmethod
-    def generate_id():
-        return str(uuid.uuid4().hex)[-10:]

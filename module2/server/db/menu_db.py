@@ -18,6 +18,11 @@ class MenuDb(Database):
         Database.connect(self)
 
     def get_menu(self, restaurant_id):
+        """
+        Retrieve all items in a restaurant's menu given the restaurant's ID.
+        :param restaurant_id: unique ID of a restaurant.
+        :return: Dictionary containing menu items, or an error message.
+        """
         self.connect()
 
         menu_info = {'restaurant_id': restaurant_id}
@@ -37,6 +42,12 @@ class MenuDb(Database):
         return menu_info
 
     def get_sub_menu(self, restaurant_id, item_type):
+        """
+        Retrieve all items in a restaurant's menu of the specified item type.
+        :param restaurant_id: unique ID of a restaurant.
+        :param item_type: Food item type, enum of one of the following:
+        :return:
+        """
         self.connect()
 
         menu_info = {'restaurant_id': restaurant_id}

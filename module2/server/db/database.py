@@ -1,5 +1,5 @@
 import MySQLdb
-
+import uuid
 
 class Database:
     def __init__(self, user, passwd, host, db, port=3306):
@@ -37,3 +37,7 @@ class Database:
 
         if self.conn:
             self.conn.close()
+
+    @staticmethod
+    def generate_id():
+        return str(uuid.uuid4().hex)[-10:]
