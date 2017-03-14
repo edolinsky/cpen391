@@ -3,16 +3,16 @@ import uuid
 
 class Order:
 
-    def __init__(self):
-        self.id = ''
+    def __init__(self, table_id):
+        self.table_id = table_id
 
-    def place_order(self):
+    def get_order(self, order_id):
         pass
 
-    def update_order(self):
+    def place_order(self, order):
         pass
 
-    def add_to_order(self):
+    def update_order(self, order):
         pass
 
     def cancel_order(self):
@@ -20,4 +20,4 @@ class Order:
 
     @staticmethod
     def generate_id():
-        return uuid.uuid4()[-10:]
+        return str(uuid.uuid4().hex)[-10:]

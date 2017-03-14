@@ -42,3 +42,6 @@ class RestaurantDb(Database):
             return True
         else:
             return False
+
+    def get_all_open_orders(self, restaurant_id):
+        pass
