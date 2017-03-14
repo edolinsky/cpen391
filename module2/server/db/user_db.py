@@ -1,4 +1,6 @@
 import MySQLdb
+from flask import jsonify
+
 from database import Database
 
 
@@ -26,10 +28,10 @@ class UserDb(Database):
         self.connect()
 
         user_pw = ''
-        query = "SELECT password FROM user WHERE EMAIL = '{}';".format(email)
+        query = "SELECT password FROM user WHERE email = '{}';".format(email)
         try:
             self.cursor.execute(query)
-            user_pw = self.cursor.fetchone()
+            user_pw = self.cursor.fetchone()['password']
         except MySQLdb.Error:
             print "Error: Unable to fetch data."
 
@@ -43,7 +45,6 @@ class UserDb(Database):
         :return:
         """
         self.connect()
-        self.cursor = self.conn.cursor()
 
         user_affinity = ''
         query = "SELECT affinity FROM user WHERE EMAIL = '{}';".format(email)
@@ -63,8 +64,7 @@ class UserDb(Database):
         :return:
         """
         self.connect()
-        self.cursor = self.conn.cursor()
-        exists = '0'
+        exists = 0
 
         query = "SELECT EXISTS(SELECT * FROM user where EMAIL = '{}')AS USER_EXISTS;".format(email)
         try:
@@ -74,7 +74,7 @@ class UserDb(Database):
             print "Error: Unable to fetch data."
         self.close()
 
-        if exists == '1':
+        if exists == 1:
             return True
         else:
             return False
@@ -91,6 +91,8 @@ class UserDb(Database):
         :return:
         """
 
+        user_info = {'email': email, 'affinity': affinity}
+
         # Create the user
         query = "INSERT INTO user (id, email, password, affinity) VALUES ('{}', '{}', '{}', '{}');".format(
             user_id, email, password, affinity
@@ -103,6 +105,9 @@ class UserDb(Database):
             self.conn.rollback()
             self.close()
 
+            user_info.update({'error': 'Failed to create user.'})
+            return user_info
+
         # If the user is staff, add the user-restaurant ID pair to the restaurant_staff table
         if affinity == 'staff':
             query = "INSERT INTO restaurant_staff (user_id, restaurant_id) VALUES ('{}', '{}');".format(
@@ -114,7 +119,14 @@ class UserDb(Database):
                 self.conn.rollback()
                 self.close()
 
+                user_info.update({'error': 'Failed to link user to restaurant.'})
+                return user_info
+            user_info.update({'restaurant_id': restaurant_id})
+
         self.conn.commit()
         self.close()
+
+        user_info.update({'id': user_id})
+        return user_info
 
 

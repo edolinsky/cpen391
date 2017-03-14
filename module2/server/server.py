@@ -15,14 +15,17 @@ BAD_REQUEST = 400
 UNAUTHORIZED = 401
 FORBIDDEN = 403
 NOT_FOUND = 404
+TEAPOT = 418
+
+SERVER_ERRROR = 500
 
 
 @app.route('/login', methods=['GET', 'POST'])
-def login_endpoint():
-    user_email = request.args['user']
-    passwd = request.args['password']
-    affinity = request.args['affinity']
-    restaurant_id = request.args['restaurant_id']
+def login_endpoint(user_email='', passwd='', affinity='', restaurant_id=''):
+    user_email = request.args.get('user', user_email)
+    passwd = request.args.get('password', passwd)
+    affinity = request.args.get('affinity', affinity)
+    restaurant_id = request.args.get('restaurant_id', restaurant_id)
 
     user = User(email=user_email)
 
@@ -57,23 +60,37 @@ def login_endpoint():
         if user.exists():
             response = jsonify({'user': user_email,
                                 'error': 'User already exists.'})
-            return jsonify(response), FORBIDDEN
+            return response, FORBIDDEN
 
-        else:
-            if affinity == 'staff':
-                restaurant = Restaurant(restaurant_id)
-                if restaurant_id and restaurant.exists():
-                    user.create(password=passwd, restaurant_id=restaurant_id, affinity=affinity)
+        # Create staff user.
+        elif affinity == 'staff':
+            restaurant = Restaurant(restaurant_id)
+
+            # Restaurant exists: create user under restaurant
+            if restaurant_id and restaurant.exists():
+                user_info = user.create(password=passwd, restaurant_id=restaurant_id, affinity=affinity)
+                if 'error' in user_info.keys():
+                    return jsonify(user_info), SERVER_ERRROR
                 else:
-                    response = jsonify({'user': user_email,
-                                        'restaurant_id': restaurant_id,
-                                        'error': 'Specified restaurant does not exist.'})
-                    return response, NOT_FOUND
+                    return jsonify(user_info), CREATED
+
             else:
-                # Create customer account
-                if not affinity:
-                    affinity = 'customer'
-                user.create(password=passwd, affinity=affinity)
+                response = jsonify({'user': user_email,
+                                    'restaurant_id': restaurant_id,
+                                    'error': 'Specified restaurant does not exist.'})
+                return response, NOT_FOUND
+
+        # Create customer user.
+        else:
+            # Create customer account
+            if not affinity:
+                affinity = 'customer'
+            user_info = user.create(password=passwd, affinity=affinity)
+
+            if 'error' in user_info.keys():
+                return jsonify(user_info), SERVER_ERRROR
+            else:
+                return jsonify(user_info), CREATED
 
 
 @app.route('/menu', methods=['GET'])
@@ -141,6 +158,11 @@ def order_endpoint():
 @app.route('/hello')
 def hello_world():
     return jsonify({'message': 'Hello World!'}), OK
+
+
+@app.route('/teapot')
+def teapot():
+    return jsonify({'type': 'teapot'}), TEAPOT
 
 
 if __name__ == '__main__':

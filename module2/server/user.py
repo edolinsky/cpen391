@@ -33,12 +33,12 @@ class User:
         if not affinity:
             affinity = 'customer'
 
-        self.db.create_user(user_id=user_id,
-                            email=self.email,
-                            password=password,
-                            affinity=affinity,
-                            restaurant_id=restaurant_id)
+        return self.db.create_user(user_id=user_id,
+                                   email=self.email,
+                                   password=password,
+                                   affinity=affinity,
+                                   restaurant_id=restaurant_id)
 
     @staticmethod
     def generate_id():
-        return uuid.uuid4()[:-10]
+        return str(uuid.uuid4().hex)[-10:]

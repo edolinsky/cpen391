@@ -25,8 +25,8 @@ class RestaurantDb(Database):
 
     def restaurant_exists(self, restaurant_id):
 
-        exists = '0'
-        query = "SELECT EXISTS(SELECT * FROM restaurants where restaurant_id = '{}')AS RESTAURANT_EXISTS;".format(
+        exists = 0
+        query = "SELECT EXISTS(SELECT * FROM restaurants where id = '{}')AS RESTAURANT_EXISTS;".format(
             restaurant_id
         )
 
@@ -38,7 +38,7 @@ class RestaurantDb(Database):
             print "Error: Unable to fetch data."
         self.close()
 
-        if exists == '1':
+        if exists == 1:
             return True
         else:
             return False

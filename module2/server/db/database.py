@@ -23,9 +23,9 @@ class Database:
                                         db=self.db,
                                         port=self.port)
 
-            self.cursor = self.conn.cursor
-        except MySQLdb.Error:
-            print "DB Connection failed."
+            self.cursor = self.conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+        except MySQLdb.Error as e:
+            print "DB Connection failed: {}".format(e)
 
     def close(self):
         """
