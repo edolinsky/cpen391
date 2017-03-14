@@ -94,9 +94,9 @@ def login_endpoint(user_email='', passwd='', affinity='', restaurant_id=''):
 
 
 @app.route('/menu', methods=['GET'])
-def menu_endpoint():
-    restaurant_id = request.args['restaurant_id']
-    item_type = request.args['item_type']
+def menu_endpoint(item_type='', restaurant_id=''):
+    restaurant_id = request.args.get('restaurant_id', restaurant_id)
+    item_type = request.args.get('item_type', item_type)
     item_types = ['drink', 'alcoholic', 'appetizer', 'entree', 'dessert', 'merchandise']
 
     if not restaurant_id:
@@ -118,7 +118,10 @@ def menu_endpoint():
         # Specified item type exists.
         if item_type in item_types:
             submenu = menu.get_submenu(item_type=item_type)
-            return submenu, OK
+            if 'error' in submenu.keys():
+                return jsonify(submenu), SERVER_ERRROR
+            else:
+                return jsonify(submenu), OK
 
         # Specified item type does not exist.
         else:
@@ -131,7 +134,10 @@ def menu_endpoint():
     # Item type is not specified; get all menu items.
     else:
         full_menu = menu.get_menu()
-        return full_menu, OK
+        if 'error' in full_menu.keys():
+            return jsonify(full_menu), SERVER_ERRROR
+        else:
+            return jsonify(full_menu), OK
 
 
 @app.route('/order', methods=['GET', 'POST', 'PUT', 'DELETE'])

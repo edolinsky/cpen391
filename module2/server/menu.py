@@ -12,7 +12,8 @@ class Menu:
                          port=db.db_port)
 
     def get_menu(self):
-        pass
+        return self.db.get_menu(restaurant_id=self.restaurant_id)
 
     def get_submenu(self, item_type):
-        pass
+        return self.db.get_sub_menu(restaurant_id=self.restaurant_id,
+                                    item_type=item_type)
