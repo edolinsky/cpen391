@@ -53,10 +53,25 @@ class OrderDb(Database):
 
         return order_info
 
-    def get_order(self, order_id):
-        # todo: implement
-        # "SELECT * FROM '{}' WHERE tableid and orderid, join menu"
-        pass
+    def get_order(self, restaurant_id, order_id):
+
+        query = ("SELECT ord.id,m.name, m.id as menu_id, m.price, m.description, m.type, ord.customer_name, ord.status "
+                 "from {} ord "
+                 "JOIN menu m ON m.id = ord.menu_id "
+                 "WHERE ord.order_id = '{}';").format(restaurant_id, order_id)
+
+        order_info = {'restaurant_id': restaurant_id, 'order_id': order_id}
+        self.connect()
+        try:
+            self.cursor.execute(query=query)
+            order_items = self.cursor.fetchall()
+            order_info.update({'items': order_items})
+        except MySQLdb.Error as e:
+            print "Unable to fetch data: {}".format(e)
+            order_info.update({'error': 'Unable to fetch order information.'})
+
+        self.close()
+        return order_info
 
     def update_order(self, restaurant_id, table_id, order_id, order):
         # todo: implement

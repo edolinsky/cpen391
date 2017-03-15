@@ -150,7 +150,7 @@ following properties:
 
 ## Order Endpoint
 `/order`
-Methods supported: `POST`
+Methods supported: `POST, GET`
 
 ### Order POST
 Request body:
@@ -211,6 +211,65 @@ of or modify the order.
   * `id`: unique ID of the order item
   * `status`: string denoting status of the item ordered, which will be set to
   _"placed"_, the first order item state.
+
+
+### Order GET
+_GET http:\/\/piquemedia.me/order?order_id=26a00ff96d&customer_id=test_user&restaurant_id=test_resto&table_id=test_table_
+
+Retrieves information about the specified order. `order_id`, `customer_id`, and `restaurant_id`
+are required fields. `table_id` will be a required field shortly (**not yet implemented**).
+
+Response on success:
+```json
+{
+  "items": [
+    {
+      "customer_name": "Erik", 
+      "description": "Yeah, we know you don't really like beer.", 
+      "id": "179a6f7f56", 
+      "menu_id": "HMw4vmcmqy", 
+      "name": "Corona", 
+      "price": 6.0, 
+      "status": "placed", 
+      "type": "alcoholic"
+    }, 
+    {
+      "customer_name": "Erik", 
+      "description": "Yeah, we know you don't really like beer.", 
+      "id": "937db81c0f", 
+      "menu_id": "HMw4vmcmqy", 
+      "name": "Corona", 
+      "price": 6.0, 
+      "status": "placed", 
+      "type": "alcoholic"
+    }, 
+    {
+      "customer_name": "Erik", 
+      "description": "The least healthy of the healthy options.", 
+      "id": "b5e1d81c47", 
+      "menu_id": "2rs7U6patW", 
+      "name": "Caesar Salad", 
+      "price": 99.5, 
+      "status": "placed", 
+      "type": "appetizer"
+    }
+  ], 
+  "order_id": "26a00ff96d", 
+  "restaurant_id": "test_resto"
+}
+```
+
+The response echoes the order and restaurant IDs, and includes a list of objects, each containing:
+    * `customer_name`: the name of the item recipent
+    * `description`: a description of the item ordered
+    * `id`: the unique item order ID
+    * `menu_id`: the ID corresponding to the item in the restaurant's menu
+    * `name`: the name of the item
+    * `price`: the price of the item
+    * `status`: the status of the ordered item
+    * `type`: the menu item type of the ordered item
+
+**Not yet implemented:** If `"Content-Type": "text/csv"` is set, the response will be in CSV format.
 
 ## Hello Endpoint
 `/hello`

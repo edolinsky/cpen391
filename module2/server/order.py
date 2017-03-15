@@ -15,8 +15,12 @@ class Order:
                           db=db.db_database,
                           port=db.db_port)
 
-    def get_order(self, order_id):
-        return self.db.get_order(order_id=order_id)
+    def get_order(self, order_id, restaurant_id, content_type):
+        order_info = self.db.get_order(restaurant_id=restaurant_id, order_id=order_id)
+        if content_type == 'text/csv':
+            pass
+        else:
+            return order_info
 
     def place_order(self, order):
         order_id = self.db.generate_id()
@@ -47,5 +51,3 @@ class Order:
         :return:
         """
         pass
-
-

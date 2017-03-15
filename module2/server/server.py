@@ -182,26 +182,35 @@ def menu_endpoint(item_type='', restaurant_id=''):
 
 
 @app.route('/order', methods=['GET', 'POST', 'PUT', 'DELETE'])
-def order_endpoint():
-    order_request = flask.request.get_json()
+def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
 
-    if 'restaurant_id' in order_request:
-        restaurant_id = order_request['restaurant_id']
-    else:
-        order_request.update({'error': 'Restaurant ID is not specified.'})
-        return jsonify(order_request), BAD_REQUEST
+    if request.method in ['POST', 'PUT', 'DELETE']:
+        order_request = flask.request.get_json()
 
-    if 'customer_id' in order_request:
-        customer_id = order_request['customer_id']
-    else:
-        order_request.update({'error': 'Customer ID is not specified.'})
-        return jsonify(order_request), BAD_REQUEST
+        if 'restaurant_id' in order_request:
+            restaurant_id = order_request['restaurant_id']
+        else:
+            order_request.update({'error': 'Restaurant ID is not specified.'})
+            return jsonify(order_request), BAD_REQUEST
 
-    if 'table_id' in order_request:
-        table_id = order_request['table_id']
+        if 'customer_id' in order_request:
+            customer_id = order_request['customer_id']
+        else:
+            order_request.update({'error': 'Customer ID is not specified.'})
+            return jsonify(order_request), BAD_REQUEST
+
+        if 'table_id' in order_request:
+            table_id = order_request['table_id']
+        else:
+            order_request.update({'error': 'Table ID is not specified.'})
+            return jsonify(order_request), BAD_REQUEST
     else:
-        order_request.update({'error': 'Table ID is not specified.'})
-        return jsonify(order_request), BAD_REQUEST
+        # GET request
+        restaurant_id = request.args.get('restaurant_id', restaurant_id)
+        order_id = request.args.get('order_id', order_id)
+        customer_id = request.args.get('customer_id', customer_id)
+        table_id = request.args.get('table_id', table_id)
+        order_request = {}
 
     # Restaurant must exist.
     restaurant = Restaurant(restaurant_id=restaurant_id)
@@ -222,8 +231,17 @@ def order_endpoint():
     order = Order(customer_id=customer_id, restaurant_id=restaurant_id, table_id=table_id)
 
     if request.method == 'GET':
-        # GET -> get order (select)
-        pass
+        order_info = order.get_order(order_id=order_id,
+                                     restaurant_id=restaurant_id,
+                                     content_type=request.content_type)
+        if request.content_type == 'text/csv':
+            # Check for error message in string
+            # Send back to HUB device
+            pass
+        elif 'error' in order_info:
+            return jsonify(order_info), SERVER_ERRROR
+        else:
+            return jsonify(order_info), OK
 
     if request.method == 'POST':
         if 'items' not in order_request:

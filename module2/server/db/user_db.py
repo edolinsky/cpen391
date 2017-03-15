@@ -1,6 +1,4 @@
 import MySQLdb
-from flask import jsonify
-
 from database import Database
 
 
