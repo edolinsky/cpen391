@@ -7,12 +7,90 @@ Allows a user to log in.
 Methods supported: `POST`
 
 ## Login POST
+_POST http:\/\/piquemedia.me/login_
+
+Request Body:
+```json
+{
+  "user": "test_user@dolins.ky",
+  "password": "password"
+}
+```
+The request body includes the following fields:
+* `user`: The user's _unique_ email address
+* `password`: The user's _hashed_ password
+
+Response on Success:
+```json
+{
+  "affinity": "customer", 
+  "id": "test_user", 
+  "user": "test_user@dolins.ky"
+}
+```
+If the user exists and the email/password combination is valid, a third field
+`affinity` will be included in the response to let the client application know
+whether the user is solely a customer, or is also staff of a particular restaurant.
+
+If the user affinity is _"staff"_, meaning that the user works at a restaurant, the 
+ID of the restaurant is also returned, as below:
+```json
+{
+  "affinity": "staff", 
+  "id": "71a182e218", 
+  "restaurant_id": "test_resto", 
+  "user": "test_staff@dolins.ky"
+}
+```
 
 ## Signup Endpoint
 `/signup`
 Methods supported: `POST`
 
 ## Signup POST
+_POST http:\/\/piquemedia.me/signup_
+
+Just as in the login endpoint, all that is needed in the request body is a 
+unique `user` email and hashed `password`, as below:
+```json
+{
+  "user": "test_user@dolins.ky",
+  "password": "password"
+}
+```
+
+However, if the user wants to sign up as staff of a restaurant, also include
+the respective `affinity` and `restaurant_id` fields.
+
+```json
+{
+  "user": "test_staff3@dolins.ky",
+  "affinity": "staff",
+  "restaurant_id": "test_resto",
+  "password": "password"
+}
+```
+
+Response on success:
+```json
+{
+  "affinity": "staff", 
+  "email": "test_staff3@dolins.ky", 
+  "id": "4f09c29ff4", 
+  "restaurant_id": "test_resto"
+}
+```
+
+The above shows the response upon successfully creating a new staff user. The
+user has been created, and associated with the particular restaurant. The response
+upon creating a customer user is shown below:
+```json
+{
+  "affinity": "customer", 
+  "email": "test_user2@dolins.ky", 
+  "id": "ebe5461790"
+}
+```
 
 ## Menu Endpoint
 `/menu`
@@ -34,7 +112,7 @@ One of:
   * _"merchandise"_
 
 Response on Success:
-```
+```json
 {
   "items": [
     {
@@ -62,7 +140,7 @@ Response on Success:
   "restaurant_id": "test_resto"
 }
 ```
-A list of menu items `items` has been added, containing objects each with the
+A list of menu items `items` is returned, containing objects each with the
 following properties:
 * `id`: unique ID of the item on the menu
 * `name`: String denoting the name of the item
@@ -75,8 +153,8 @@ following properties:
 Methods supported: `POST`
 
 ### Order POST
-Expected body:
-```
+Request body:
+```json
 {
   "customer_id": "test_user",
   "restaurant_id": "test_resto",
@@ -97,7 +175,7 @@ Expected body:
   person who ordered the item
 
 Response on Success:
-```
+```json
 {
   "customer_id": "test_user",
   "items": [
@@ -141,7 +219,7 @@ Methods supported: `GET`
 For testing: responds with a simple message.
 
 Response:
-```
+```json
 {
   "message": "Hello World!"
 }
@@ -155,7 +233,7 @@ Methods supported: `GET`
 Teapot.
 
 Response:
-```
+```json
 {
   "type": "teapot"
 }

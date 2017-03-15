@@ -41,3 +41,11 @@ class User:
                                    password=password,
                                    affinity=affinity,
                                    restaurant_id=restaurant_id)
+
+    def get_my_restaurant(self, user_id):
+
+        # This query is only valid if the user works at a restaurant.
+        if self.get_affinity() != 'staff':
+            return ''
+
+        return self.db.get_user_restaurant(user_id=user_id)

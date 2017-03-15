@@ -1,4 +1,3 @@
-import MySQLdb
 import db
 from db.restaurant_db import RestaurantDb
 

@@ -1,6 +1,5 @@
 import db
 import copy
-from enum import Enum
 from db.order_db import OrderDb
 
 

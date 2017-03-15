@@ -167,4 +167,24 @@ class UserDb(Database):
         user_info.update({'id': user_id})
         return user_info
 
+    def get_user_restaurant(self, user_id):
+        """
+        Retrieve the ID of the restaurant that the user works for.
+        :param user_id:
+        :return:
+        """
+        self.connect()
+
+        restaurant_id = ''
+        query = "SELECT restaurant_id FROM restaurant_staff WHERE user_id = '{}';".format(user_id)
+        try:
+            self.cursor.execute(query)
+            restaurant_id = self.cursor.fetchone()['restaurant_id']
+        except MySQLdb.Error:
+            print "Error: Unable to fetch data."
+
+        self.close()
+        return restaurant_id
+
+
 

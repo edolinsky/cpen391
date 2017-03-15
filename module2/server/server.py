@@ -49,6 +49,16 @@ def login_endpoint():
             response = jsonify({'error': 'Unable to fetch user information.',
                                 'user': user_email})
             return response, SERVER_ERRROR
+        elif affinity == 'staff':
+            restaurant_id = user.get_my_restaurant(user_id=user_id)
+            if not restaurant_id:
+                response = jsonify({'error': 'Unable to fetch user information.',
+                                    'user': user_email})
+                return response, SERVER_ERRROR
+            else:
+                response = jsonify({'user': user_email, 'affinity': affinity,
+                                    'id': user_id, 'restaurant_id': restaurant_id})
+                return response, OK
         else:
             response = jsonify({'user': user_email, 'affinity': affinity, 'id': user_id})
             return response, OK
@@ -252,4 +262,8 @@ def teapot():
 
 if __name__ == '__main__':
     app.secret_key = os.environ['secret_key']
-    app.run()
+
+    if os.environ['runtime'] == 'production':
+        pass
+    else:
+        app.run()
