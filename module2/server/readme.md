@@ -97,7 +97,7 @@ upon creating a customer user is shown below:
 Methods supported: `GET`
 
 ### Menu GET
-_GET http:\/\/piquemedia.me/menu?restaurant_id=<id>&type=appetizer_
+_GET http:\/\/piquemedia.me/menu?restaurant\_id=<id>&type=appetizer_
 
 Parameters:
 * `restaurant_id`: unique ID of the restaurant to be used to retrieve
@@ -214,7 +214,7 @@ of or modify the order.
 
 
 ### Order GET
-_GET http:\/\/piquemedia.me/order?order_id=26a00ff96d&customer_id=test_user&restaurant_id=test_resto&table_id=test_table_
+_GET http:\/\/piquemedia.me/order?order\_id=26a00ff96d&customer\_id=test\_user&restaurant\_id=test\_resto&table\_id=test\_table_
 
 Retrieves information about the specified order. `order_id`, `customer_id`, and `restaurant_id`
 are required fields. `table_id` will be a required field shortly (**not yet implemented**).
@@ -269,8 +269,15 @@ The response echoes the order and restaurant IDs, and includes a list of objects
     * `status`: the status of the ordered item
     * `type`: the menu item type of the ordered item
 
-**Not yet implemented:** If `"Content-Type": "text/csv"` is set, the response will be in CSV format.
+If `"Content-Type": "text/tab-separated-values"` is set, the response will be in TSV format, with header line.
 
+Response on Success:
+```
+id	status	name	customer_name	price	type	menu_id	description
+179a6f7f56	placed	Corona	Erik	6.0	alcoholic	HMw4vmcmqy	Yeah, we know you don't really like beer.
+937db81c0f	placed	Corona	Erik	6.0	alcoholic	HMw4vmcmqy	Yeah, we know you don't really like beer.
+b5e1d81c47	placed	Caesar Salad	Erik	99.5	appetizer	2rs7U6patW	The least healthy of the healthy options.
+```
 ## Hello Endpoint
 `/hello`
 Methods supported: `GET`

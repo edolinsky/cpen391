@@ -234,10 +234,8 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
         order_info = order.get_order(order_id=order_id,
                                      restaurant_id=restaurant_id,
                                      content_type=request.content_type)
-        if request.content_type == 'text/csv':
-            # Check for error message in string
-            # Send back to HUB device
-            pass
+        if request.content_type == 'text/tab-separated-values':
+            return order_info
         elif 'error' in order_info:
             return jsonify(order_info), SERVER_ERRROR
         else:
@@ -268,6 +266,11 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
         pass
 
 
+@app.route('/orders')
+def orders_endpoint():
+    pass
+
+
 @app.route('/hello')
 def hello_world():
     return jsonify({'message': 'Hello World!'}), OK
@@ -282,6 +285,6 @@ if __name__ == '__main__':
     app.secret_key = os.environ['secret_key']
 
     if os.environ['runtime'] == 'production':
-        pass
+        app.run('0.0.0.0', debug=False, port=80)
     else:
         app.run()

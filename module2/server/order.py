@@ -17,8 +17,19 @@ class Order:
 
     def get_order(self, order_id, restaurant_id, content_type):
         order_info = self.db.get_order(restaurant_id=restaurant_id, order_id=order_id)
-        if content_type == 'text/csv':
-            pass
+        if content_type == 'text/tab-separated-values':
+            if 'error' in order_info:
+                return "error\n{}".format(order_info['error'])
+            else:
+                order_string = ("id\tstatus\tname\tcustomer_name\tprice\t"
+                                "type\tmenu_id\tdescription\n")
+                for item in order_info['items']:
+                    item_list = [item['id'], item['status'], item['name'],
+                                 item['customer_name'], item['price'], item['type'],
+                                 item['menu_id'], item['description']]
+                    order_string += "\t".join(map(str, item_list)) + "\n"
+
+                return order_string
         else:
             return order_info
 

@@ -55,8 +55,8 @@ class OrderDb(Database):
 
     def get_order(self, restaurant_id, order_id):
 
-        query = ("SELECT ord.id,m.name, m.id as menu_id, m.price, m.description, m.type, ord.customer_name, ord.status "
-                 "from {} ord "
+        query = ("SELECT ord.id, m.name, m.id as menu_id, m.price, m.description, m.type, ord.customer_name, ord.status"
+                 " from {} ord "
                  "JOIN menu m ON m.id = ord.menu_id "
                  "WHERE ord.order_id = '{}';").format(restaurant_id, order_id)
 
