@@ -71,6 +71,10 @@ def login_endpoint():
 
 @app.route('/signup', methods=['POST'])
 def signup_endpoint():
+    """
+    Handles user account creation
+    :return:
+    """
 
     # Parse request body and throw errors if required fields are not included.
     request_body = request.get_json()
@@ -137,9 +141,18 @@ def signup_endpoint():
 
 @app.route('/menu', methods=['GET'])
 def menu_endpoint(item_type='', restaurant_id=''):
+    """
+    Handles simple requests corresponding to a restaurant's menu.
+    :param item_type:
+    :param restaurant_id:
+    :return:
+    """
+
+    # Parse fields from request parameters.
     restaurant_id = request.args.get('restaurant_id', restaurant_id)
     item_type = request.args.get('item_type', item_type)
 
+    # restaurant_id must be specified.
     if not restaurant_id:
         response = jsonify({'error': 'Restaurant ID not specified.'})
         return response, BAD_REQUEST
@@ -181,9 +194,17 @@ def menu_endpoint(item_type='', restaurant_id=''):
             return jsonify(full_menu), OK
 
 
-@app.route('/order', methods=['GET', 'POST', 'PUT', 'DELETE'])
+@app.route('/order', methods=['GET', 'POST', 'PUT'])
 def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
-
+    """
+    Handles user- or staff-initiated requests pertaining to individual orders.
+    This endpoint does not handle order status.
+    :param order_id:
+    :param restaurant_id:
+    :param customer_id:
+    :param table_id:
+    :return:
+    """
     if request.method in ['POST', 'PUT', 'DELETE']:
         order_request = flask.request.get_json()
 
@@ -228,7 +249,7 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
     # Table must exist and be affiliated with the restaurant.
     # todo: implement device class & corresponding DB
 
-    order = Order(customer_id=customer_id, restaurant_id=restaurant_id, table_id=table_id)
+    order = Order(restaurant_id=restaurant_id)
 
     if request.method == 'GET':
         order_info = order.get_order(order_id=order_id,
@@ -242,6 +263,8 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
             return jsonify(order_info), OK
 
     if request.method == 'POST':
+
+        # List of items must exist and must be non-empty.
         if 'items' not in order_request:
             order_request.update({'error': 'List of items is not specified.'})
             return jsonify(order_request), BAD_REQUEST
@@ -250,7 +273,9 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
             order_request.update({'error': 'List of items is empty.'})
             return jsonify(order_request), BAD_REQUEST
 
-        order_response = order.place_order(order_request)
+        order_response = order.place_order(order=order_request,
+                                           customer_id=customer_id,
+                                           table_id=table_id)
         if 'error' in order_response:
             return jsonify(order_response), SERVER_ERRROR
         else:
@@ -260,15 +285,41 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
         # PUT -> update order (insert/update)
         pass
 
-    if request.method == 'DELETE':
-        # DELETE -> cancel order (delete)
-        # Should only be done by staff
-        pass
 
-
-@app.route('/orders')
+@app.route('/orders', methods=['GET'])
 def orders_endpoint():
     pass
+
+
+@app.route('/order_status', methods=['PATCH'])
+def order_status_update():
+    """
+    Changes an order's status. This is the only endpoint allowed to do so
+    after order creation.
+    :return: JSON reply
+    """
+    update_request = flask.request.get_json()
+
+    # Restaurant must be specified in request body.
+    if 'restaurant_id' in update_request:
+        restaurant_id = update_request['restaurant_id']
+    else:
+        update_request.update({'error': 'Restaurant ID is not specified.'})
+        return jsonify(update_request), BAD_REQUEST
+
+    # Restaurant must exist.
+    restaurant = Restaurant(restaurant_id=restaurant_id)
+    if not restaurant.exists():
+        update_request.update({'error': 'Specified restaurant does not exist.'})
+        return update_request, BAD_REQUEST
+
+    order = Order(restaurant_id=restaurant_id)
+    update_info = order.update_status(update_info=update_request)
+
+    if 'error' in update_info:
+        return jsonify(update_info), SERVER_ERRROR
+    else:
+        return jsonify(update_info), OK
 
 
 @app.route('/hello')

@@ -3,7 +3,6 @@ from database import Database
 
 
 class RestaurantDb(Database):
-
     def __init__(self, user, passwd, host, db, port=3306):
         Database.__init__(self,
                           user=user,

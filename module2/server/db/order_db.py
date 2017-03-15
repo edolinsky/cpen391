@@ -26,8 +26,9 @@ class OrderDb(Database):
         # Prepare list of tuples from specified list of dicts.
         order_tuples = []
         for item in order_info['items']:
-            order_tuples.append((item['id'], item['menu_id'], order_info['table_id'], order_info['order_id'],
-                                 order_info['customer_id'], item['customer_name'], item['status']))
+            order_tuples.append((item['id'], item['menu_id'], order_info['table_id'],
+                                 order_info['order_id'], order_info['customer_id'],
+                                 item['customer_name'], item['status']))
 
         self.connect()
 
@@ -78,7 +79,26 @@ class OrderDb(Database):
         # "INSERT ON DUPLICATE KEY UPDATE"
         pass
 
-    def update_status(self):
-        # todo: implement
-        # This should be the only
-        pass
+    def update_status(self, update_info):
+
+        query = "UPDATE {} SET status = %s WHERE id = %s;".format(update_info['restaurant_id'])
+
+        update_tuples = []
+        for update in update_info['items']:
+            update_tuples.append((update['status'], update['id']))
+
+        self.connect()
+
+        try:
+            self.cursor.executemany(query=query, args=update_tuples)
+        except MySQLdb.Error as e:
+            print "Unable to update data: {}".format(e)
+            self.conn.rollback()
+            self.close()
+
+            update_info.update({'error': 'Failed to update orders.'})
+            return update_info
+
+        self.conn.commit()
+        self.close()
+        return update_info

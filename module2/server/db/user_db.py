@@ -183,6 +183,3 @@ class UserDb(Database):
 
         self.close()
         return restaurant_id
-
-
-

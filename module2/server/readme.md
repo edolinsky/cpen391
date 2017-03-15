@@ -3,11 +3,12 @@
 ## Login Endpoint
 `/login`
 
-Allows a user to log in.
 Methods supported: `POST`
 
+Allows a user to log in.
+
 ## Login POST
-_POST http:\/\/piquemedia.me/login_
+_POST http:\//piquemedia.me/login_
 
 Request Body:
 ```json
@@ -45,10 +46,11 @@ ID of the restaurant is also returned, as below:
 
 ## Signup Endpoint
 `/signup`
+
 Methods supported: `POST`
 
 ## Signup POST
-_POST http:\/\/piquemedia.me/signup_
+_POST http:\/\/piquemedia.me\/signup_
 
 Just as in the login endpoint, all that is needed in the request body is a 
 unique `user` email and hashed `password`, as below:
@@ -94,6 +96,7 @@ upon creating a customer user is shown below:
 
 ## Menu Endpoint
 `/menu`
+
 Methods supported: `GET`
 
 ### Menu GET
@@ -150,6 +153,7 @@ following properties:
 
 ## Order Endpoint
 `/order`
+
 Methods supported: `POST, GET`
 
 ### Order POST
@@ -214,7 +218,7 @@ of or modify the order.
 
 
 ### Order GET
-_GET http:\/\/piquemedia.me/order?order\_id=26a00ff96d&customer\_id=test\_user&restaurant\_id=test\_resto&table\_id=test\_table_
+_GET http:\/\/piquemedia.me\/order?order\_id=26a00ff96d&customer\_id=test\_user&restaurant\_id=test\_resto&table\_id=test\_table_
 
 Retrieves information about the specified order. `order_id`, `customer_id`, and `restaurant_id`
 are required fields. `table_id` will be a required field shortly (**not yet implemented**).
@@ -260,14 +264,14 @@ Response on success:
 ```
 
 The response echoes the order and restaurant IDs, and includes a list of objects, each containing:
-    * `customer_name`: the name of the item recipent
-    * `description`: a description of the item ordered
-    * `id`: the unique item order ID
-    * `menu_id`: the ID corresponding to the item in the restaurant's menu
-    * `name`: the name of the item
-    * `price`: the price of the item
-    * `status`: the status of the ordered item
-    * `type`: the menu item type of the ordered item
+* `customer_name`: the name of the item recipent
+* `description`: a description of the item ordered
+* `id`: the unique item order ID
+* `menu_id`: the ID corresponding to the item in the restaurant's menu
+* `name`: the name of the item
+* `price`: the price of the item
+* `status`: the status of the ordered item
+* `type`: the menu item type of the ordered item
 
 If `"Content-Type": "text/tab-separated-values"` is set, the response will be in TSV format, with header line.
 
@@ -278,8 +282,42 @@ id	status	name	customer_name	price	type	menu_id	description
 937db81c0f	placed	Corona	Erik	6.0	alcoholic	HMw4vmcmqy	Yeah, we know you don't really like beer.
 b5e1d81c47	placed	Caesar Salad	Erik	99.5	appetizer	2rs7U6patW	The least healthy of the healthy options.
 ```
+
+## Order Status Endpoint
+`/order_status`
+
+Methods supported: `PATCH`
+
+This endpoint handles (and is the only endpoint allowed to handle) updates to the status of an order.
+
+### Order Status PATCH
+_PATCH http:\/\/piquemedia.me\/order_status_
+
+Request Body:
+```json
+{
+  "restaurant_id": "test_resto",
+  "items": [ 
+    {"id": "3838e0e86c", "status": "prep"},
+    {"id": "b5e1d81c47", "status": "ready"},
+    ]
+}
+```
+Requests contain the following fields:
+* `restaurant_id`: the unique ID of the restaurant.
+* `items`: a list, containing objects with the following fields:
+    * `id`: the unique ID of the order item.
+    * `status`: the new status of the item, which can be one of the following:
+        * `placed`
+        * `prep`
+        * `ready`
+        * `served`
+        * `complete`
+        * `cancelled`
+
 ## Hello Endpoint
 `/hello`
+
 Methods supported: `GET`
 
 For testing: responds with a simple message.
@@ -294,6 +332,7 @@ Response:
 
 ## Teapot Endpoint
 `/teapot`
+
 Methods supported: `GET`
 
 Teapot.
