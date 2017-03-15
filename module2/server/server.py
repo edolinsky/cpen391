@@ -205,7 +205,9 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
     :param table_id:
     :return:
     """
-    if request.method in ['POST', 'PUT', 'DELETE']:
+
+    if request.method in ['POST', 'PUT']:
+        # Request has json body.
         order_request = flask.request.get_json()
 
         if 'restaurant_id' in order_request:
@@ -233,13 +235,13 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
         table_id = request.args.get('table_id', table_id)
         order_request = {}
 
-    # Restaurant must exist.
+    # Restaurant must exist in database.
     restaurant = Restaurant(restaurant_id=restaurant_id)
     if not restaurant.exists():
         order_request.update({'error': 'Specified restaurant does not exist.'})
         return order_request, BAD_REQUEST
 
-    # Customer must exist.
+    # Customer must exist in database.
     user = User('')
     user.get_email(customer_id)
     if not user.exists():
@@ -286,40 +288,56 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
         pass
 
 
-@app.route('/orders', methods=['GET'])
-def orders_endpoint():
-    pass
+@app.route('/orders', methods=['GET', 'PATCH'])
+def orders_endpoint(query='open', restaurant_id=''):
+    supported_queries = ['open']
 
+    if request.method == 'GET':
+        restaurant_id = request.args.get('restaurant_id', restaurant_id)
+        query = request.args.get('query', query)
 
-@app.route('/order_status', methods=['PATCH'])
-def order_status_update():
-    """
-    Changes an order's status. This is the only endpoint allowed to do so
-    after order creation.
-    :return: JSON reply
-    """
-    update_request = flask.request.get_json()
+        if not restaurant_id:
+            response = jsonify({'error': 'Restaurant ID is not specified.'})
+            return response, BAD_REQUEST
+        if query not in supported_queries:
+            response = jsonify({'error': 'Specified query is not supported.'})
+            return response, BAD_REQUEST
 
-    # Restaurant must be specified in request body.
-    if 'restaurant_id' in update_request:
-        restaurant_id = update_request['restaurant_id']
-    else:
-        update_request.update({'error': 'Restaurant ID is not specified.'})
-        return jsonify(update_request), BAD_REQUEST
+        restaurant = Restaurant(restaurant_id=restaurant_id)
 
-    # Restaurant must exist.
-    restaurant = Restaurant(restaurant_id=restaurant_id)
-    if not restaurant.exists():
-        update_request.update({'error': 'Specified restaurant does not exist.'})
-        return update_request, BAD_REQUEST
+        orders = {}
+        # Switch on query types, executing corresponding query.
+        if query == 'open':
+            orders = restaurant.get_open_orders()
 
-    order = Order(restaurant_id=restaurant_id)
-    update_info = order.update_status(update_info=update_request)
+        if 'error' in orders:
+            return jsonify(orders), SERVER_ERRROR
+        else:
+            return jsonify(orders), OK
 
-    if 'error' in update_info:
-        return jsonify(update_info), SERVER_ERRROR
-    else:
-        return jsonify(update_info), OK
+    if request.method == 'PATCH':
+        update_request = flask.request.get_json()
+
+        # Restaurant must be specified in request body.
+        if 'restaurant_id' in update_request:
+            restaurant_id = update_request['restaurant_id']
+        else:
+            update_request.update({'error': 'Restaurant ID is not specified.'})
+            return jsonify(update_request), BAD_REQUEST
+
+        # Restaurant must exist.
+        restaurant = Restaurant(restaurant_id=restaurant_id)
+        if not restaurant.exists():
+            update_request.update({'error': 'Specified restaurant does not exist.'})
+            return update_request, BAD_REQUEST
+
+        order = Order(restaurant_id=restaurant_id)
+        update_info = order.update_status(update_info=update_request)
+
+        if 'error' in update_info:
+            return jsonify(update_info), SERVER_ERRROR
+        else:
+            return jsonify(update_info), OK
 
 
 @app.route('/hello')

@@ -283,15 +283,57 @@ id	status	name	customer_name	price	type	menu_id	description
 b5e1d81c47	placed	Caesar Salad	Erik	99.5	appetizer	2rs7U6patW	The least healthy of the healthy options.
 ```
 
-## Order Status Endpoint
-`/order_status`
+## Orders Endpoint
+`/orders`
 
-Methods supported: `PATCH`
+Methods supported: `GET, PATCH`
 
-This endpoint handles (and is the only endpoint allowed to handle) updates to the status of an order.
+This endpoint handles viewing orders and editing status of orders as managed by a restaurant.
 
-### Order Status PATCH
-_PATCH http:\/\/piquemedia.me\/order_status_
+### Orders
+_http:\//piquemedia.me/orders?restaurant_id=test_resto&query=open_
+
+Retrieves orders as specified by query parameters.
+
+Parameters:
+* `restaurant_id`: Unique ID of restaurant
+* `query`: string specifying query to be made:
+    * `open`: retrieve all orders that are not served, complete, or cancelled
+    
+Response on Success:
+```json
+{
+  "orders": [
+    {
+      "customer_name": "Erik", 
+      "id": "179a6f7f56", 
+      "menu_id": "HMw4vmcmqy", 
+      "name": "Corona", 
+      "status": "placed", 
+      "table_id": "test_table"
+    }, 
+    {
+      "customer_name": "Erik", 
+      "id": "3838e0e86c", 
+      "menu_id": "2rs7U6patW", 
+      "name": "Caesar Salad", 
+      "status": "prep", 
+      "table_id": "test_table"
+    }
+  ], 
+  "restaurant_id": "test_resto"
+}
+```
+Parameters:
+* `orders`: contains a list of order objects, each with the following fields:
+    * `customer_name`: name of customer to receive order item
+    * `id`: unique ID of the order item
+    * `name`: name of the item
+    * `status`: order status
+    * `table_id`: unique ID of hub at table in restaurant
+
+### Orders PATCH
+_PATCH http:\/\/piquemedia.me\/orders_
 
 Request Body:
 ```json

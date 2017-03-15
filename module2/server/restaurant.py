@@ -15,4 +15,4 @@ class Restaurant:
         return self.db.restaurant_exists(self.restaurant_id)
 
     def get_open_orders(self):
-        pass
+        return self.db.select_all_open_orders(self.restaurant_id)

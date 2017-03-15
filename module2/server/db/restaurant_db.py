@@ -46,4 +46,21 @@ class RestaurantDb(Database):
             return False
 
     def select_all_open_orders(self, restaurant_id):
-        pass
+
+        query = ("SELECT o.id, o.customer_name, o.status, m.name, m.id as menu_id, o.table_id FROM {} o "
+                 "JOIN menu m ON m.id = o.menu_id "
+                 "WHERE o.status NOT IN ('served','complete', 'cancelled');").format(restaurant_id)
+
+        orders_info = {'restaurant_id': restaurant_id}
+
+        self.connect()
+        try:
+            self.cursor.execute(query)
+            orders = self.cursor.fetchall()
+            orders_info.update({'orders': orders})
+        except MySQLdb.Error as e:
+            print "Unable to fetch data: {}".format(e)
+            orders_info.update({'error': 'Unable to fetch order data.'})
+        self.close()
+
+        return orders_info
