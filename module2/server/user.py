@@ -1,17 +1,15 @@
-import uuid
-
-import server
+import db
 from db.user_db import UserDb
 
 
 class User:
     def __init__(self, email):
         self.email = email
-        self.db = UserDb(user=server.db_user,
-                         passwd=server.db_passwd,
-                         host=server.db_host,
-                         db=server.db_database,
-                         port=server.db_port)
+        self.db = UserDb(user=db.db_user,
+                         passwd=db.db_passwd,
+                         host=db.db_host,
+                         db=db.db_database,
+                         port=db.db_port)
 
     def is_valid(self, passwd):
 
@@ -21,21 +19,33 @@ class User:
             return False
 
     def get_affinity(self):
-
         return self.db.get_affinity(email=self.email)
+
+    def get_id(self):
+        return self.db.get_id(email=self.email)
+
+    def get_email(self, user_id):
+        self.email = self.db.get_email(user_id=user_id)
 
     def exists(self):
         return self.db.user_exists(email=self.email)
 
     def create(self, password, affinity='', restaurant_id=''):
-        user_id = generate_id()
+        user_id = self.db.generate_id()
 
-        self.db.create_user(user_id=user_id,
-                            email=self.email,
-                            password=password,
-                            affinity=affinity,
-                            restaurant_id=restaurant_id)
+        if not affinity:
+            affinity = 'customer'
 
+        return self.db.create_user(user_id=user_id,
+                                   email=self.email,
+                                   password=password,
+                                   affinity=affinity,
+                                   restaurant_id=restaurant_id)
 
-def generate_id():
-    return uuid.uuid4()[:-10]
+    def get_my_restaurant(self, user_id):
+
+        # This query is only valid if the user works at a restaurant.
+        if self.get_affinity() != 'staff':
+            return ''
+
+        return self.db.get_user_restaurant(user_id=user_id)

@@ -1,8 +1,9 @@
 import MySQLdb
+import uuid
 
 
 class Database:
-    def __init__(self, user, passwd, host, db, port='3306'):
+    def __init__(self, user, passwd, host, db, port=3306):
         self.user = user
         self.passwd = passwd
         self.host = host
@@ -18,14 +19,14 @@ class Database:
         """
         try:
             self.conn = MySQLdb.connect(user=self.user,
-                                        password=self.passwd,
+                                        passwd=self.passwd,
                                         host=self.host,
                                         db=self.db,
                                         port=self.port)
 
-            self.cursor = self.conn.cursor
-        except MySQLdb.Error:
-            print "DB Connection failed."
+            self.cursor = self.conn.cursor(cursorclass=MySQLdb.cursors.DictCursor)
+        except MySQLdb.Error as e:
+            print "DB Connection failed: {}".format(e)
 
     def close(self):
         """
@@ -37,3 +38,7 @@ class Database:
 
         if self.conn:
             self.conn.close()
+
+    @staticmethod
+    def generate_id():
+        return str(uuid.uuid4().hex)[-10:]
