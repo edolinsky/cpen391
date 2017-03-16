@@ -18,8 +18,8 @@ import java.util.Random;
 
 public class CustomPieChart extends View {
 
-    final private static float ANIMATION_SPEED = 20.0f; // the bigger the slower
-    final private static float ANIMATION_DURATION = 750.0f;
+    final private static float REFRESH_RATE = 20.0f;
+    final private static float ANIMATION_DURATION = 1250.0f;
     private static int MAX_X;
     private static int MAX_Y;
     private float[] data;
@@ -36,7 +36,7 @@ public class CustomPieChart extends View {
         public void run() {
             me.invalidate();
             if (anim_progress < 1.0)
-                viewHandler.postDelayed(updateView, (int)ANIMATION_SPEED);
+                viewHandler.postDelayed(updateView, (int) REFRESH_RATE);
         }
     };
 
@@ -77,10 +77,6 @@ public class CustomPieChart extends View {
         updateView.run();
     }
 
-    public void clearChart() {
-
-    }
-
     @Override
     public void onDraw(Canvas canvas) {
 
@@ -98,7 +94,6 @@ public class CustomPieChart extends View {
 
 
         for (float segment:segments) {
-            System.out.println("Its " + segment);
             paint.setColor(colors[i]);
             canvas.drawArc(rect, segStartPoint, (segment-1)*anim_progress, true, paint);
             paint.setColor(Color.TRANSPARENT);
@@ -107,7 +102,7 @@ public class CustomPieChart extends View {
             i++;
         }
 
-        anim_progress += ANIMATION_SPEED/ANIMATION_DURATION;
+        anim_progress += REFRESH_RATE/ANIMATION_DURATION;
 
     }
 
