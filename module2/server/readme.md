@@ -73,7 +73,22 @@ the respective `affinity` and `restaurant_id` fields.
 }
 ```
 
+Where `affinity` can be one of `staff` or `staff_only`. Signing up as `staff_only` will give them
+access to just the staff side of the app, while `staff` will give them both customer and staff
+privileges.
+
 Response on success:
+```json
+{
+  "affinity": "customer", 
+  "email": "test_user2@dolins.ky", 
+  "id": "ebe5461790"
+}
+```
+The above shows the response upon successfully creating a new customer user. The response
+upon creating a staff user is shown below:
+
+
 ```json
 {
   "affinity": "staff", 
@@ -83,16 +98,7 @@ Response on success:
 }
 ```
 
-The above shows the response upon successfully creating a new staff user. The
-user has been created, and associated with the particular restaurant. The response
-upon creating a customer user is shown below:
-```json
-{
-  "affinity": "customer", 
-  "email": "test_user2@dolins.ky", 
-  "id": "ebe5461790"
-}
-```
+The user has been created, and associated with the particular restaurant.
 
 ## Menu Endpoint
 `/menu`

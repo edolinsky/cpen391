@@ -49,7 +49,8 @@ def login_endpoint():
             response = jsonify({'error': 'Unable to fetch user information.',
                                 'user': user_email})
             return response, SERVER_ERRROR
-        elif affinity == 'staff':
+
+        elif affinity in user.staff_users:
             restaurant_id = user.get_my_restaurant(user_id=user_id)
             if not restaurant_id:
                 response = jsonify({'error': 'Unable to fetch user information.',
@@ -104,7 +105,7 @@ def signup_endpoint():
         return response, FORBIDDEN
 
     # Create staff user.
-    elif affinity == 'staff':
+    elif affinity in user.staff_users:
         try:
             restaurant_id = request_body['restaurant_id']
         except KeyError:

@@ -3,6 +3,8 @@ from db.user_db import UserDb
 
 
 class User:
+    staff_users = ['staff', 'staff_only']
+
     def __init__(self, email):
         self.email = email
         self.db = UserDb(user=db.db_user,
@@ -45,7 +47,7 @@ class User:
     def get_my_restaurant(self, user_id):
 
         # This query is only valid if the user works at a restaurant.
-        if self.get_affinity() != 'staff':
+        if self.get_affinity() not in self.staff_users:
             return ''
 
         return self.db.get_user_restaurant(user_id=user_id)

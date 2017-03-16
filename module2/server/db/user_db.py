@@ -145,7 +145,7 @@ class UserDb(Database):
             return user_info
 
         # If the user is staff, add the user-restaurant ID pair to the restaurant_staff table
-        if affinity == 'staff':
+        if affinity in ['staff', 'staff_only']:
             query = "INSERT INTO restaurant_staff (user_id, restaurant_id) VALUES ('{}', '{}');".format(
                 user_id, restaurant_id
             )
