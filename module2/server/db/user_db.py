@@ -130,7 +130,8 @@ class UserDb(Database):
         user_info = {'email': email, 'affinity': affinity}
 
         # Create the user
-        query = "INSERT INTO user (id, email, password, affinity) VALUES ('{}', '{}', '{}', '{}');".format(
+        query = ("INSERT INTO user (id, email, password, affinity) "
+                 "VALUES ('{}', '{}', '{}', '{}'));").format(
             user_id, email, password, affinity
         )
 
@@ -146,8 +147,10 @@ class UserDb(Database):
 
         # If the user is staff, add the user-restaurant ID pair to the restaurant_staff table
         if affinity in ['staff', 'staff_only']:
-            query = "INSERT INTO restaurant_staff (user_id, restaurant_id) VALUES ('{}', '{}');".format(
-                user_id, restaurant_id
+            restaurant_staff_id = self.generate_id()
+            query = ("INSERT INTO restaurant_staff (id, user_id, restaurant_id) "
+                     "VALUES ('{}', '{}', '{}');").format(
+                restaurant_staff_id, user_id, restaurant_id
             )
             try:
                 self.cursor.execute(query)
@@ -174,7 +177,8 @@ class UserDb(Database):
         self.connect()
 
         restaurant_id = ''
-        query = "SELECT restaurant_id FROM restaurant_staff WHERE user_id = '{}';".format(user_id)
+        query = ("SELECT restaurant_id FROM restaurant_staff "
+                 "WHERE user_id = '{}';").format(user_id)
         try:
             self.cursor.execute(query)
             restaurant_id = self.cursor.fetchone()['restaurant_id']
