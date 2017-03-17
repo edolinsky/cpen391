@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Resty</string>
+
+    <!-- Main Login Page Strings -->
+    <string name="loginUsernameInputHint">username</string>
+    <string name="loginPasswordInputHint">password</string>
+    <string name="loginButtonTitle">Login</string>
+    <string name="loginSignupButtonTitle">Sign-up</string>
+
+</resources>
