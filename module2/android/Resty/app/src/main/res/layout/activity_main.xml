@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/loginUsernameInputHint"
-            android:inputType="numberDecimal"
+            android:inputType="textEmailAddress"
             android:textAlignment="viewStart" />
 
     </android.support.design.widget.TextInputLayout>
@@ -53,7 +53,7 @@
             android:layout_marginTop="16dp"
             android:ems="10"
             android:hint="@string/loginPasswordInputHint"
-            android:inputType="numberDecimal"
+            android:inputType="textWebPassword"
             android:textAlignment="viewStart" />
 
     </android.support.design.widget.TextInputLayout>

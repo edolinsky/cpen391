@@ -9,27 +9,26 @@ import android.widget.EditText;
 
 import com.google.gson.Gson;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import cpen391.resty.resty.ServerRequests.RestySigninRequest;
+
+import static com.android.volley.Request.Method.HEAD;
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText usernameText;
     private EditText passwordText;
     private Button loginButton;
     private Button signupButton;
-
-    private static class LoginRequest{
-        String name;
-        String password;
-
-        LoginRequest(String name, String password){
-            this.name = name;
-            this.password = password;
-        }
-
-        String toJson(){
-            Gson gson = new Gson();
-            return gson.toJson(this);
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,23 +46,16 @@ public class MainActivity extends AppCompatActivity {
 
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
-        signIn(new LoginRequest(username, password));
+        signIn(username, password);
+    }
+
+    public void signIn(String username, String password){
+        RestySigninRequest request = new RestySigninRequest();
+        request.signIn(username, password, this);
     }
 
     public void signupOnClick(View view){
 
-    }
-
-    public void signIn(LoginRequest request){
-
-        String jsonRequest = request.toJson();
-
-        try{
-           // HttpPost
-
-        }catch (Exception e){
-            System.out.println(e);
-        }
 
         // pretend sign-in request was successful
         // switch to main screen
@@ -72,4 +64,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
 
     }
+
 }
