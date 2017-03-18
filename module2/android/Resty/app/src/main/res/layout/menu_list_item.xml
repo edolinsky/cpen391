@@ -1,0 +1,46 @@
+<android.support.constraint.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+
+    <TextView
+        android:id="@+id/itemName"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:text="menu item"
+        android:textAlignment="center"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="18dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <EditText
+        android:id="@+id/itemAmount"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="amount"
+        android:inputType="number"
+        android:textAlignment="viewStart"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@+id/itemName"
+        app:layout_constraintRight_toLeftOf="@+id/itemCost" />
+
+    <TextView
+        android:id="@+id/itemCost"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginRight="8dp"
+        android:gravity="center"
+        android:text="cost"
+        app:layout_constraintBaseline_toBaselineOf="@+id/itemName"
+        app:layout_constraintRight_toRightOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
