@@ -2,12 +2,9 @@ package cpen391.resty.resty.ServerRequests;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Cache;
 import com.android.volley.Network;
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -15,24 +12,12 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.Map;
-
 import cpen391.resty.resty.HubAuthenticationActivity;
+import cpen391.resty.resty.ServerRequests.ServerRequestConstants.Endpoint;
 
 public class RestySigninRequest {
 
@@ -60,7 +45,7 @@ public class RestySigninRequest {
 
     public void signIn(final String username, final String password, final Context context){
 
-        final String LOGIN_REQUEST_URL = "http://piquemedia.me/login";
+        final String LOGIN_REQUEST_URL = Endpoint.LOGIN.getUrl();
         LoginRequest request = new LoginRequest(username, password);
         String jsonRequest = request.toJson();
         JSONObject requestObject = null;
@@ -72,7 +57,7 @@ public class RestySigninRequest {
         }
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Request.Method.POST, LOGIN_REQUEST_URL, requestObject, new Response.Listener<JSONObject>() {
+                (Endpoint.LOGIN.getMethod(), LOGIN_REQUEST_URL, requestObject, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
@@ -106,7 +91,6 @@ public class RestySigninRequest {
 
         // Add the request to the RequestQueue.
         mRequestQueue.add(jsObjRequest);
-
 
     }
 
