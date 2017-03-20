@@ -3,18 +3,20 @@ package cpen391.resty.resty;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
 
-    MenuItem items;
+    ArrayList<MenuItem> items;
     ListView menuListView;
     private static MenuItemAdapter adapter;
 
@@ -24,16 +26,19 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         Intent intent = getIntent();
-        String jsonMenu = intent.getStringExtra(HubAuthenticationActivity.MENU);
+        String menuString = intent.getStringExtra(HubAuthenticationActivity.MENU);
+        JsonParser parser = new JsonParser();
+        JsonObject jsonMenu = (JsonObject)parser.parse(menuString);
 
         Gson gson = new Gson();
-        items = gson.fromJson(jsonMenu, MenuItem.class);
+        Type menuListType = new TypeToken<List<MenuItem>>(){}.getType();
+        List<MenuItem> menuList = gson.fromJson(jsonMenu.getAsJsonArray("items"), menuListType);
+
+        items = new ArrayList<>();
+        items.addAll(menuList);
 
         menuListView = (ListView)findViewById(R.id.menuList);
-
-        ArrayList<MenuItem> menu = new ArrayList<>();
-        menu.add(items);
-        adapter = new MenuItemAdapter(menu, getApplicationContext());
+        adapter = new MenuItemAdapter(items, getApplicationContext());
         menuListView.setAdapter(adapter);
     }
 }
