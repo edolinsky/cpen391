@@ -11,9 +11,10 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 
-public abstract class RestyRequest implements VolleyHttpRequester{
+public abstract class RestyRequest implements VolleyHttpRequester {
 
-     void makeRequest(Request request, Context context) {
+    // TODO this needs a context object, is there one we could give it to make all of these singletons?
+    public void makeRequest(Request request, Context context) {
         RequestQueue mRequestQueue;
 
         // Instantiate the cache

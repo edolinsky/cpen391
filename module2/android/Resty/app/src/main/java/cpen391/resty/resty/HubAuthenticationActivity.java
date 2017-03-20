@@ -1,12 +1,10 @@
 package cpen391.resty.resty;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import cpen391.resty.resty.ServerRequests.RestyMenuRequest;
-import cpen391.resty.resty.ServerRequests.RestySigninRequest;
 import cpen391.resty.resty.utils.TestDataUtils;
 
 public class HubAuthenticationActivity extends AppCompatActivity {
@@ -23,7 +21,7 @@ public class HubAuthenticationActivity extends AppCompatActivity {
 
         // get menu
         RestyMenuRequest menuRequest = new RestyMenuRequest();
-        menuRequest.getMenu(TestDataUtils.TEST_RESTAURANT, null, this.getApplicationContext());
+        menuRequest.getMenu(TestDataUtils.TEST_RESTAURANT, null, this);
     }
 
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -23,23 +24,25 @@ public class RestyMenuRequest extends RestyRequest {
             item_type = "";
         }
 
-        String url = String.format(Endpoint.MENU.getUrl(), restaurant_id, item_type);
+        String url = String.format(Endpoint.MENU.getUrl(), restaurant_id);
         StringRequest request = new StringRequest(Endpoint.MENU.getMethod(), url,
                 createSuccessListener(context), createErrorListener());
 
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 5,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         makeRequest(request, context);
 
     }
 
     @Override
     public Response.Listener createSuccessListener(final Context context) {
-        return new Response.Listener<JSONObject>() {
+        return new Response.Listener<String>() {
 
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(String response) {
 
                 Intent intent = new Intent(context, MenuActivity.class);
-                intent.putExtra(MENU, response.toString());
+                intent.putExtra(MENU, response);
                 context.startActivity(intent);
 
             }
@@ -53,7 +56,7 @@ public class RestyMenuRequest extends RestyRequest {
             @Override
             public void onErrorResponse(VolleyError error) {
 
-                System.out.println("Hallo we have an error");
+                 System.out.println("Hallo we have an error");
             }
         };
     }

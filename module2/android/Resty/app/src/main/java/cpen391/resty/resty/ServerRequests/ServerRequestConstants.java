@@ -12,7 +12,7 @@ public class ServerRequestConstants {
         /** workflow endpoints */
         LOGIN ("login", POST),
         SIGNUP("signup", POST),
-        MENU("menu?restaurant_id=%1$s&type=%2$s", GET),
+        MENU("menu?restaurant_id=%1$s", GET),
         GET_ORDER("order", GET),
         PLACE_ORDER("order", POST),
         VIEW_ORDERS("orders", GET),
