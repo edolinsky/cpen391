@@ -14,6 +14,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpen391.resty.resty.ServerRequests.RestyMenuRequest;
+
 public class MenuActivity extends AppCompatActivity {
 
     ArrayList<MenuItem> items;
@@ -26,7 +28,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         Intent intent = getIntent();
-        String menuString = intent.getStringExtra(HubAuthenticationActivity.MENU);
+        String menuString = intent.getStringExtra(RestyMenuRequest.MENU);
         JsonParser parser = new JsonParser();
         JsonObject jsonMenu = (JsonObject)parser.parse(menuString);
 

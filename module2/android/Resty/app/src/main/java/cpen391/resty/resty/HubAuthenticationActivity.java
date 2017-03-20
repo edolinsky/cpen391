@@ -5,11 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import cpen391.resty.resty.ServerRequests.RestyMenuRequest;
+import cpen391.resty.resty.ServerRequests.RestySigninRequest;
 import cpen391.resty.resty.utils.TestDataUtils;
 
 public class HubAuthenticationActivity extends AppCompatActivity {
-
-    public static final String MENU = "cpen391.resty.resty.MENU";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,9 +20,10 @@ public class HubAuthenticationActivity extends AppCompatActivity {
     /** Called when user taps authenticate button */
     public void authenticate(View view) {
         // pretend authentication successful
-        Intent intent = new Intent(this, MenuActivity.class);
-        intent.putExtra(MENU, TestDataUtils.TEST_MENU);
-        startActivity(intent);
+
+        // get menu
+        RestyMenuRequest menuRequest = new RestyMenuRequest();
+        menuRequest.getMenu(TestDataUtils.TEST_RESTAURANT, null, this.getApplicationContext());
     }
 
 }
