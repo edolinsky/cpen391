@@ -26,25 +26,22 @@ class Order:
                                        order_id=order_id)
 
         # If client is asking for TSV, parse values from dictionary into string.
-        if content_type == 'text/tab-separated-values':
+        if content_type == 'application/csv':
 
             if 'error' in order_info:
                 return "error\n{}".format(order_info['error'])
 
             else:
-                order_string = ("id\tstatus\tname\tcustomer_name\tprice\t"
-                                "type\tmenu_id\tdescription\n")
+                order_string = ""
 
                 for item in order_info['items']:
-                    item_list = [item['id'], item['status'], item['name'],
-                                 item['customer_name'], item['price'], item['type'],
-                                 item['menu_id'], item['description']]
+                    item_list = [item['name'], item['customer_name'], item['status']]
 
-                    order_string += "\t".join(map(str, item_list)) + "\n"
+                    order_string += ",".join(map(str, item_list)) + "\n"
 
                 return order_string
 
-        # Oterwise, continue with JSON.
+        # Otherwise, continue with JSON.
         else:
             return order_info
 

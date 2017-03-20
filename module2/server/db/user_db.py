@@ -15,7 +15,7 @@ class UserDb(Database):
         Database.connect(self)
 
     def close(self):
-        Database.connect(self)
+        Database.close(self)
 
     def get_user_password(self, email):
         """

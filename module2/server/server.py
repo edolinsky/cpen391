@@ -4,6 +4,7 @@ import os
 from flask import request, jsonify
 from user import User
 from menu import Menu
+from hub import Hub
 from restaurant import Restaurant
 from order import Order
 
@@ -240,17 +241,20 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
     restaurant = Restaurant(restaurant_id=restaurant_id)
     if not restaurant.exists():
         order_request.update({'error': 'Specified restaurant does not exist.'})
-        return order_request, BAD_REQUEST
+        return jsonify(order_request), BAD_REQUEST
 
     # Customer must exist in database.
     user = User('')
     user.get_email(customer_id)
     if not user.exists():
         order_request.update({'error': 'Specified customer does not exist.'})
-        return order_request, BAD_REQUEST
+        return jsonify(order_request), BAD_REQUEST
 
     # Table must exist and be affiliated with the restaurant.
-    # todo: implement device class & corresponding DB
+    hub = Hub(restaurant_id=restaurant_id)
+    if not hub.is_registered(hub_id=table_id):
+        order_request.update({'error': 'Specified table is not registered to this restaurant.'})
+        return jsonify(order_request), UNAUTHORIZED
 
     order = Order(restaurant_id=restaurant_id)
 
@@ -258,7 +262,7 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
         order_info = order.get_order(order_id=order_id,
                                      restaurant_id=restaurant_id,
                                      content_type=request.content_type)
-        if request.content_type == 'text/tab-separated-values':
+        if request.content_type == 'application/csv':
             return order_info
         elif 'error' in order_info:
             return jsonify(order_info), SERVER_ERRROR
