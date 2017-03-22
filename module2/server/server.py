@@ -37,6 +37,10 @@ def login_endpoint():
         response = jsonify({'error': 'Password not specified.'})
         return response, BAD_REQUEST
 
+    reg_id = ''
+    if 'android_reg_id' in request_body:
+        reg_id = request_body['android_reg_id']
+
     user = User(email=user_email)
 
     # Validate user/password combination against that in database.
@@ -46,24 +50,30 @@ def login_endpoint():
         affinity = user.get_affinity()
         user_id = user.get_id()
 
+        user_data = {'user': user_email, 'affinity': affinity,
+                     'id': user_id}
+
+        # Update android app reg_id if it was specified.
+        if reg_id:
+            update_success = user.update_app_id(app_id=reg_id)
+            if update_success:
+                user_data.update({'android_reg_id': reg_id})
+
         if not affinity or not user_id:
-            response = jsonify({'error': 'Unable to fetch user information.',
-                                'user': user_email})
-            return response, SERVER_ERRROR
+            user_data.update({'error': 'Unable to fetch user information.'})
+            return jsonify(user_data), SERVER_ERRROR
 
         elif affinity in user.staff_users:
             restaurant_id = user.get_my_restaurant(user_id=user_id)
+
             if not restaurant_id:
-                response = jsonify({'error': 'Unable to fetch user information.',
-                                    'user': user_email})
-                return response, SERVER_ERRROR
+                user_data.update({'error': 'Unable to fetch user information.'})
+                return jsonify(user_data), SERVER_ERRROR
             else:
-                response = jsonify({'user': user_email, 'affinity': affinity,
-                                    'id': user_id, 'restaurant_id': restaurant_id})
-                return response, OK
+                user_data.update({'restaurant_id': restaurant_id})
+                return jsonify(user_data), OK
         else:
-            response = jsonify({'user': user_email, 'affinity': affinity, 'id': user_id})
-            return response, OK
+            return jsonify(user_data), OK
     else:
         # If unsuccessful, send error message to user.
         response = jsonify({'user': user_email,
@@ -97,6 +107,10 @@ def signup_endpoint():
         response = jsonify({'error': 'Password not specified.'})
         return response, BAD_REQUEST
 
+    reg_id = ''
+    if 'android_reg_id' in request_body:
+        reg_id = request_body['android_reg_id']
+
     user = User(email=user_email)
 
     # Do not allow a user to be created if email already exists
@@ -120,9 +134,15 @@ def signup_endpoint():
         # Restaurant exists: create user under restaurant
         if restaurant_id and restaurant.exists():
             user_info = user.create(password=passwd, restaurant_id=restaurant_id, affinity=affinity)
-            if 'error' in user_info.keys():
+            if 'error' in user_info:
                 return jsonify(user_info), SERVER_ERRROR
             else:
+                # Update android app reg_id if it was specified.
+                if reg_id:
+                    update_success = user.update_app_id(app_id=reg_id)
+                    if update_success:
+                        user_info.update({'android_reg_id': reg_id})
+
                 return jsonify(user_info), CREATED
 
         else:
@@ -135,9 +155,15 @@ def signup_endpoint():
     else:
         user_info = user.create(password=passwd, affinity=affinity)
 
-        if 'error' in user_info.keys():
+        if 'error' in user_info:
             return jsonify(user_info), SERVER_ERRROR
         else:
+            # Update android app reg_id if it was specified.
+            if reg_id:
+                update_success = user.update_app_id(app_id=reg_id)
+                if update_success:
+                    user_info.update({'android_reg_id': reg_id})
+
             return jsonify(user_info), CREATED
 
 
@@ -330,7 +356,7 @@ def orders_endpoint(query='open', restaurant_id=''):
             update_request.update({'error': 'Restaurant ID is not specified.'})
             return jsonify(update_request), BAD_REQUEST
 
-        # Restaurant must exist.
+        # Restaurant must exist in database.
         restaurant = Restaurant(restaurant_id=restaurant_id)
         if not restaurant.exists():
             update_request.update({'error': 'Specified restaurant does not exist.'})
@@ -343,6 +369,34 @@ def orders_endpoint(query='open', restaurant_id=''):
             return jsonify(update_info), SERVER_ERRROR
         else:
             return jsonify(update_info), OK
+
+
+@app.route('/call_server', methods=['POST'])
+def call_server():
+    request_body = flask.request.get_json()
+
+    if 'restaurant_id' in request_body:
+        restaurant_id = request_body['restaurant_id']
+    else:
+        request_body.update({'error': 'Restaurant ID is not specified.'})
+        return jsonify(request_body), BAD_REQUEST
+
+    if 'table_id' in request_body:
+        table_id = request_body['table_id']
+    else:
+        request_body.update({'error': 'Table ID is not specified.'})
+        return jsonify(request_body), BAD_REQUEST
+
+    hub = Hub(restaurant_id=restaurant_id)
+    user = User('')
+
+    attendant_id = hub.get_attendant_id(hub_id=table_id)
+    attendant_app_id = user.get_app_id(attendant_id)
+
+    table_name = hub.get_table_name(hub_id=table_id)
+
+    hub.trigger_notification(attendant_app_id=attendant_app_id,
+                             table_name=table_name)
 
 
 @app.route('/hello')

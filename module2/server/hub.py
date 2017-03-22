@@ -1,5 +1,10 @@
 import db
+import os
+from pyfcm import FCMNotification
+
 from db.hub_db import HubDb
+
+api_key = os.environ.get('fcm_api_key')
 
 
 class Hub:
@@ -18,5 +23,19 @@ class Hub:
     def get_attendant_id(self, hub_id):
         return self.db.get_hub_attendant_id(hub_id=hub_id)
 
-    def trigger_notification(self, attendant_id):
-        pass
+    def get_table_name(self, hub_id):
+        return self.db.get_table_name(hub_id=hub_id)
+
+    def trigger_notification(self, attendant_app_id, table_name):
+        push_service = FCMNotification(api_key=api_key)
+
+        message_title = "Resty Update"
+        message_body = "{} is requesting your service!".format(table_name)
+
+        result = push_service.notify_single_device(registration_id=attendant_app_id,
+                                                   message_title=message_title,
+                                                   message_body=message_body)
+        if result['success'] == 1:
+            return True
+        else:
+            return False

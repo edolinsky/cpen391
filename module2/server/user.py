@@ -51,3 +51,9 @@ class User:
             return ''
 
         return self.db.get_user_restaurant(user_id=user_id)
+
+    def update_app_id(self, app_id):
+        return self.db.update_reg_id(email=self.email, reg_id=app_id)
+
+    def get_app_id(self, user_id):
+        return self.db.get_reg_id(user_id=user_id)

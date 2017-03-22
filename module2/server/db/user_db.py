@@ -187,3 +187,42 @@ class UserDb(Database):
 
         self.close()
         return restaurant_id
+
+    def get_reg_id(self, user_id):
+        self.connect()
+
+        android_reg_id = ''
+        query = ("SELECT android_reg_id FROM user "
+                 "WHERE id = '{}';").format(user_id)
+        try:
+            self.cursor.execute(query)
+            android_reg_id = self.cursor.fetchone()['android_reg_id']
+        except MySQLdb.Error:
+            print "Error: Unable to fetch data."
+
+        self.close()
+        return android_reg_id
+
+    def update_reg_id(self, email, reg_id):
+        """
+        Update a user's unique app registration id given their email.
+        :param email:
+        :param reg_id:
+        :return:
+        """
+        success = False
+        self.connect()
+
+        query = "UPDATE user SET android_reg_id = '{}' WHERE email = '{}';".format(reg_id, email)
+        try:
+            self.cursor.execute(query)
+            success = True
+        except MySQLdb.Error:
+            print "Error: Unable to update data."
+            self.conn.rollback()
+            self.close()
+            return success
+
+        self.conn.commit()
+        self.close()
+        return success
