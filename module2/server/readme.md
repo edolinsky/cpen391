@@ -103,10 +103,12 @@ The user has been created, and associated with the particular restaurant.
 ## Menu Endpoint
 `/menu`
 
-Methods supported: `GET`
+Methods supported: `GET, POST`
 
 ### Menu GET
 _GET http:\/\/piquemedia.me/menu?restaurant\_id=<id>&type=appetizer_
+
+A Menu GET request is a query for a particular restaurant's menu items.
 
 Parameters:
 * `restaurant_id`: unique ID of the restaurant to be used to retrieve
@@ -157,10 +159,74 @@ following properties:
 * `price`: Price of the item, with one or two digits post-decimal
 * `type`: enumerated menu type of the item
 
+### Menu POST
+_POST http:\/\/piquemedia.me/menu_
+
+This endpoint is used to create new menu items under an existing restaurant.
+
+Request body:
+```json
+{"restaurant_id": "f2e1027e07",
+ "items": [
+   {
+     "name": "Crackalicious Brussel Sprouts",
+     "type": "appetizer",
+     "description": "Crispy brussel sprouts with black pepper, prosciutto, parmesan and lemon.",
+     "price": 7.95
+   },
+   {
+     "name": "Crunchy Free Range Chicken Karage",
+     "type": "appetizer",
+     "description": "Crunchy bites of free range chicken w/ garlic chips, ponzu mayo and lime pepper dipping sauce.",
+     "price": 9.95
+   },
+   {
+     "name": "Pho Nachos",
+     "type": "appetizer",
+     "description": "The Koerner's trademark, patent pending signature dish. Braised beef, bean sprouts, mozzarella, lime, cilantro, Hoisin and Sriracha.",
+     "price": 17.95
+   }
+ ]
+}
+```
+Where the parameters are similar to those detailed in the _Menu GET_ section above.
+
+Response on Success:
+```json
+{
+  "items": [
+    {
+      "description": "Crispy brussel sprouts with black pepper, prosciutto, parmesan and lemon.", 
+      "id": "a51d4f40d4", 
+      "name": "Crackalicious Brussel Sprouts", 
+      "price": 7.95, 
+      "type": "appetizer"
+    }, 
+    {
+      "description": "Crunchy bites of free range chicken w/ garlic chips, ponzu mayo and lime pepper dipping sauce.", 
+      "id": "fdc5d80502", 
+      "name": "Crunchy Free Range Chicken Karage", 
+      "price": 9.95, 
+      "type": "appetizer"
+    }, 
+    {
+      "description": "The Koerner's trademark, patent pending signature dish. Braised beef, bean sprouts, mozzarella, lime, cilantro, Hoisin and Sriracha.", 
+      "id": "5963f01899", 
+      "name": "Pho Nachos", 
+      "price": 17.95, 
+      "type": "appetizer"
+    }
+  ], 
+  "restaurant_id": "f2e1027e07"
+}
+```
+Upon success, you'll see that the same object is returned, but identification numbers have
+been assigned to each of the menu items.
+
 ## Order Endpoint
 `/order`
 
-Methods supported: `POST, GET`
+Methods supported: `GET, POST`
 
 ### Order POST
 Request body:
@@ -279,15 +345,16 @@ The response echoes the order and restaurant IDs, and includes a list of objects
 * `status`: the status of the ordered item
 * `type`: the menu item type of the ordered item
 
-If `"Content-Type": "text/tab-separated-values"` is set, the response will be in TSV format, with header line.
+If `"Content-Type": "text/csv"` is set, the response will be in CSV format.
 
 Response on Success:
 ```
-id	status	name	customer_name	price	type	menu_id	description
-179a6f7f56	placed	Corona	Erik	6.0	alcoholic	HMw4vmcmqy	Yeah, we know you don't really like beer.
-937db81c0f	placed	Corona	Erik	6.0	alcoholic	HMw4vmcmqy	Yeah, we know you don't really like beer.
-b5e1d81c47	placed	Caesar Salad	Erik	99.5	appetizer	2rs7U6patW	The least healthy of the healthy options.
+Corona,Erik,placed
+Corona,Erik,placed
+Caesar Salad,Erik,cancelled
 ```
+Note that the item name, name of consumer, and status are the only three fields provided
+when using this response format.
 
 ## Orders Endpoint
 `/orders`
@@ -363,6 +430,35 @@ Requests contain the following fields:
         * `complete`
         * `cancelled`
 
+## Restaurant Endpoint
+`/restaurant`
+
+Methods supported: `POST`
+
+This endpoint allows for simple creation of new restaurants. It should not be 
+public-facing, and thus should not be included in the user application.
+
+### Restaurant POST
+_POST http:\/\/piquemedia.me\/restaurant_
+
+Request body:
+```json
+{"name": "Koerner's Pub"}
+```
+All that is needed here is the name of the restaurant. This will likely be fleshed
+out in the future, but we do not store more than the name at this point.
+
+Response on success:
+```json
+{
+"message": "Restaurant Created.",
+"name": "Koerner's Pub",
+"restaurant_id": "f2e1027e07"
+}
+```
+A restaurant ID has been created and is associated with this restaurant. A message
+is also included, but is unimportant.
+
 ## Hello Endpoint
 `/hello`
 
@@ -376,7 +472,6 @@ Response:
   "message": "Hello World!"
 }
 ```
-
 
 ## Teapot Endpoint
 `/teapot`
