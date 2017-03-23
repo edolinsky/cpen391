@@ -19,6 +19,36 @@ class MenuDb(Database):
     def close(self):
         Database.close(self)
 
+    def create_menu(self, menu_info):
+
+        # Prepare list of tuples from specified list of dicts.
+        menu_tuples = []
+        for item in menu_info['items']:
+            menu_tuples.append((item['id'], menu_info['restaurant_id'], item['name'],
+                                item['type'], item['description'], item['price']))
+
+        query = ("INSERT INTO menu (id, restaurant_id, name, type, description, price) "
+                 "VALUES (%s, %s, %s, %s, %s, %s);")
+        self.connect()
+
+        try:
+            self.cursor.executemany(query=query, args=menu_tuples)
+        except MySQLdb.Error as e:
+            print "Unable to update data: {}".format(e)
+            self.conn.rollback()
+            self.close()
+
+            # Add error message and remove any information that is now invalid.
+            menu_info.update({'error': 'Failed to submit menu.'})
+            print menu_info
+            menu_info.pop('items')
+            return menu_info
+
+        self.conn.commit()
+        self.close()
+
+        return menu_info
+
     def get_menu(self, restaurant_id):
         """
         Retrieve all items in a restaurant's menu given the restaurant's ID.

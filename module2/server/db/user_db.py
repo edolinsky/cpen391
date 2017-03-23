@@ -131,7 +131,7 @@ class UserDb(Database):
 
         # Create the user
         query = ("INSERT INTO user (id, email, password, affinity) "
-                 "VALUES ('{}', '{}', '{}', '{}'));").format(
+                 "VALUES ('{}', '{}', '{}', '{}');").format(
             user_id, email, password, affinity
         )
 

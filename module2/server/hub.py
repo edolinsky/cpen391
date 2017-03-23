@@ -26,7 +26,8 @@ class Hub:
     def get_table_name(self, hub_id):
         return self.db.get_table_name(hub_id=hub_id)
 
-    def trigger_notification(self, attendant_app_id, table_name):
+    @staticmethod
+    def trigger_notification(attendant_app_id, table_name):
         push_service = FCMNotification(api_key=api_key)
 
         message_title = "Resty Update"
@@ -38,4 +39,5 @@ class Hub:
         if result['success'] == 1:
             return True
         else:
+            print "Notification error: {}".format(result)
             return False

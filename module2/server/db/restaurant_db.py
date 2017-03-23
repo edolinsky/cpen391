@@ -1,5 +1,6 @@
 import MySQLdb
 from database import Database
+from create_table import CreateTable
 
 
 class RestaurantDb(Database):
@@ -20,10 +21,33 @@ class RestaurantDb(Database):
     def get_restaurant(self, name):
         pass
 
-    def insert_restaurant(self, name):
-        # insert in restaurant table
-        # create table with name 'restaurant_id'
-        pass
+    def create_restaurant(self, restaurant_id, name):
+        tablecreator = CreateTable()
+        query = "INSERT INTO restaurants (id, name) VALUES (\"{}\", \"{}\");".format(restaurant_id, name)
+        self.connect()
+
+        try:
+            self.cursor.execute(query)
+        except MySQLdb.Error as e:
+            print "Error: Unable to insert data: {}".format(e)
+            self.conn.rollback()
+            self.close()
+            return {'error': 'Unable to register restaurant.'}
+
+        create_query = tablecreator.create_restaurant_table(restaurant_id=restaurant_id)
+
+        try:
+            self.cursor.execute(create_query)
+        except MySQLdb.Error:
+            print "Error: Unable to create restaurant."
+            self.conn.rollback()
+            self.close()
+            return {'error': 'Unable to create restaurant.'}
+
+        self.conn.commit()
+        return {'restaurant_id': restaurant_id,
+                'name': name,
+                'message': 'Restaurant Created.'}
 
     def restaurant_exists(self, restaurant_id):
 

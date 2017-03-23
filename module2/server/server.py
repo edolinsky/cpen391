@@ -167,7 +167,7 @@ def signup_endpoint():
             return jsonify(user_info), CREATED
 
 
-@app.route('/menu', methods=['GET'])
+@app.route('/menu', methods=['GET', 'POST'])
 def menu_endpoint(item_type='', restaurant_id=''):
     """
     Handles simple requests corresponding to a restaurant's menu.
@@ -176,9 +176,16 @@ def menu_endpoint(item_type='', restaurant_id=''):
     :return:
     """
 
+    request_body = {}
+
     # Parse fields from request parameters.
-    restaurant_id = request.args.get('restaurant_id', restaurant_id)
-    item_type = request.args.get('item_type', item_type)
+    if request.method == 'GET':
+        restaurant_id = request.args.get('restaurant_id', restaurant_id)
+        item_type = request.args.get('item_type', item_type)
+
+    elif request.method == 'POST':
+        request_body = request.get_json()
+        restaurant_id = request_body.get('restaurant_id', '')
 
     # restaurant_id must be specified.
     if not restaurant_id:
@@ -186,40 +193,61 @@ def menu_endpoint(item_type='', restaurant_id=''):
         return response, BAD_REQUEST
 
     restaurant = Restaurant(restaurant_id)
-    menu = Menu(restaurant_id=restaurant_id)
 
-    # Restaurant must exist to retrieve menu.
+    # Restaurant must exist to create menu.
     if not restaurant.exists():
         response = jsonify({'restaurant_id': restaurant_id,
                             'error': 'Specified restaurant does not exist.'})
         return response, BAD_REQUEST
 
-    # Item type is specified; get menu items matching that type.
-    elif item_type:
+    if request.method == 'GET':
+        menu = Menu(restaurant_id=restaurant_id)
 
-        # Specified item type exists.
-        if item_type in menu.db.item_types:
-            submenu = menu.get_submenu(item_type=item_type)
-            if 'error' in submenu.keys():
-                return jsonify(submenu), SERVER_ERRROR
+        # Item type is specified; get menu items matching that type.
+        if item_type:
+
+            # Specified item type exists.
+            if item_type in menu.db.item_types:
+                submenu = menu.get_submenu(item_type=item_type)
+                if 'error' in submenu.keys():
+                    return jsonify(submenu), SERVER_ERRROR
+                else:
+                    return jsonify(submenu), OK
+
             else:
-                return jsonify(submenu), OK
+                # Specified item type does not exist.
+                response = jsonify({'restaurant_id': restaurant_id,
+                                    'item_type': item_type,
+                                    'error': 'Invalid item type.',
+                                    'valid_types': restaurant.db.item_types})
+                return response, BAD_REQUEST
 
-        # Specified item type does not exist.
+        # Item type is not specified; get all menu items.
         else:
-            response = jsonify({'restaurant_id': restaurant_id,
-                                'item_type': item_type,
-                                'error': 'Invalid item type.',
-                                'valid_types': restaurant.db.item_types})
-            return response, BAD_REQUEST
+            full_menu = menu.get_menu()
+            if 'error' in full_menu.keys():
+                return jsonify(full_menu), SERVER_ERRROR
+            else:
+                return jsonify(full_menu), OK
 
-    # Item type is not specified; get all menu items.
-    else:
-        full_menu = menu.get_menu()
-        if 'error' in full_menu.keys():
-            return jsonify(full_menu), SERVER_ERRROR
+    elif request.method == 'POST':
+
+        # List of items must exist and must be non-empty.
+        if 'items' not in request_body:
+            request_body.update({'error': 'List of items is not specified.'})
+            return jsonify(request_body), BAD_REQUEST
+
+        elif len(request_body['items']) < 1:
+            request_body.update({'error': 'List of items is empty.'})
+            return jsonify(request_body), BAD_REQUEST
+
+        menu = Menu(restaurant_id=restaurant_id)
+        menu_response = menu.create_menu(menu_info=request_body)
+
+        if 'error' in menu_response:
+            return jsonify(menu_response), SERVER_ERRROR
         else:
-            return jsonify(full_menu), OK
+            return jsonify(menu_response), OK
 
 
 @app.route('/order', methods=['GET', 'POST', 'PUT'])
@@ -371,16 +399,38 @@ def orders_endpoint(query='open', restaurant_id=''):
             return jsonify(update_info), OK
 
 
-@app.route('/call_server', methods=['POST'])
-def call_server():
+@app.route('/restaurant', methods=['POST'])
+def restaurant_endpoint():
     request_body = flask.request.get_json()
 
+    if request.content_type == 'POST':
+        # Restaurant name must be supplied in request body.
+        if 'name' in request_body:
+            restaurant_name = request_body['name']
+        else:
+            request_body.update({'error': 'Restaurant name not specified.'})
+            return jsonify(request_body), BAD_REQUEST
+
+        # Create new restaurant, and return result to user.
+        restaurant = Restaurant(restaurant_id='')
+        restaurant_info = restaurant.create(name=restaurant_name)
+
+        if 'error' in restaurant_info:
+            return jsonify(restaurant_info), SERVER_ERRROR
+        else:
+            return jsonify(restaurant_info), OK
+
+
+@app.route('/call_server', methods=['POST'])
+def call_server_endpoint():
+    request_body = flask.request.get_json()
+
+    # Restaurant ID and Table ID must be specified in request body.
     if 'restaurant_id' in request_body:
         restaurant_id = request_body['restaurant_id']
     else:
         request_body.update({'error': 'Restaurant ID is not specified.'})
         return jsonify(request_body), BAD_REQUEST
-
     if 'table_id' in request_body:
         table_id = request_body['table_id']
     else:
@@ -390,13 +440,22 @@ def call_server():
     hub = Hub(restaurant_id=restaurant_id)
     user = User('')
 
+    # Get current attendant user from hub information.
     attendant_id = hub.get_attendant_id(hub_id=table_id)
     attendant_app_id = user.get_app_id(attendant_id)
 
+    # Get table name for message body.
     table_name = hub.get_table_name(hub_id=table_id)
 
-    hub.trigger_notification(attendant_app_id=attendant_app_id,
-                             table_name=table_name)
+    # Trigger notification to attendant.
+    success = hub.trigger_notification(attendant_app_id=attendant_app_id,
+                                       table_name=table_name)
+    if success:
+        request_body.update({'message': 'Notification Successful.'})
+        return jsonify(request_body), OK
+    else:
+        request_body.update({'error': 'Could not send Notification.'})
+        return jsonify(request_body), SERVER_ERRROR
 
 
 @app.route('/hello')

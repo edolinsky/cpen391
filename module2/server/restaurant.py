@@ -16,3 +16,9 @@ class Restaurant:
 
     def get_open_orders(self):
         return self.db.select_all_open_orders(self.restaurant_id)
+
+    def create(self, name):
+        self.restaurant_id = self.db.generate_id()
+
+        return self.db.create_restaurant(restaurant_id=self.restaurant_id, name=name)
+

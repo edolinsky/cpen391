@@ -42,3 +42,30 @@ class Database:
     @staticmethod
     def generate_id():
         return str(uuid.uuid4().hex)[-10:]
+
+
+def collision_test():
+    """
+    Tests for ID collisions. Do not run with regular unit tests.
+    :return:
+    """
+    num_keys = 1000000  # One million.
+    db = Database(db='', host='', user='', passwd='')
+    collision_count = 0
+    key_count = 0
+    keys = {}
+    while key_count < num_keys:
+        key = db.generate_id()
+        if key in keys:
+            collision_count += 1
+        else:
+            keys.update({key: ''})
+        key_count += 1
+    print "Collision test: {} Collisions in {} keys.".format(collision_count, num_keys)
+
+
+if __name__ == '__main__':
+    # Tests
+    collision_test()
+
+
