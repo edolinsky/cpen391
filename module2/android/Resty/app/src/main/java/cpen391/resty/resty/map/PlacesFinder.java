@@ -1,4 +1,4 @@
-package cpen391.resty.resty;
+package cpen391.resty.resty.map;
 
 import android.content.Context;
 import android.location.Location;
@@ -24,6 +24,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import cpen391.resty.resty.R;
 
 /**
  * based off of http://stackoverflow.com/questions/30161395/im-trying-to-search-nearby-places-such-as-banks-restaurants-atms-inside-the-d

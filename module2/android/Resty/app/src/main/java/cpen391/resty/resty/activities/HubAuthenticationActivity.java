@@ -1,8 +1,9 @@
-package cpen391.resty.resty;
+package cpen391.resty.resty.activities;
 
 import android.os.Bundle;
 import android.view.View;
 
+import cpen391.resty.resty.R;
 import cpen391.resty.resty.ServerRequests.RestyMenuRequest;
 import cpen391.resty.resty.utils.TestDataUtils;
 

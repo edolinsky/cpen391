@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
-import cpen391.resty.resty.HubAuthenticationActivity;
+import cpen391.resty.resty.activities.HubAuthenticationActivity;
 import cpen391.resty.resty.ServerRequests.ServerRequestConstants.Endpoint;
 
 public class RestySigninRequest extends RestyRequest {

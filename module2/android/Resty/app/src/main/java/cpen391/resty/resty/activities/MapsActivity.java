@@ -1,4 +1,4 @@
-package cpen391.resty.resty;
+package cpen391.resty.resty.activities;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -16,9 +16,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import cpen391.resty.resty.map.PlacesFinder;
+import cpen391.resty.resty.R;
 import cpen391.resty.resty.utils.PermissionUtils;
 
 /**

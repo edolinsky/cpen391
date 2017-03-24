@@ -9,9 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONObject;
-
-import cpen391.resty.resty.MenuActivity;
+import cpen391.resty.resty.activities.MenuActivity;
 import cpen391.resty.resty.ServerRequests.ServerRequestConstants.Endpoint;
 
 public class RestyMenuRequest extends RestyRequest {

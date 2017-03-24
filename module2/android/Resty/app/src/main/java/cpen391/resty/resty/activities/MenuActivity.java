@@ -1,4 +1,4 @@
-package cpen391.resty.resty;
+package cpen391.resty.resty.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +14,9 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpen391.resty.resty.menu.MenuItem;
+import cpen391.resty.resty.menu.MenuItemAdapter;
+import cpen391.resty.resty.R;
 import cpen391.resty.resty.ServerRequests.RestyMenuRequest;
 
 public class MenuActivity extends AppCompatActivity {

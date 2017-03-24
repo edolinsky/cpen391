@@ -1,4 +1,4 @@
-package cpen391.resty.resty;
+package cpen391.resty.resty.menu;
 
 
 public class MenuItem {

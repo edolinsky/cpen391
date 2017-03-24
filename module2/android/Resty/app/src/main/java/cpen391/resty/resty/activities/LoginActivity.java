@@ -1,4 +1,4 @@
-package cpen391.resty.resty;
+package cpen391.resty.resty.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import cpen391.resty.resty.R;
 import cpen391.resty.resty.ServerRequests.RestySigninRequest;
 
 public class LoginActivity extends AppCompatActivity {

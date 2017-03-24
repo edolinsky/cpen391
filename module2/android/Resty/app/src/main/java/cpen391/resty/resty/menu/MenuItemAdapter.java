@@ -1,4 +1,4 @@
-package cpen391.resty.resty;
+package cpen391.resty.resty.menu;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,10 +8,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import cpen391.resty.resty.R;
 
 public class MenuItemAdapter extends ArrayAdapter<MenuItem> implements View.OnClickListener {
     private ArrayList<MenuItem> menu;

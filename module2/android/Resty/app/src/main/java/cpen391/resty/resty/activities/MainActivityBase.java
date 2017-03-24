@@ -1,4 +1,4 @@
-package cpen391.resty.resty;
+package cpen391.resty.resty.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
