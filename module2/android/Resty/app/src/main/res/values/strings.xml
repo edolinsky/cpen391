@@ -7,6 +7,9 @@
     <string name="loginButtonTitle">Login</string>
     <string name="loginSignupButtonTitle">Sign-up</string>
 
+    <!-- Toolbar Strings -->
+    <string name="restaurant_menu">Restaurant Menu</string>
+
     <!-- Authentication Screen -->
     <string name="authenticateTitle">Authenticate</string>
 
