@@ -17,7 +17,7 @@ import java.util.List;
 import cpen391.resty.resty.menu.MenuItem;
 import cpen391.resty.resty.menu.MenuItemAdapter;
 import cpen391.resty.resty.R;
-import cpen391.resty.resty.ServerRequests.RestyMenuRequest;
+import cpen391.resty.resty.serverRequests.RestyMenuRequest;
 
 public class MenuActivity extends AppCompatActivity {
 

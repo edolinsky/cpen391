@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import cpen391.resty.resty.R;
-import cpen391.resty.resty.ServerRequests.RestySigninRequest;
+import cpen391.resty.resty.serverRequests.RestySigninRequest;
 
 public class LoginActivity extends AppCompatActivity {
 
