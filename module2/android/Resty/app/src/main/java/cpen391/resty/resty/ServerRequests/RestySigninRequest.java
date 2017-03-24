@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import org.json.JSONObject;
@@ -18,10 +19,12 @@ public class RestySigninRequest extends RestyRequest {
     private static class LoginRequest{
         String user;
         String password;
+        String android_reg_id;
 
         LoginRequest(String name, String password){
             this.user = name;
             this.password = password;
+            this.android_reg_id = FirebaseInstanceId.getInstance().getToken();
         }
 
         String toJson(){
