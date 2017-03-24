@@ -35,5 +35,5 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tablePin" />
 
-    <include layout="@layout/navbar"></include>
+    <include layout="@layout/navbar" />
 </android.support.constraint.ConstraintLayout>
