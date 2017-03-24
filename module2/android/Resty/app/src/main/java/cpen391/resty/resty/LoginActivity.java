@@ -46,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         // pretend sign-in request was successful
         // switch to main screen
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, HubAuthenticationActivity.class);
         startActivity(intent);
 
     }

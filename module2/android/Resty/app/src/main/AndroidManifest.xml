@@ -25,7 +25,8 @@
         </activity>
         <activity android:name=".HubAuthenticationActivity" />
         <activity android:name=".MenuActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivityBase" />
+        <activity android:name=".MapsActivity" />
     </application>
 
 </manifest>

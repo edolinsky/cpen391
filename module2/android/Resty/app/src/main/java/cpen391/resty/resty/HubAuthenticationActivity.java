@@ -1,13 +1,12 @@
 package cpen391.resty.resty;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import cpen391.resty.resty.ServerRequests.RestyMenuRequest;
 import cpen391.resty.resty.utils.TestDataUtils;
 
-public class HubAuthenticationActivity extends AppCompatActivity {
+public class HubAuthenticationActivity extends MainActivityBase {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -9,6 +9,8 @@
 
     <!-- Toolbar Strings -->
     <string name="restaurant_menu">Restaurant Menu</string>
+    <string name="map">Map</string>
+    <string name="settings">Settings</string>
 
     <!-- Authentication Screen -->
     <string name="authenticateTitle">Authenticate</string>

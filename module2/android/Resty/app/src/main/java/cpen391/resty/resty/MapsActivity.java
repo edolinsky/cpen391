@@ -25,7 +25,7 @@ import cpen391.resty.resty.utils.PermissionUtils;
  * Contains some code from the google maps android ap example project at
  * https://github.com/googlemaps/android-samples
  */
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
+public class MapsActivity extends MainActivityBase implements OnMapReadyCallback,
         OnMyLocationButtonClickListener, ActivityCompat.OnRequestPermissionsResultCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
