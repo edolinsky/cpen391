@@ -1,0 +1,55 @@
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/actionbarT"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="0dp"
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
+    android:background="@android:color/darker_gray"
+    android:minHeight="?attr/actionBarSize"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:theme="@style/Base.Theme.AppCompat.CompactMenu">
+
+    <LinearLayout
+        android:id="@+id/toolbarmenucontainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:clickable="true"
+            android:onClick="menuClick"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/ic_restaurant_menu_black_48dp" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:clickable="true"
+            android:onClick="mapsClick"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/ic_map_black_48dp" />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:clickable="true"
+            android:onClick="settingsClick"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/ic_settings_black_48dp" />
+
+    </LinearLayout>
+
+</android.support.v7.widget.Toolbar>
