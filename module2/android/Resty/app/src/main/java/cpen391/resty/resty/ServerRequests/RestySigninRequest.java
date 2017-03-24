@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import org.json.JSONObject;
 
 import cpen391.resty.resty.HubAuthenticationActivity;
+import cpen391.resty.resty.MainActivity;
 import cpen391.resty.resty.ServerRequests.ServerRequestConstants.Endpoint;
 
 public class RestySigninRequest extends RestyRequest {
@@ -64,7 +65,7 @@ public class RestySigninRequest extends RestyRequest {
             @Override
             public void onResponse(JSONObject response) {
 
-                Intent intent = new Intent(context, HubAuthenticationActivity.class);
+                Intent intent = new Intent(context, MainActivity.class);
                 context.startActivity(intent);
 
             }
