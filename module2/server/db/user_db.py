@@ -48,7 +48,9 @@ class UserDb(Database):
         query = "SELECT affinity FROM user WHERE EMAIL = '{}';".format(email)
         try:
             self.cursor.execute(query)
-            user_affinity = self.cursor.fetchone()['affinity']
+            result = self.cursor.fetchone()
+            if result is not None:
+                user_affinity = result['affinity']
         except MySQLdb.Error:
             print "Error: Unable to fetch data."
 
@@ -67,7 +69,9 @@ class UserDb(Database):
         query = "SELECT id FROM user WHERE EMAIL = '{}';".format(email)
         try:
             self.cursor.execute(query)
-            user_id = self.cursor.fetchone()['id']
+            result = self.cursor.fetchone()
+            if result is not None:
+                user_id = result['id']
         except MySQLdb.Error:
             print "Error: Unable to fetch data."
 
@@ -102,7 +106,7 @@ class UserDb(Database):
         self.connect()
         exists = 0
 
-        query = "SELECT EXISTS(SELECT * FROM user where EMAIL = '{}')AS USER_EXISTS;".format(email)
+        query = "SELECT EXISTS(SELECT * FROM user where email = '{}')AS USER_EXISTS;".format(email)
         try:
             self.cursor.execute(query)
             exists = self.cursor.fetchone()['USER_EXISTS']
@@ -196,7 +200,9 @@ class UserDb(Database):
                  "WHERE id = '{}';").format(user_id)
         try:
             self.cursor.execute(query)
-            android_reg_id = self.cursor.fetchone()['android_reg_id']
+            result = self.cursor.fetchone()
+            if result is not None:
+                android_reg_id = result['android_reg_id']
         except MySQLdb.Error:
             print "Error: Unable to fetch data."
 
@@ -226,3 +232,37 @@ class UserDb(Database):
         self.conn.commit()
         self.close()
         return success
+
+    def delete_user(self, email):
+        self.connect()
+
+        query = "DELETE FROM user WHERE email='{}';".format(email)
+
+        try:
+            self.cursor.execute(query)
+        except MySQLdb.Error:
+            print "Error: Unable to delete user."
+            self.conn.rollback()
+            self.close()
+            return False
+
+        self.conn.commit()
+        self.close()
+        return True
+
+    def delete_from_staff(self, user_id):
+        self.connect()
+
+        query = "DELETE FROM restaurant_staff WHERE user_id='{}';".format(user_id)
+
+        try:
+            self.cursor.execute(query)
+        except MySQLdb.Error:
+            print "Error: Unable to delete user from staff table."
+            self.conn.rollback()
+            self.close()
+            return False
+
+        self.conn.commit()
+        self.close()
+        return True

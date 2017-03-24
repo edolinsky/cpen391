@@ -57,3 +57,24 @@ class User:
 
     def get_app_id(self, user_id):
         return self.db.get_reg_id(user_id=user_id)
+
+    def delete(self):
+        response = ""
+
+        if self.get_affinity() in self.staff_users:
+            if self.remove_from_staff():
+                response += "Removed from staff and "
+            else:
+                response += "Failed to delete user."
+                return {'error': response}
+
+        if self.db.delete_user(email=self.email):
+            response += "deleted user."
+        else:
+            response += "Failed to delete user."
+
+        return {'message': response}
+
+    def remove_from_staff(self):
+        user_id = self.get_id()
+        return self.db.delete_from_staff(user_id=user_id)

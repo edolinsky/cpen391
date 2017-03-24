@@ -40,7 +40,7 @@ class HubDb(Database):
 
     def get_hub_attendant_id(self, hub_id):
         attendant_id = ''
-        query = "SELECT attendant FROM hubs WHERE id = '{}';".format(hub_id)
+        query = "SELECT attendant FROM hub_attendant WHERE hub_id = '{}';".format(hub_id)
 
         self.connect()
         try:
@@ -54,7 +54,7 @@ class HubDb(Database):
 
     def get_table_name(self, hub_id):
         table_name = ''
-        query = "SELECT table_name FROM hubs WHERE id = '{}'".format(hub_id)
+        query = "SELECT table_name FROM hub_attendant WHERE hub_id = '{}'".format(hub_id)
 
         self.connect()
         try:
