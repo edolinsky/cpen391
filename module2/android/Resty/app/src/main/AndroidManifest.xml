@@ -17,7 +17,7 @@
             android:value="@string/google_maps_key" />
 
         <service
-            android:name="firebase.RestyFirebaseIIDService"
+            android:name=".firebase.RestyFirebaseIIDService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

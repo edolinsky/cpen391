@@ -33,9 +33,11 @@ class Hub:
         message_title = "Resty Update"
         message_body = "{} is requesting your service!".format(table_name)
 
+        message = {'message_title': message_title,
+                   'message_body': message_body}
+
         result = push_service.notify_single_device(registration_id=attendant_app_id,
-                                                   message_title=message_title,
-                                                   message_body=message_body)
+                                                   data_message=message)
         if result['success'] == 1:
             return True
         else:
