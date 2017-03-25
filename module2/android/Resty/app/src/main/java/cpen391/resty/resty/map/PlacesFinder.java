@@ -57,7 +57,7 @@ public class PlacesFinder {
         sb.append("&radius=" + context.getString(R.string.radius));
         sb.append("&types=" + context.getString(R.string.searchType));
         sb.append("&sensor=true");
-        sb.append("&key=" + context.getString(R.string.google_maps_key));
+        sb.append("&key=" + context.getString(R.string.google_places_key));
 
         Log.d("Map", "api: " + sb.toString());
 
