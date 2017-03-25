@@ -54,7 +54,7 @@ class HubDb(Database):
 
     def get_table_name(self, hub_id):
         table_name = ''
-        query = "SELECT table_name FROM hub_attendant WHERE hub_id = '{}'".format(hub_id)
+        query = "SELECT table_name FROM hub_attendant WHERE hub_id = '{}';".format(hub_id)
 
         self.connect()
         try:
@@ -65,3 +65,19 @@ class HubDb(Database):
         self.close()
 
         return table_name
+
+    def get_hub_restaurant_id(self, hub_id):
+        restaurant_id = ''
+        query = "SELECT restaurant_id FROM hubs WHERE id = '{}';".format(hub_id)
+
+        self.connect()
+        try:
+            self.cursor.execute(query)
+            result = self.cursor.fetchone()
+            if result is not None:
+                restaurant_id = result['restaurant_id']
+        except MySQLdb.Error:
+            print "Error: Unable to fetch data."
+        self.close()
+
+        return restaurant_id

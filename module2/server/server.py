@@ -219,7 +219,7 @@ def menu_endpoint(item_type='', restaurant_id=''):
                 response = jsonify({'restaurant_id': restaurant_id,
                                     'item_type': item_type,
                                     'error': 'Invalid item type.',
-                                    'valid_types': restaurant.db.item_types})
+                                    'valid_types': menu.db.item_types})
                 return response, BAD_REQUEST
 
         # Item type is not specified; get all menu items.
@@ -316,7 +316,7 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
         order_info = order.get_order(order_id=order_id,
                                      restaurant_id=restaurant_id,
                                      content_type=request.content_type)
-        if request.content_type == 'application/csv':
+        if request.content_type == 'text/csv':
             return order_info
         elif 'error' in order_info:
             return jsonify(order_info), SERVER_ERRROR
@@ -363,6 +363,9 @@ def orders_endpoint(query='open', restaurant_id=''):
             return response, BAD_REQUEST
 
         restaurant = Restaurant(restaurant_id=restaurant_id)
+        if not restaurant.exists():
+            response = jsonify({'error': 'Specified restaurant does not exist.'})
+            return response, BAD_REQUEST
 
         orders = {}
         # Switch on query types, executing corresponding query.
@@ -399,11 +402,31 @@ def orders_endpoint(query='open', restaurant_id=''):
             return jsonify(update_info), OK
 
 
-@app.route('/restaurant', methods=['POST'])
-def restaurant_endpoint():
-    request_body = flask.request.get_json()
+@app.route('/restaurant', methods=['GET', 'POST'])
+def restaurant_endpoint(table_id=''):
 
-    if request.content_type == 'POST':
+    if request.method == 'GET':
+        hub_id = request.args.get('table_id', table_id)
+
+        hub = Hub('')
+        hub.get_restaurant_id(hub_id=hub_id)
+
+        if request.content_type == 'text/csv':
+            print hub.restaurant_id
+            if hub.restaurant_id:
+                return hub.restaurant_id, OK
+            else:
+                return 'error', BAD_REQUEST
+        else:
+            if hub.restaurant_id:
+                return jsonify({'table_id': hub_id,
+                                'restaurant_id': hub.restaurant_id}), OK
+            else:
+                return jsonify({'table_id': hub_id,
+                                'error': 'Specified table ID is not affiliated with a restaurant.'}), BAD_REQUEST
+
+    elif request.method == 'POST':
+        request_body = flask.request.get_json()
         # Restaurant name must be supplied in request body.
         if 'name' in request_body:
             restaurant_name = request_body['name']
@@ -456,6 +479,11 @@ def call_server_endpoint():
     else:
         request_body.update({'error': 'Could not send Notification.'})
         return jsonify(request_body), SERVER_ERRROR
+
+
+@app.route('/server_hub_map', methods=['GET', 'POST', 'DELETE'])
+def server_hub_map_endpoint():
+    pass
 
 
 @app.route('/hello')

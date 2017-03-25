@@ -17,17 +17,44 @@ class Hub:
                         port=db.db_port)
 
     def is_registered(self, hub_id):
+        """
+        Determines whether the specified hub ID is registered to
+        this hub's restaurant.
+        :param hub_id:
+        :return:
+        """
         return self.db.hub_is_affiliated(hub_id=hub_id,
                                          restaurant_id=self.restaurant_id)
 
     def get_attendant_id(self, hub_id):
+        """
+        Retrieves the user ID of the waitstaff attending the
+        specified hub's table.
+        :param hub_id:
+        :return:
+        """
         return self.db.get_hub_attendant_id(hub_id=hub_id)
 
     def get_table_name(self, hub_id):
+        """
+        Retrieves the table name given a hub ID.
+        :param hub_id:
+        :return:
+        """
         return self.db.get_table_name(hub_id=hub_id)
+
+    def get_restaurant_id(self, hub_id):
+        self.restaurant_id = self.db.get_hub_restaurant_id(hub_id)
 
     @staticmethod
     def trigger_notification(attendant_app_id, table_name):
+        """
+        Triggers a Firebase Cloud message to the particular app ID,
+        alerting the waitstaff.
+        :param attendant_app_id:
+        :param table_name:
+        :return:
+        """
         push_service = FCMNotification(api_key=api_key)
 
         message_title = "Resty Update"
