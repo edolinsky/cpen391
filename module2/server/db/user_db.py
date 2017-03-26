@@ -29,7 +29,9 @@ class UserDb(Database):
         query = "SELECT password FROM user WHERE email = '{}';".format(email)
         try:
             self.cursor.execute(query)
-            user_pw = self.cursor.fetchone()['password']
+            result = self.cursor.fetchone()
+            if result is not None:
+                user_pw = result['password']
         except MySQLdb.Error:
             print "Error: Unable to fetch data."
 
@@ -90,7 +92,9 @@ class UserDb(Database):
         query = "SELECT email FROM user WHERE id = '{}';".format(user_id)
         try:
             self.cursor.execute(query)
-            user_email = self.cursor.fetchone()['email']
+            result = self.cursor.fetchone()
+            if result is not None:
+                user_email = result['email']
         except MySQLdb.Error:
             print "Error: Unable to fetch data."
 
@@ -109,7 +113,9 @@ class UserDb(Database):
         query = "SELECT EXISTS(SELECT * FROM user where email = '{}')AS USER_EXISTS;".format(email)
         try:
             self.cursor.execute(query)
-            exists = self.cursor.fetchone()['USER_EXISTS']
+            result = self.cursor.fetchone()
+            if result is not None:
+                exists = result['USER_EXISTS']
         except MySQLdb.Error:
             print "Error: Unable to fetch data."
         self.close()
@@ -185,7 +191,9 @@ class UserDb(Database):
                  "WHERE user_id = '{}';").format(user_id)
         try:
             self.cursor.execute(query)
-            restaurant_id = self.cursor.fetchone()['restaurant_id']
+            result = self.cursor.fetchone()
+            if result is not None:
+                restaurant_id = result['restaurant_id']
         except MySQLdb.Error:
             print "Error: Unable to fetch data."
 

@@ -28,7 +28,9 @@ class HubDb(Database):
         self.connect()
         try:
             self.cursor.execute(query)
-            exists = self.cursor.fetchone()
+            result = self.cursor.fetchone()
+            if result is not None:
+                exists = result['HUB_AFFILIATED']
         except MySQLdb.Error:
             print "Error: Unable to fetch data."
         self.close()
@@ -45,7 +47,9 @@ class HubDb(Database):
         self.connect()
         try:
             self.cursor.execute(query)
-            attendant_id = self.cursor.fetchone()['attendant']
+            result = self.cursor.fetchone()
+            if result is not None:
+                attendant_id = result['attendant']
         except MySQLdb.Error:
             print "Error: Unable to fetch data."
         self.close()
@@ -59,7 +63,9 @@ class HubDb(Database):
         self.connect()
         try:
             self.cursor.execute(query)
-            table_name = self.cursor.fetchone()['table_name']
+            result = self.cursor.fetchone()
+            if result is not None:
+                table_name = result['table_name']
         except MySQLdb.Error:
             print "Error: Unable to fetch data."
         self.close()

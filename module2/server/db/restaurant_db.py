@@ -59,7 +59,9 @@ class RestaurantDb(Database):
         self.connect()
         try:
             self.cursor.execute(query)
-            exists = self.cursor.fetchone()['RESTAURANT_EXISTS']
+            result = self.cursor.fetchone()
+            if result is not None:
+                exists = result['RESTAURANT_EXISTS']
         except MySQLdb.Error:
             print "Error: Unable to fetch data."
         self.close()

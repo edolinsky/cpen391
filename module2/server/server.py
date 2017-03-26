@@ -265,24 +265,10 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
     if request.method in ['POST', 'PUT']:
         # Request has json body.
         order_request = flask.request.get_json()
+        restaurant_id = order_request.get('restaurant_id', '')
+        customer_id = order_request.get('customer_id', '')
+        table_id = order_request.get('table_id', '')
 
-        if 'restaurant_id' in order_request:
-            restaurant_id = order_request['restaurant_id']
-        else:
-            order_request.update({'error': 'Restaurant ID is not specified.'})
-            return jsonify(order_request), BAD_REQUEST
-
-        if 'customer_id' in order_request:
-            customer_id = order_request['customer_id']
-        else:
-            order_request.update({'error': 'Customer ID is not specified.'})
-            return jsonify(order_request), BAD_REQUEST
-
-        if 'table_id' in order_request:
-            table_id = order_request['table_id']
-        else:
-            order_request.update({'error': 'Table ID is not specified.'})
-            return jsonify(order_request), BAD_REQUEST
     else:
         # GET request
         restaurant_id = request.args.get('restaurant_id', restaurant_id)
@@ -290,6 +276,23 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
         customer_id = request.args.get('customer_id', customer_id)
         table_id = request.args.get('table_id', table_id)
         order_request = {}
+
+        # Order ID must be non-empty.
+        if not order_id:
+            order_request.update({'error': 'Order ID must be specified.'})
+            return jsonify(order_request), BAD_REQUEST
+
+    if not restaurant_id:
+        order_request.update({'error': 'Restaurant ID is not specified.'})
+        return jsonify(order_request), BAD_REQUEST
+
+    if not customer_id:
+        order_request.update({'error': 'Customer ID is not specified.'})
+        return jsonify(order_request), BAD_REQUEST
+
+    if not table_id:
+        order_request.update({'error': 'Table ID is not specified.'})
+        return jsonify(order_request), BAD_REQUEST
 
     # Restaurant must exist in database.
     restaurant = Restaurant(restaurant_id=restaurant_id)
@@ -391,7 +394,7 @@ def orders_endpoint(query='open', restaurant_id=''):
         restaurant = Restaurant(restaurant_id=restaurant_id)
         if not restaurant.exists():
             update_request.update({'error': 'Specified restaurant does not exist.'})
-            return update_request, BAD_REQUEST
+            return jsonify(update_request), BAD_REQUEST
 
         order = Order(restaurant_id=restaurant_id)
         update_info = order.update_status(update_info=update_request)

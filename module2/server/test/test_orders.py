@@ -24,25 +24,72 @@ class OrdersTests(LiveServerTestCase):
         pass
 
     def setUp(self):
-        pass
+        self.params = {'restaurant_id': 'test_resto',
+                       'query': 'open'}
+        self.request_body = {"restaurant_id": "test_resto",
+                             "items": [
+                                 {"id": "3838e0e86c", "status": "placed"}
+                             ]
+                             }
+        self.order_id = "3be0d4a448"
+
+    def orders_get(self):
+        return requests.get(self.get_server_url() + self.orders_endpoint,
+                            params=self.params)
+
+    def orders_patch(self):
+        return requests.patch(self.get_server_url() + self.orders_endpoint,
+                              json=self.request_body)
 
     def test_get_success(self):
-        pass
+        r = self.orders_get()
+
+        self.assertEqual(r.status_code, server.OK)
+        self.assertTrue('orders' in r.json())
 
     def test_get_not_supported(self):
-        pass
+        self.params.update({'query': 'garbage'})
+        r = self.orders_get()
+
+        self.assertEqual(r.status_code, server.BAD_REQUEST)
+        self.assertTrue('error' in r.json())
 
     def test_get_no_restaurant(self):
-        pass
+        self.params.pop('restaurant_id')
+        r = self.orders_get()
+
+        self.assertEqual(r.status_code, server.BAD_REQUEST)
+        self.assertTrue('error' in r.json())
 
     def test_get_restaurant_nonexistent(self):
-        pass
+        self.params.update({'restaurant_id': 'garbage'})
+        r = self.orders_get()
+
+        self.assertEqual(r.status_code, server.BAD_REQUEST)
+        self.assertTrue('error' in r.json())
 
     def test_patch_success(self):
-        pass
+        r1 = self.orders_patch()
+
+        self.assertEqual(r1.status_code, server.OK)
+        self.assertEqual(r1.json()['items'][0]['status'], 'placed')
+
+        self.request_body['items'][0].update({'status': 'prep'})
+        r2 = self.orders_patch()
+
+        self.assertEqual(r2.status_code, server.OK)
+        self.assertEqual(r2.json()['items'][0]['status'], 'prep')
 
     def test_patch_no_restaurant(self):
-        pass
+        self.request_body.pop('restaurant_id')
+
+        r = self.orders_patch()
+        self.assertEqual(r.status_code, server.BAD_REQUEST)
+        self.assertTrue('error' in r.json())
 
     def test_patch_restaurant_nonexistent(self):
-        pass
+        self.request_body.update({'restaurant_id': 'garbage'})
+
+        r = self.orders_patch()
+        self.assertEqual(r.status_code, server.BAD_REQUEST)
+        self.assertTrue('error' in r.json())

@@ -25,11 +25,11 @@ class Order:
         order_info = self.db.get_order(restaurant_id=restaurant_id,
                                        order_id=order_id)
 
-        # If client is asking for TSV, parse values from dictionary into string.
-        if content_type == 'application/csv':
+        # If client is asking for CSV, parse values from dictionary into string.
+        if content_type == 'text/csv':
 
             if 'error' in order_info:
-                return "error\n{}".format(order_info['error'])
+                return "error\r\n{}".format(order_info['error'])
 
             else:
                 order_string = ""
@@ -37,7 +37,7 @@ class Order:
                 for item in order_info['items']:
                     item_list = [item['name'], item['customer_name'], item['status']]
 
-                    order_string += ",".join(map(str, item_list)) + "\n"
+                    order_string += ",".join(map(str, item_list)) + "\r\n"
 
                 return order_string
 
