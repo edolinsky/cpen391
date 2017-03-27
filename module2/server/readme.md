@@ -292,8 +292,8 @@ of or modify the order.
 ### Order GET
 _GET http:\/\/piquemedia.me\/order?order\_id=26a00ff96d&customer\_id=test\_user&restaurant\_id=test\_resto&table\_id=test\_table_
 
-Retrieves information about the specified order. `order_id`, `customer_id`, and `restaurant_id`
-are required fields. `table_id` will be a required field shortly (**not yet implemented**).
+Retrieves information about the specified order. `order_id`, `table_id`, `customer_id`, and `restaurant_id`
+are required fields.
 
 Response on success:
 ```json
@@ -364,7 +364,7 @@ Methods supported: `GET, PATCH`
 This endpoint handles viewing orders and editing status of orders as managed by a restaurant.
 
 ### Orders
-_http:\//piquemedia.me/orders?restaurant_id=test_resto&query=open_
+_http:\//piquemedia.me/orders?restaurant\_id=test\_resto&query=open_
 
 Retrieves orders as specified by query parameters.
 
@@ -433,10 +433,31 @@ Requests contain the following fields:
 ## Restaurant Endpoint
 `/restaurant`
 
-Methods supported: `POST`
+Methods supported: `GET, POST`
 
-This endpoint allows for simple creation of new restaurants. It should not be 
-public-facing, and thus should not be included in the user application.
+This endpoint allows for simple creation of new restaurants as well as retrieval
+of restaurant-related information. It should not be public-facing, and thus should 
+not be included in the user application.
+
+### Restaurant GET
+_GET http:\/\/piquemedia.me\/restaurant?table\_id=test\_table_
+
+Intended for use by hub devices, this allows a hub to retrieve the corresponding 
+restaurant ID given its unique hub ID. Both JSON and CSV responses are supported, 
+based on the requested mime type.
+
+JSON response:
+```json
+{
+  "restaurant_id": "test_resto", 
+  "table_id": "test_table"
+}
+```
+
+CSV response:
+```
+test_resto
+```
 
 ### Restaurant POST
 _POST http:\/\/piquemedia.me\/restaurant_
@@ -458,6 +479,125 @@ Response on success:
 ```
 A restaurant ID has been created and is associated with this restaurant. A message
 is also included, but is unimportant.
+
+## Call Server Endpoint
+`/call_server`
+
+Methods supported: `POST`
+
+This endpoint allows hub devices to trigger notifications to staff users.
+
+### Call Server POST
+_POST http:\/\/piquemedia.me\/call\_server_
+
+Request body:
+```json
+{
+  "restaurant_id": "test_resto",
+  "table_id": "0xDEFEC7EDDA7ABA5E"
+}
+```
+
+Response on Success:
+```json
+{
+  "message": "Notification Successful.", 
+  "restaurant_id": "test_resto", 
+  "table_id": "0xDEFEC7EDDA7ABA5E"
+}
+```
+
+## Server Hub Map Endpoint
+`/server_hub_map`
+
+Methods supported: `GET, POST, DELETE`
+
+This endpoint allows staff users to manage the assignment of waitstaff to individual tables.
+
+### Server Hub Map GET
+_GET http:\/\/piquemedia.me\/server\_hub\_map?table\_id=test\_table_
+
+This request supplies the set of all current mappings for the specified restaurant.
+
+### Server Hub Map POST
+_POST http:\/\/piquemedia.me\/server\_hub\_map_
+
+This request updates the restaurant's mappings to reflect those that are specified.
+
+
+Request body:
+```json
+{
+  "restaurant_id": "test_resto",
+  "mappings": [ 
+    {
+      "attendant_id": "71a182e218",
+      "table_id": "0xDEFEC7EDDA7ABA5E"
+    }
+  ]
+}
+```
+
+The following fields are included:
+* `restaurant_id`: the unique ID of the restaurant.
+* `mappings`: a list, containing objects with the following fields:
+    * `attendant_id`: user ID of the waitstaff user to be mapped
+    * `table_id`: hub device ID of the device to be mapped
+
+Response on Success:
+```json
+{
+  "mappings": [
+    {
+      "attendant_id": "71a182e218", 
+      "table_id": "0xDEFEC7EDDA7ABA5E"
+    }
+  ], 
+  "restaurant_id": "test_resto"
+}
+```
+
+### Server Hub Map DELETE
+_DELETE http:\/\/piquemedia.me\/server\_hub\_map?attendant\_id=71a182e218&restaurant\_id=test\_resto_
+
+This request removes the specified user from all hub map entries for the specified restaurant.
+
+Response on Success:
+```json
+{
+  "message": "Removed user from table mappings."
+}
+```
+
+## Update FCM ID Endpoint
+`/update_fcm_id`
+
+Methods supported: `POST`
+
+This endpoint allows mobile devices to automatically update a user's Firebase Cloud Messaging ID.
+
+### Update FCM ID POST
+_POST http:\/\/piquemedia.me\/update\_fcm\_id
+
+```json
+{
+  "user": "test_user@dolins.ky",
+  "android_reg_id": "Attack of the Clones"
+}
+```
+
+The following fields must be specified:
+* `user`: Unique user email
+* `android_reg_id`: Newly generated FCM ID
+
+Response on success:
+```json
+{
+  "android_reg_id": "Attack of the Clones", 
+  "message": "FCM ID Update successful.", 
+  "user": "test_user@dolins.ky"
+}
+```
 
 ## Hello Endpoint
 `/hello`
