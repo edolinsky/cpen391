@@ -194,8 +194,8 @@ class UserDb(Database):
             result = self.cursor.fetchone()
             if result is not None:
                 restaurant_id = result['restaurant_id']
-        except MySQLdb.Error:
-            print "Error: Unable to fetch data."
+        except MySQLdb.Error as e:
+            print "Error: Unable to fetch data. {}".format(e)
 
         self.close()
         return restaurant_id

@@ -24,6 +24,10 @@ SERVER_ERRROR = 500
 
 @app.route('/login', methods=['POST'])
 def login_endpoint():
+    """
+    Handles user login.
+    :return: JSON response body and status code.
+    """
     request_body = request.get_json()
     if 'user' in request_body:
         user_email = request_body['user']
@@ -85,7 +89,7 @@ def login_endpoint():
 def signup_endpoint():
     """
     Handles user account creation
-    :return:
+    :return: JSON response body and status code.
     """
 
     # Parse request body and throw errors if required fields are not included.
@@ -171,9 +175,9 @@ def signup_endpoint():
 def menu_endpoint(item_type='', restaurant_id=''):
     """
     Handles simple requests corresponding to a restaurant's menu.
-    :param item_type:
-    :param restaurant_id:
-    :return:
+    :param item_type: Optional item type to filter response, as listed in MenuDB.item_types.
+    :param restaurant_id: Unique restaurant ID.
+    :return: JSON response body and status code.
     """
 
     request_body = {}
@@ -255,11 +259,11 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
     """
     Handles user- or staff-initiated requests pertaining to individual orders.
     This endpoint does not handle order status.
-    :param order_id:
-    :param restaurant_id:
-    :param customer_id:
-    :param table_id:
-    :return:
+    :param order_id: Unique order ID (only for GET/PUT).
+    :param restaurant_id: Unique restaurant ID.
+    :param customer_id: Unique user ID of customer.
+    :param table_id: Unique hub device ID.
+    :return: JSON response body and status code.
     """
 
     if request.method in ['POST', 'PUT']:
@@ -352,6 +356,13 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
 
 @app.route('/orders', methods=['GET', 'PATCH'])
 def orders_endpoint(query='open', restaurant_id=''):
+    """
+    Handles waitstaff-side requests for restaurant orders, and updates
+    to order item status.
+    :param query: one of the query types as listed in supported_queries.
+    :param restaurant_id: unique restaurant ID.
+    :return: JSON or CSV response body and status code.
+    """
     supported_queries = ['open']
 
     if request.method == 'GET':
@@ -407,6 +418,11 @@ def orders_endpoint(query='open', restaurant_id=''):
 
 @app.route('/restaurant', methods=['GET', 'POST'])
 def restaurant_endpoint(table_id=''):
+    """
+    Handles creation and queries for restaurant data.
+    :param table_id: hub device ID.
+    :return: JSON or CSV response body and status code.
+    """
 
     if request.method == 'GET':
         hub_id = request.args.get('table_id', table_id)
@@ -449,6 +465,10 @@ def restaurant_endpoint(table_id=''):
 
 @app.route('/call_server', methods=['POST'])
 def call_server_endpoint():
+    """
+    Gateway for mobile notifications as initiated by a table hub.
+    :return: JSON response body and status code.
+    """
     request_body = flask.request.get_json()
 
     # Restaurant ID and Table ID must be specified in request body.
@@ -485,8 +505,143 @@ def call_server_endpoint():
 
 
 @app.route('/server_hub_map', methods=['GET', 'POST', 'DELETE'])
-def server_hub_map_endpoint():
-    pass
+def server_hub_map_endpoint(restaurant_id='', attendant_id=''):
+    """
+    Handles updates to waitstaff/table mappings, which is used for
+    mobile notifications.
+    :return: JSON response body and status code.
+    """
+    if request.method == 'POST':
+        # POST Request.
+        request_body = flask.request.get_json()
+        restaurant_id = request_body.get('restaurant_id', '')
+    elif request.method == 'GET':
+        # GET Request.
+        restaurant_id = request.args.get('restaurant_id', restaurant_id)
+        request_body = {}
+    else:
+        # DELETE Request.
+        restaurant_id = request.args.get('restaurant_id', restaurant_id)
+        attendant_id = request.args.get('attendant_id', attendant_id)
+        request_body = {}
+
+    if not restaurant_id:
+        request_body.update({'error': 'Restaurant ID not specified.'})
+        return jsonify(request_body), BAD_REQUEST
+
+    restaurant = Restaurant(restaurant_id=restaurant_id)
+    if not restaurant.exists():
+        request_body.update({'error': 'Specified restaurant does not exist.'})
+        return jsonify(request_body), BAD_REQUEST
+
+    if request.method == 'POST':
+        # update keys.
+        if 'mappings' not in request_body:
+            request_body.update({'error': 'Mappings not specified.'})
+            return jsonify(request_body), BAD_REQUEST
+        elif len(request_body['mappings']) < 1:
+            request_body.update({'error': 'Mappings list is empty.'})
+            return jsonify(request_body), BAD_REQUEST
+
+        mappings = request_body['mappings']
+
+        for mapping in mappings:
+            user = User('')
+            user_id = mapping.get('attendant_id', '')
+            user.get_email(user_id=user_id)
+
+            hub = Hub(restaurant_id=restaurant_id)
+            hub_id = mapping.get('table_id', '')
+
+            if not user.exists():
+                request_body.update({'error': 'Specified user {} does not exist.'.format(user_id)})
+                return jsonify(request_body), BAD_REQUEST
+
+            elif user.get_my_restaurant(user_id=user_id) != restaurant_id:
+                request_body.update(
+                    {'error': 'Specified user {} is not affiliated with specified restaurant.'.format(user_id)})
+                return jsonify(request_body), UNAUTHORIZED
+
+            if not hub.is_registered(hub_id=hub_id):
+                request_body.update({
+                    'error': 'Specified table ID {} is not affiliated with specified restaurant.'.format(hub_id)})
+                return jsonify(request_body), UNAUTHORIZED
+
+        mapping_info = restaurant.update_staff_hub_mappings(mapping_info=request_body)
+        return jsonify(mapping_info), CREATED
+
+    elif request.method == 'GET':
+        # GET all mappings in restaurant (with emails).
+        mappings = restaurant.get_staff_hub_mappings()
+        request_body.update(mappings)
+
+        if 'error' in mappings:
+            return jsonify(request_body), SERVER_ERRROR
+        else:
+            return jsonify(request_body), OK
+
+    elif request.method == 'DELETE':
+
+        if not attendant_id:
+            request_body.update({'error': 'User ID not specified.'})
+            return jsonify(request_body), BAD_REQUEST
+
+        user = User('')
+        user.get_email(user_id=attendant_id)
+
+        if not user.exists():
+            request_body.update({'error': 'Specified user does not exist.'})
+            return jsonify(request_body), BAD_REQUEST
+
+        elif user.get_my_restaurant(user_id=attendant_id) != restaurant_id:
+            request_body.update({'error': 'User restaurant combination does not match.'})
+            return jsonify(request_body), UNAUTHORIZED
+
+        response = restaurant.remove_staff_from_mappings(staff_id=attendant_id)
+        request_body.update(response)
+
+        if 'error' in response:
+            return jsonify(response), SERVER_ERRROR
+        else:
+            return jsonify(response), OK
+
+
+@app.route('/update_fcm_id', methods=['POST'])
+def update_fcm_id_endpoint():
+    """
+    Handes updates to firebase cloud messaging identifiers.
+    :return: JSON response body and status code.
+    """
+    request_body = flask.request.get_json()
+
+    # Check for required fields.
+    if 'user' in request_body:
+        user_email = request_body['user']
+    else:
+        response = jsonify({'error': 'Email not specified.'})
+        return response, BAD_REQUEST
+
+    if 'android_reg_id' in request_body:
+        android_reg_id = request_body['android_reg_id']
+    else:
+        request_body.update({'error': 'FCM ID not specified.'})
+        return jsonify(request_body), BAD_REQUEST
+
+    user = User(email=user_email)
+
+    # Make sure specified user exists in database.
+    if not user.exists():
+        request_body.update({'error': 'User does not exist.'})
+        return jsonify(request_body), UNAUTHORIZED
+    else:
+        # Update application ID.
+        update_success = user.update_app_id(app_id=android_reg_id)
+        if update_success:
+            request_body.update({'message': 'FCM ID Update successful.'})
+            return jsonify(request_body), CREATED
+        else:
+            request_body.update({'error': 'Could not update FCM ID.'})
+            return jsonify(request_body), SERVER_ERRROR
 
 
 @app.route('/hello')
