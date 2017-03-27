@@ -656,8 +656,4 @@ def teapot():
 
 if __name__ == '__main__':
     app.secret_key = os.environ['secret_key']
-
-    if os.environ['runtime'] == 'production':
-        app.run('0.0.0.0', debug=False, port=80)
-    else:
-        app.run()
+    app.run('0.0.0.0', debug=False)
