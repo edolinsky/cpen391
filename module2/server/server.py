@@ -19,7 +19,7 @@ FORBIDDEN = 403
 NOT_FOUND = 404
 TEAPOT = 418
 
-SERVER_ERRROR = 500
+SERVER_ERROR = 500
 
 
 @app.route('/login', methods=['POST'])
@@ -65,14 +65,14 @@ def login_endpoint():
 
         if not affinity or not user_id:
             user_data.update({'error': 'Unable to fetch user information.'})
-            return jsonify(user_data), SERVER_ERRROR
+            return jsonify(user_data), SERVER_ERROR
 
         elif affinity in user.staff_users:
             restaurant_id = user.get_my_restaurant(user_id=user_id)
 
             if not restaurant_id:
                 user_data.update({'error': 'Unable to fetch user information.'})
-                return jsonify(user_data), SERVER_ERRROR
+                return jsonify(user_data), SERVER_ERROR
             else:
                 user_data.update({'restaurant_id': restaurant_id})
                 return jsonify(user_data), OK
@@ -139,7 +139,7 @@ def signup_endpoint():
         if restaurant_id and restaurant.exists():
             user_info = user.create(password=passwd, restaurant_id=restaurant_id, affinity=affinity)
             if 'error' in user_info:
-                return jsonify(user_info), SERVER_ERRROR
+                return jsonify(user_info), SERVER_ERROR
             else:
                 # Update android app reg_id if it was specified.
                 if reg_id:
@@ -160,7 +160,7 @@ def signup_endpoint():
         user_info = user.create(password=passwd, affinity=affinity)
 
         if 'error' in user_info:
-            return jsonify(user_info), SERVER_ERRROR
+            return jsonify(user_info), SERVER_ERROR
         else:
             # Update android app reg_id if it was specified.
             if reg_id:
@@ -214,7 +214,7 @@ def menu_endpoint(item_type='', restaurant_id=''):
             if item_type in menu.db.item_types:
                 submenu = menu.get_submenu(item_type=item_type)
                 if 'error' in submenu.keys():
-                    return jsonify(submenu), SERVER_ERRROR
+                    return jsonify(submenu), SERVER_ERROR
                 else:
                     return jsonify(submenu), OK
 
@@ -230,7 +230,7 @@ def menu_endpoint(item_type='', restaurant_id=''):
         else:
             full_menu = menu.get_menu()
             if 'error' in full_menu.keys():
-                return jsonify(full_menu), SERVER_ERRROR
+                return jsonify(full_menu), SERVER_ERROR
             else:
                 return jsonify(full_menu), OK
 
@@ -249,7 +249,7 @@ def menu_endpoint(item_type='', restaurant_id=''):
         menu_response = menu.create_menu(menu_info=request_body)
 
         if 'error' in menu_response:
-            return jsonify(menu_response), SERVER_ERRROR
+            return jsonify(menu_response), SERVER_ERROR
         else:
             return jsonify(menu_response), OK
 
@@ -326,7 +326,7 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
         if request.content_type == 'text/csv':
             return order_info
         elif 'error' in order_info:
-            return jsonify(order_info), SERVER_ERRROR
+            return jsonify(order_info), SERVER_ERROR
         else:
             return jsonify(order_info), OK
 
@@ -345,7 +345,7 @@ def order_endpoint(order_id='', restaurant_id='', customer_id='', table_id=''):
                                            customer_id=customer_id,
                                            table_id=table_id)
         if 'error' in order_response:
-            return jsonify(order_response), SERVER_ERRROR
+            return jsonify(order_response), SERVER_ERROR
         else:
             return jsonify(order_response), OK
 
@@ -387,7 +387,7 @@ def orders_endpoint(query='open', restaurant_id=''):
             orders = restaurant.get_open_orders()
 
         if 'error' in orders:
-            return jsonify(orders), SERVER_ERRROR
+            return jsonify(orders), SERVER_ERROR
         else:
             return jsonify(orders), OK
 
@@ -411,7 +411,7 @@ def orders_endpoint(query='open', restaurant_id=''):
         update_info = order.update_status(update_info=update_request)
 
         if 'error' in update_info:
-            return jsonify(update_info), SERVER_ERRROR
+            return jsonify(update_info), SERVER_ERROR
         else:
             return jsonify(update_info), OK
 
@@ -458,7 +458,7 @@ def restaurant_endpoint(table_id=''):
         restaurant_info = restaurant.create(name=restaurant_name)
 
         if 'error' in restaurant_info:
-            return jsonify(restaurant_info), SERVER_ERRROR
+            return jsonify(restaurant_info), SERVER_ERROR
         else:
             return jsonify(restaurant_info), OK
 
@@ -501,7 +501,7 @@ def call_server_endpoint():
         return jsonify(request_body), OK
     else:
         request_body.update({'error': 'Could not send Notification.'})
-        return jsonify(request_body), SERVER_ERRROR
+        return jsonify(request_body), SERVER_ERROR
 
 
 @app.route('/server_hub_map', methods=['GET', 'POST', 'DELETE'])
@@ -576,7 +576,7 @@ def server_hub_map_endpoint(restaurant_id='', attendant_id=''):
         request_body.update(mappings)
 
         if 'error' in mappings:
-            return jsonify(request_body), SERVER_ERRROR
+            return jsonify(request_body), SERVER_ERROR
         else:
             return jsonify(request_body), OK
 
@@ -601,7 +601,7 @@ def server_hub_map_endpoint(restaurant_id='', attendant_id=''):
         request_body.update(response)
 
         if 'error' in response:
-            return jsonify(response), SERVER_ERRROR
+            return jsonify(response), SERVER_ERROR
         else:
             return jsonify(response), OK
 
@@ -641,7 +641,7 @@ def update_fcm_id_endpoint():
             return jsonify(request_body), CREATED
         else:
             request_body.update({'error': 'Could not update FCM ID.'})
-            return jsonify(request_body), SERVER_ERRROR
+            return jsonify(request_body), SERVER_ERROR
 
 
 @app.route('/hello')
