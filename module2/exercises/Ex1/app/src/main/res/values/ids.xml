@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- This file was created to add the 2 values below, due to a bug with textinputlayout that results in a warning: "Couldn't resolve resource @id/visible"-->
+<resources>
+    <item name="visible" type="id"/>
+    <item name="masked" type="id"/>
+</resources>
