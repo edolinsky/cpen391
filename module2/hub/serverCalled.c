@@ -1,5 +1,6 @@
 #include "serverCalled.h"
 #include "mainmenu.h"
+#include "apps/notify.h"
 
 void drawServerCalled(void){
 	int i;
@@ -8,6 +9,9 @@ void drawServerCalled(void){
 	int incr = 15;
 	char title[] = "Your server has been called";
 	char back[] = "Back to main screen";
+
+	// Trigger notification to backend.
+	call_attendant();
 
 	for(i = 0; i < 480; i ++){
 		//HLine(int x1, int y1, int length, int Colour)

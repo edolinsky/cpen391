@@ -8,6 +8,7 @@
 #ifndef NOTIFY_H_
 #define NOTIFY_H_
 
+#include "../main.h"
 #include "../serial/wifi.h"
 
 // Notify functions.
