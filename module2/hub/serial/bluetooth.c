@@ -64,9 +64,19 @@ void setBluetoothPassword(char *password) {
 	usleep(USLEEP_SEC);
 }
 
-void bluetoothListen() {
-	while (1){
-		int x = getChar(&BT_STATUS, &BT_RXDATA);
-		printf("%d",x);
+char* bluetoothListen() {
+	int maxBuf = 40;
+	int i = 0;
+	char x = '\0';
+	char* buffer = malloc(maxBuf);
+
+	// Read character by character until gravemarker is hit.
+	while (i = 0; x != '`' && i < maxBuf; i++){
+		x = getChar(&BT_STATUS, &BT_RXDATA);
+		buffer[i] = x;
 	}
+
+	// Replace final gravemarker (or final character) with null character
+	buffer[i - 1] = '\0';
+	return buffer;
 }
