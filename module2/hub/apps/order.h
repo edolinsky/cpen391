@@ -13,6 +13,7 @@
 
 // Order functions.
 char* read_order();
+char* read_restaurant_id();
 void get_order(char* customer_id, char* order_id);
 
 #endif /* ORDER_H_ */

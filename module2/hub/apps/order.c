@@ -7,6 +7,20 @@
 
 #include "order.h"
 
+char* read_restaurant_id() {
+    putString(&WIFI_STATUS, &WIFI_TXDATA, "read_restaurant_id\n\n");
+    int maxBuf = 100;
+    char *buf = malloc(maxBuf);
+    int i = 0;
+    while (i < maxBuf) {
+        char x = getChar(&WIFI_STATUS, &WIFI_RXDATA);
+        if (x == '`')
+            break;
+        buf[i++] = x;
+    }
+    return buf;
+}
+
 /**
  * Issues a command to read the on-chip order file.
  */

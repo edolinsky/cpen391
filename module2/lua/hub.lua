@@ -4,6 +4,7 @@ SSID_PASSWORD = 'aiv4aith2Zie4Aeg'
 
 -- Unique device ID
 HUB_ID = "0xDEFEC7EDDA7ABA5E"
+DEFAULT_RESTAURANT_ID = ""
 RESTAURANT_ID = "test_resto"    -- default. This is later updated from back-end.
 
 -- Server base URL and supported endpoints.
@@ -80,6 +81,12 @@ end
 -- Adds a single grave marker to the end of the server's response so that
 -- the message can be parsed accurately.
 function get_order(customer_id, order_id)
+
+    -- if restaurant ID has not been set, retrieve it from API.
+    if (RESTAURANT_ID == DEFAULT_RESTAURANT_ID)
+        get_restaurant_id()
+    end
+
     http.get(
         build_order_get(customer_id, order_id),
         "Content-Type: text/csv\r\n",
@@ -96,6 +103,12 @@ end
 -- Triggers a request to alert an attendant to a table. Nothing interesting
 -- needs to be done with the response.
 function call_attendant()
+
+    -- if restaurant ID has not been set, retrieve it from API.
+    if (RESTAURANT_ID == DEFAULT_RESTAURANT_ID)
+        get_restaurant_id()
+    end
+
     http.post(
         build_call_attendant_post(),
         'Content-Type: application/json\r\n',
@@ -122,4 +135,9 @@ function get_restaurant_id()
                 RESTAURANT_ID = payload
             end
     end)
+end
+
+-- Prints the RESTAURANT_ID string.
+function read_restaurant_id()
+    print(RESTAURANT_ID)
 end
