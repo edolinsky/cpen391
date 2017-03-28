@@ -61,5 +61,7 @@ cpen391_bsp/
 # Python compiled files
 *.pyc
 
+*.metadata/
+
 # Unignore layout.xml files
-!module2/android/Resty/app/src/main/res/layout/*.xml
+!module2/android/Resty/app/src/main/res/layout/

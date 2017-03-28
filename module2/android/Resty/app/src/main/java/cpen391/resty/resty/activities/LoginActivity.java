@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import cpen391.resty.resty.R;
+import cpen391.resty.resty.dataStore.RestyStore;
 import cpen391.resty.resty.serverRequests.RestySigninRequest;
 
 public class LoginActivity extends AppCompatActivity {
@@ -16,6 +17,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordText;
     private Button loginButton;
     private Button signupButton;
+    private RestyStore dataStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,12 +30,18 @@ public class LoginActivity extends AppCompatActivity {
         loginButton = (Button) findViewById(R.id.loginButton);
         signupButton = (Button) findViewById(R.id.loginSignupButton);
 
+        dataStore = RestyStore.getInstance(this);
+
     }
 
     public void loginOnClick(View view){
 
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
+
+        // Store username for later queries.
+        dataStore.put(RestyStore.Key.USER, username);
+
         signIn(username, password);
     }
 
