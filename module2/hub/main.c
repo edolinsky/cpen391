@@ -8,18 +8,22 @@
 #include <stdio.h>
 #include "serial/rs232.h"
 #include "serial/bluetooth.h"
+#include "serial/wifi.h"
 #include "serial/touch.h"
 #include "serial/graphics.h"
-#include "apps/calendar.h"
 #include "serial/colours.h"
-#include "modules/keyboard.h"
+#include "apps/notify.h"
+#include "mainmenu.h"
 #include "main.h"
 
 
 int main(){
 	initTouch();
 	printf("Hello from Nios II!\n");
+	initWiFi();
+
 	drawMenu();
+	return 0;
 }
 
 

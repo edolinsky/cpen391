@@ -8,9 +8,6 @@
 #ifndef ORDER_H_
 #define ORDER_H_
 
-#include "../main.h"
-#include "../serial/wifi.h"
-
 // Order functions.
 char* read_order();
 char* read_restaurant_id();
