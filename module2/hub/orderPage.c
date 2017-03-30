@@ -7,7 +7,7 @@
 #include "serverCalled.h"
 #include "main.h"
 
-#define ORDER_REQUEST_DELAY 2000000 // two seconds
+#define ORDER_REQUEST_DELAY 2000000 // two seconds.
 
 void drawOrderPage(void){
 	int i = 0;
@@ -23,11 +23,10 @@ void drawOrderPage(void){
 	char name[] = "Customer";
 	char status[] = "Status";
 
+	// Set app context so that we can return to this screen.
 	app_context = ORDER_CONTEXT;
 
-
-	//char orders[] = "Burger and fries,Erik,Cooking;Butter Chicken,Annalies,On the Way;Pho Nachos,Reid,Ordered;Sushi,Omar,Delivered;";
-
+	// Get order information from server via WiFi chip.
 	get_order("test_user", "26a00ff96d");
 	usleep(ORDER_REQUEST_DELAY);
 	char* orders = read_order();
@@ -104,12 +103,11 @@ void drawOrderPage(void){
 
 	free(orders);
 
-	// Button:
+	// Buttons:
 	initElements();
 
-	//createElement(int x, int y, int width, int height, int colour);
-
-	// Create server call button
+	// Create server call and reload buttons
+	//                                    x,   y, wid, ht, colour
 	Element *callButton = createElement(575, 425, 225, 75, DIM_GRAY);
 	Element *reloadButton = createElement(0, 425, 225, 75, DIM_GRAY);
 
@@ -123,11 +121,12 @@ void drawOrderPage(void){
 
 	refresh();
 
-	// Write call server button title
+	// Write call server button label.
 	for(i = 0; i < strlen(call); i++){
 		OutGraphicsCharFont2a((775 - strlen(call)*10)+i*10, 450, WHITE, WHITE, call[i], 0);
 	}
 
+	// Write refresh button label.
 	for(i = 0; i < strlen(reload); i++){
 		OutGraphicsCharFont2a(75 + i*10, 450, WHITE, WHITE, reload[i], 0);
 	}

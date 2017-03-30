@@ -18,19 +18,24 @@
 #include "mainmenu.h"
 #include "main.h"
 
+#define SLEEP_INTERVAL 1500000 // 1.5 seconds.
+
 int main(){
 	app_context = 0;
 	initTouch();
 	printf("Hello from Nios II!\n");
 
 	initWiFi();
-	usleep(1500000);
+	usleep(SLEEP_INTERVAL);
 
 	get_restaurant_id();
-	usleep(1500000);
+	usleep(SLEEP_INTERVAL);
 
-	char* restaurant_id = read_restaurant_id();
+	restaurant_id = read_restaurant_id();
 	printf(restaurant_id);
+
+	hub_id = read_table_id();
+	printf(hub_id);
 
 	drawMenu();
 	return 0;

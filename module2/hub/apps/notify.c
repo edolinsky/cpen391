@@ -2,7 +2,7 @@
  * notify.c
  *
  * Created on: March 27, 2017
- *      Author: edoinsky
+ *      Author: edolinsky
  */
 
 #include <stdlib.h>

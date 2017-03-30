@@ -2,7 +2,7 @@
  * order.h
  *
  * Created on: March 27, 2017
- *      Author: edoinsky
+ *      Author: edolinsky
  */
 
 #ifndef ORDER_H_

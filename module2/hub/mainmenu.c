@@ -8,6 +8,8 @@
 #include "serverCalled.h"
 #include "apps/authenticate.h"
 
+#define TIME_REQUEST_DELAY 2000000 // two seconds.
+
 void drawMenu(void){
 	int i;
 	int leftJust = 150;
@@ -27,14 +29,11 @@ void drawMenu(void){
 	char instructions8[] = "6. Press the 'Lets get started!' button";
 	char PIN[] = "Your table pin:";
 
-	for (i = 0; i < 20; i++) {
-		char* randomPin = generate_random_pin();
-		printf(randomPin);
-		printf("\n");
-		free(randomPin);
-	}
+	get_time();
+	usleep(TIME_REQUEST_DELAY);
+	int time = read_time();
 
-	char* randomPin = generate_random_pin();
+	char* randomPin = generate_random_pin(time);
 
 	// Shade out the background
 	for(i = 0; i < 480; i ++){

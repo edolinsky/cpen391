@@ -17,6 +17,10 @@
 #define SUCCESS_CONTEXT 2
 
 int app_context;
+char* restaurant_id;
+char* hub_id;
+char* order_id;
+char* customer_id;
 
 // General purpose functions
 int getChar(volatile unsigned char* status, volatile unsigned char* rx);

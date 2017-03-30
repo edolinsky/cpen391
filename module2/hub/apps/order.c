@@ -2,7 +2,7 @@
  * order.c
  *
  * Created on: March 27, 2017
- *      Author: edoinsky
+ *      Author: edolinsky
  */
 
 #include <stdlib.h>
@@ -23,6 +23,14 @@ char* read_restaurant_id() {
 
 	putString(&WIFI_STATUS, &WIFI_TXDATA, "\r\nread_restaurant_id()\r\n");
     return wifiListen(buf, maxBuf);
+}
+
+char* read_table_id() {
+	int maxBuf = 20;
+	char *buf = malloc(maxBuf);
+
+	putString(&WIFI_STATUS, &WIFI_TXDATA, "\r\nread_table_id()\r\n");
+	return wifiListen(buf, maxBuf);
 }
 
 /**

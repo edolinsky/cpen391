@@ -12,12 +12,14 @@ APP_HOST = "http://piquemedia.me"
 CALL_SERVER_ENDPOINT = "/call_server"
 ORDER_ENDPOINT = "/order"
 RESTAURANT_ENDPOINT = "/restaurant"
+TIME_ENDPOINT = "/time"
 
 --  Internal file names.
 ORDER_FILE = "order.csv"
+TIME_FILE = "time.txt"
 
 -- WiFi Message constants.
-MSG_START = "``````````"
+MSG_START = "````````````````````"
 MSG_END = "`"
 
 -- configure ESP as a station
@@ -60,6 +62,11 @@ end
 function build_call_attendant_body()
     return  '{"restaurant_id": "' .. RESTAURANT_ID .. '",' ..
             ' "table_id": "' .. HUB_ID .. '"}'
+end
+
+function build_time_get()
+    return  APP_HOST ..
+            TIME_ENDPOINT
 end
 
 -- Deletes the specified file, and then writes the
@@ -145,4 +152,24 @@ end
 -- Prints the RESTAURANT_ID string.
 function read_restaurant_id()
     print(MSG_START .. RESTAURANT_ID .. MSG_END .. "\r\n")
+end
+
+-- Prints the HUB_ID string.
+function read_table_id()
+    print(MSG_START .. HUB_ID .. MSG_END .. "\r\n")
+end
+
+-- Retrieve the current unix epoch time from back-end.
+function get_time()
+    http.get(
+        build_time_get(),
+        "Content-Type: text/csv\r\n",
+        function(code, payload)
+            if (code < 0) then
+                print("HTTP request failed.")
+            else
+                overwrite_file(TIME_FILE, payload)
+            end
+        end
+    )
 end
