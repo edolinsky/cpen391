@@ -1,16 +1,21 @@
 package ky.dolins.ex1;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.util.Currency;
+import java.util.Date;
 import java.util.Locale;
 
 public class TipCalculator extends AppCompatActivity {
@@ -87,6 +92,12 @@ public class TipCalculator extends AppCompatActivity {
         total = ((billAmount * (1 + tipAmount / 100D)) + taxAmount)/ Double.valueOf(splitFactor);
         total = Math.ceil(total * 100D) / 100D;
 
+        // Add to memory
+        String historyItem = "Bill Amount: $" + Double.toString(billAmount) + "    Tip percent: " + Double.toString(tipAmount)
+                + "%\nSplit between: " + Long.toString(splitFactor) + "\nBought at: "
+                + DateFormat.getDateTimeInstance().format(new Date());
+
+        addOrder(historyItem);
 
         BigDecimal billAmountD = new BigDecimal(billAmount/splitFactor);
         BigDecimal taxAmountD = new BigDecimal(taxAmount/splitFactor);
@@ -116,5 +127,35 @@ public class TipCalculator extends AppCompatActivity {
         // display pie chart
         pieChart.drawChart(new float[]{billAmountD.floatValue(), tipAmountD.floatValue(), taxAmountD.floatValue()});
 
+    }
+
+    public void sendMessage2(View view) {
+        Intent intent = new Intent(this, HistoryList.class);
+
+        startActivity(intent);
+    }
+
+    public void clear(View view) {
+
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+
+        editor.putInt("count", 0);
+
+        editor.clear();
+        editor.commit();
+    }
+
+    public void addOrder(String order){
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        int count = pref.getInt("count", 0);
+        count++;
+        Log.d("Count ", Integer.toString(count));
+        editor.putString(Integer.toString(count), order);
+        editor.putInt("count", count);
+        Log.d("Order: ", order);
+
+        editor.commit();
     }
 }

@@ -24,6 +24,30 @@ void initWiFi(void) {
 	printf("WiFi initialized!\n");
 }
 
-void wifiListen() {
+char* wifiListen(char* buf, int maxLen) {
+	int i = 1;
 	
+	while (getChar(&WIFI_STATUS, &WIFI_RXDATA) != '`') {
+		// do nothing until gravemarker is hit.
+	}
+
+	char x;
+
+	// Ignore successive gravemarkers.
+	do {
+		x = getChar(&WIFI_STATUS, &WIFI_RXDATA);
+		buf[0] = x;
+	} while (x == '`');
+
+	// Read in message content.
+	while (i < maxLen) {
+		char x = getChar(&WIFI_STATUS, &WIFI_RXDATA);
+		if (x == '`') {
+			break;
+		}
+		buf[i++] = x;
+	}
+
+	buf[i] = '\0';
+	return buf;
 }

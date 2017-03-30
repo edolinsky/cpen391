@@ -12,9 +12,15 @@ APP_HOST = "http://piquemedia.me"
 CALL_SERVER_ENDPOINT = "/call_server"
 ORDER_ENDPOINT = "/order"
 RESTAURANT_ENDPOINT = "/restaurant"
+TIME_ENDPOINT = "/time"
 
 --  Internal file names.
 ORDER_FILE = "order.csv"
+TIME_FILE = "time.txt"
+
+-- WiFi Message constants.
+MSG_START = "````````````````````"
+MSG_END = "`"
 
 -- configure ESP as a station
 wifi.setmode(wifi.STATION)
@@ -58,6 +64,11 @@ function build_call_attendant_body()
             ' "table_id": "' .. HUB_ID .. '"}'
 end
 
+function build_time_get()
+    return  APP_HOST ..
+            TIME_ENDPOINT
+end
+
 -- Deletes the specified file, and then writes the
 -- specified content under a new file with the same filename.
 function overwrite_file(filename, content)
@@ -72,7 +83,7 @@ end
 -- Prints the content stored within the file with the specified name.
 function read_file(filename)
     if file.open(filename, "r") then
-        print(file.read())
+        print(MSG_START .. file.read() .. MSG_END .. "\r\n")
         file.close(ORDER_FILE)
     end
 end
@@ -83,7 +94,7 @@ end
 function get_order(customer_id, order_id)
 
     -- if restaurant ID has not been set, retrieve it from API.
-    if (RESTAURANT_ID == DEFAULT_RESTAURANT_ID)
+    if (RESTAURANT_ID == DEFAULT_RESTAURANT_ID) then
         get_restaurant_id()
     end
 
@@ -95,9 +106,10 @@ function get_order(customer_id, order_id)
             if (code < 0) then
                 print("HTTP request failed.")
             else
-                overwrite_file(ORDER_FILE, payload .. "`")
+                overwrite_file(ORDER_FILE, payload)
             end
-    end)
+        end
+    )
 end
 
 -- Triggers a request to alert an attendant to a table. Nothing interesting
@@ -105,7 +117,7 @@ end
 function call_attendant()
 
     -- if restaurant ID has not been set, retrieve it from API.
-    if (RESTAURANT_ID == DEFAULT_RESTAURANT_ID)
+    if (RESTAURANT_ID == DEFAULT_RESTAURANT_ID) then
         get_restaurant_id()
     end
 
@@ -116,10 +128,9 @@ function call_attendant()
         function(code, payload)
             if (code < 0) then
                 print("HTTP request failed.")
-            else
-                print(code, payload)
             end
-    end)
+        end
+    )
 end
 
 -- Retrieves the restaurant ID that this device belongs to, as recorded
@@ -134,10 +145,31 @@ function get_restaurant_id()
             else
                 RESTAURANT_ID = payload
             end
-    end)
+        end
+    )
 end
 
 -- Prints the RESTAURANT_ID string.
 function read_restaurant_id()
-    print(RESTAURANT_ID)
+    print(MSG_START .. RESTAURANT_ID .. MSG_END .. "\r\n")
+end
+
+-- Prints the HUB_ID string.
+function read_table_id()
+    print(MSG_START .. HUB_ID .. MSG_END .. "\r\n")
+end
+
+-- Retrieve the current unix epoch time from back-end.
+function get_time()
+    http.get(
+        build_time_get(),
+        "Content-Type: text/csv\r\n",
+        function(code, payload)
+            if (code < 0) then
+                print("HTTP request failed.")
+            else
+                overwrite_file(TIME_FILE, payload)
+            end
+        end
+    )
 end

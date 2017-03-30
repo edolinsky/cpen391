@@ -10,9 +10,11 @@
 
 // Authenticate functions.
 int listen_for_pin_and_check(char* hub_pin);
-char* generate_random_pin();
+char* generate_random_pin(int seed);
 void authenticate(char* pin);
 void send_table_info(char* restaurant_id);
 char* listen_for_order_id();
+void get_time();
+int read_time();
 
  #endif /* AUTHENTICATE_H_ */

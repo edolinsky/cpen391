@@ -1,5 +1,13 @@
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "apps/order.h"
+#include "serial/wifi.h"
 #include "orderPage.h"
 #include "serverCalled.h"
+#include "main.h"
+
+#define ORDER_REQUEST_DELAY 2000000 // two seconds.
 
 void drawOrderPage(void){
 	int i = 0;
@@ -10,10 +18,19 @@ void drawOrderPage(void){
 	int margin = 50;
 	int tablestart = 75;
 	char call[] = "Call your server";
+	char reload[] = "Refresh";
 	char item[] = "Item";
 	char name[] = "Customer";
 	char status[] = "Status";
-	char orders[] = "Burger and fries,Erik,Cooking;Butter Chicken,Annalies,On the Way;Pho Nachos,Reid,Ordered;Sushi,Omar,Delivered;";
+
+	// Set app context so that we can return to this screen.
+	app_context = ORDER_CONTEXT;
+
+	// Get order information from server via WiFi chip.
+	get_order("test_user", "26a00ff96d");
+	usleep(ORDER_REQUEST_DELAY);
+	char* orders = read_order();
+	printf(orders);
 
 	char title[] = "Your orders so far:";
 	// Shade out the background
@@ -53,17 +70,17 @@ void drawOrderPage(void){
 		OutGraphicsCharFont2a( margin + 10 + itemwidth + statuswidth+i*12, tablestart - vspace/2, BLACK, WHITE, status[i], 0);
 	}
 
-	// Parsing BS:
+	// Order parsing:
 	i = 0;
-	int semicolon = 0;
+	int lines = 0;
 	int comma = 0;
 	int cursorx = margin + 10;
 	int cursory = tablestart + vspace/2;
 	int word = 0;
 	while(orders[i] != NULL){
-		if(orders[i] == ';'){
-			semicolon++;
-			cursory = tablestart*1.5 + (semicolon - 1)*vspace;
+		if(orders[i] == '\n'){
+			lines++;
+			cursory = tablestart*1.5 + (lines - 1)*vspace;
 			cursorx = margin + 10;
 			comma = 0;
 			word = 0;
@@ -84,24 +101,33 @@ void drawOrderPage(void){
 		i++;
 	}
 
-	// Button:
+	free(orders);
+
+	// Buttons:
 	initElements();
 
-	//createElement(int x, int y, int width, int height, int colour);
-
-	// Create server call button
+	// Create server call and reload buttons
+	//                                    x,   y, wid, ht, colour
 	Element *callButton = createElement(575, 425, 225, 75, DIM_GRAY);
+	Element *reloadButton = createElement(0, 425, 225, 75, DIM_GRAY);
 
 	// Set actions
 	setElementAction(callButton, &drawServerCalled);
+	setElementAction(reloadButton, &drawOrderPage);
 
 	// Draw buttons
 	addElementToList(callButton);
+	addElementToList(reloadButton);
 
 	refresh();
 
-	// Write call server button title
+	// Write call server button label.
 	for(i = 0; i < strlen(call); i++){
 		OutGraphicsCharFont2a((775 - strlen(call)*10)+i*10, 450, WHITE, WHITE, call[i], 0);
+	}
+
+	// Write refresh button label.
+	for(i = 0; i < strlen(reload); i++){
+		OutGraphicsCharFont2a(75 + i*10, 450, WHITE, WHITE, reload[i], 0);
 	}
 }

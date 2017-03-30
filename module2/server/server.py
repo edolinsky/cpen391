@@ -1,5 +1,6 @@
 import flask
 import os
+import time
 
 from flask import request, jsonify
 from user import User
@@ -652,6 +653,11 @@ def hello_world():
 @app.route('/teapot')
 def teapot():
     return jsonify({'type': 'teapot'}), TEAPOT
+
+
+@app.route('/time')
+def time():
+    return int(time.time()), OK
 
 
 if __name__ == '__main__':

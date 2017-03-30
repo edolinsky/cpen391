@@ -1,13 +1,14 @@
 #include "mainmenu.h"
 #include <stdio.h>
-#include "../serial/touch.h"
-#include "../serial/graphics.h"
-#include "../serial/colours.h"
-#include "todo.h"
-#include "shopping.h"
-#include "../apps/calendar.h"
+#include <unistd.h>
+#include "serial/touch.h"
+#include "serial/graphics.h"
+#include "serial/colours.h"
 #include "successScreen.h"
 #include "serverCalled.h"
+#include "apps/authenticate.h"
+
+#define TIME_REQUEST_DELAY 2000000 // two seconds.
 
 void drawMenu(void){
 	int i;
@@ -26,8 +27,13 @@ void drawMenu(void){
 	char instructions6[] = "4. Launch the Resty app";
 	char instructions7[] = "5. Enter the following PIN when prompted";
 	char instructions8[] = "6. Press the 'Lets get started!' button";
-	char randomPin[] = "1234";
 	char PIN[] = "Your table pin:";
+
+	get_time();
+	usleep(TIME_REQUEST_DELAY);
+	int time = read_time();
+
+	char* randomPin = generate_random_pin(time);
 
 	// Shade out the background
 	for(i = 0; i < 480; i ++){
@@ -99,6 +105,8 @@ void drawMenu(void){
 	for(i = 0; i < strlen(PIN); i++){
 		OutGraphicsCharFont2a((400 - strlen(PIN)*5) + i*10, 275, BLACK, BLACK, PIN[i], 0);
 	}
+
+	free(randomPin);
 
 
 	listenToTouches();

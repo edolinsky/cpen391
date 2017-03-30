@@ -1,4 +1,6 @@
 #include "successScreen.h"
+#include "serverCalled.h"
+#include "main.h"
 
 void drawSuccess(void){
 	int i;
@@ -9,8 +11,10 @@ void drawSuccess(void){
 	char call[] = "Call your server";
 	char test[] = "test";
 
+	app_context = SUCCESS_CONTEXT;
+
 	for(i = 0; i < 480; i ++){
-		//HLine(int x1, int y1, int length, int Colour)
+		//   x1,y1, len, colour
 		HLine(0, i, 800, GRAY);
 	}
 
@@ -21,10 +25,9 @@ void drawSuccess(void){
 
 	initElements();
 
-	//createElement(int x, int y, int width, int height, int colour);
-
 	// Create three buttons
-	Element *callButton = createElement(575, 425, 225, 75, DIM_GRAY);
+	// --------------------------------   x,   y, wid,  ht, colour
+	Element *callButton = createElement(575, 425, 225,  75, DIM_GRAY);
 	Element *testButton = createElement(200, 200, 400, 100, DIM_GRAY);
 
 	// Set actions
@@ -43,7 +46,7 @@ void drawSuccess(void){
 		OutGraphicsCharFont2a((775 - strlen(call)*10)+i*10, 450, WHITE, WHITE, call[i], 0);
 	}
 
-	// Write back button title
+	// Write test button title
 	for(i = 0; i < strlen(test); i++){
 		OutGraphicsCharFont2a((400 - strlen(test)*5)+i*10, 250, WHITE, WHITE, test[i], 0);
 	}

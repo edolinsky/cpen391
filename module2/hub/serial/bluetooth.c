@@ -23,7 +23,6 @@ void initBluetooth(void) {
 	setBluetoothName("Group15");
 	setBluetoothPassword("cpen391");
 	printf("Bluetooth initialized!\n");
-	bluetoothListen();
 }
 
 void setBluetoothName(char *name) {
@@ -71,7 +70,7 @@ char* bluetoothListen() {
 	char* buffer = malloc(maxBuf);
 
 	// Read character by character until gravemarker is hit.
-	while (i = 0; x != '`' && i < maxBuf; i++){
+	for (i = 0; x != '`' && i < maxBuf; i++) {
 		x = getChar(&BT_STATUS, &BT_RXDATA);
 		buffer[i] = x;
 	}

@@ -137,7 +137,7 @@ class UserDb(Database):
         :return:
         """
 
-        user_info = {'email': email, 'affinity': affinity}
+        user_info = {'user': email, 'affinity': affinity}
 
         # Create the user
         query = ("INSERT INTO user (id, email, password, affinity) "

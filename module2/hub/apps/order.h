@@ -2,18 +2,16 @@
  * order.h
  *
  * Created on: March 27, 2017
- *      Author: edoinsky
+ *      Author: edolinsky
  */
 
 #ifndef ORDER_H_
 #define ORDER_H_
 
-#include "../main.h"
-#include "../serial/wifi.h"
-
 // Order functions.
 char* read_order();
-char* read_restaurant_id();
 void get_order(char* customer_id, char* order_id);
+char* read_restaurant_id();
+void get_restaurant_id();
 
 #endif /* ORDER_H_ */
