@@ -5,6 +5,9 @@
 #include "serial/wifi.h"
 #include "orderPage.h"
 #include "serverCalled.h"
+#include "main.h"
+
+#define ORDER_REQUEST_DELAY 2000000 // two seconds
 
 void drawOrderPage(void){
 	int i = 0;
@@ -15,15 +18,18 @@ void drawOrderPage(void){
 	int margin = 50;
 	int tablestart = 75;
 	char call[] = "Call your server";
+	char reload[] = "Refresh";
 	char item[] = "Item";
 	char name[] = "Customer";
 	char status[] = "Status";
+
+	app_context = ORDER_CONTEXT;
 
 
 	//char orders[] = "Burger and fries,Erik,Cooking;Butter Chicken,Annalies,On the Way;Pho Nachos,Reid,Ordered;Sushi,Omar,Delivered;";
 
 	get_order("test_user", "26a00ff96d");
-	usleep(2000000);
+	usleep(ORDER_REQUEST_DELAY);
 	char* orders = read_order();
 	printf(orders);
 
@@ -65,7 +71,7 @@ void drawOrderPage(void){
 		OutGraphicsCharFont2a( margin + 10 + itemwidth + statuswidth+i*12, tablestart - vspace/2, BLACK, WHITE, status[i], 0);
 	}
 
-	// Parsing BS:
+	// Order parsing:
 	i = 0;
 	int lines = 0;
 	int comma = 0;
@@ -105,17 +111,24 @@ void drawOrderPage(void){
 
 	// Create server call button
 	Element *callButton = createElement(575, 425, 225, 75, DIM_GRAY);
+	Element *reloadButton = createElement(0, 425, 225, 75, DIM_GRAY);
 
 	// Set actions
 	setElementAction(callButton, &drawServerCalled);
+	setElementAction(reloadButton, &drawOrderPage);
 
 	// Draw buttons
 	addElementToList(callButton);
+	addElementToList(reloadButton);
 
 	refresh();
 
 	// Write call server button title
 	for(i = 0; i < strlen(call); i++){
 		OutGraphicsCharFont2a((775 - strlen(call)*10)+i*10, 450, WHITE, WHITE, call[i], 0);
+	}
+
+	for(i = 0; i < strlen(reload); i++){
+		OutGraphicsCharFont2a(75 + i*10, 450, WHITE, WHITE, reload[i], 0);
 	}
 }

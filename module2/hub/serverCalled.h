@@ -5,4 +5,4 @@
 #include "serial/colours.h"
 #include "orderPage.h"
 
-void drawServerCalled(void);
+void drawServerCalled();

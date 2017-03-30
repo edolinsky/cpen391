@@ -18,8 +18,8 @@
 #include "mainmenu.h"
 #include "main.h"
 
-
 int main(){
+	app_context = 0;
 	initTouch();
 	printf("Hello from Nios II!\n");
 

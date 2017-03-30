@@ -1,4 +1,6 @@
 #include "successScreen.h"
+#include "serverCalled.h"
+#include "main.h"
 
 void drawSuccess(void){
 	int i;
@@ -8,6 +10,8 @@ void drawSuccess(void){
 	char title[] = "Orders will appear here after you order on your phone";
 	char call[] = "Call your server";
 	char test[] = "test";
+
+	app_context = SUCCESS_CONTEXT;
 
 	for(i = 0; i < 480; i ++){
 		//HLine(int x1, int y1, int length, int Colour)

@@ -1,10 +1,12 @@
 #include "mainmenu.h"
 #include <stdio.h>
+#include <unistd.h>
 #include "serial/touch.h"
 #include "serial/graphics.h"
 #include "serial/colours.h"
 #include "successScreen.h"
 #include "serverCalled.h"
+#include "apps/authenticate.h"
 
 void drawMenu(void){
 	int i;
@@ -23,8 +25,16 @@ void drawMenu(void){
 	char instructions6[] = "4. Launch the Resty app";
 	char instructions7[] = "5. Enter the following PIN when prompted";
 	char instructions8[] = "6. Press the 'Lets get started!' button";
-	char randomPin[] = "1234";
 	char PIN[] = "Your table pin:";
+
+	for (i = 0; i < 20; i++) {
+		char* randomPin = generate_random_pin();
+		printf(randomPin);
+		printf("\n");
+		free(randomPin);
+	}
+
+	char* randomPin = generate_random_pin();
 
 	// Shade out the background
 	for(i = 0; i < 480; i ++){
@@ -96,6 +106,8 @@ void drawMenu(void){
 	for(i = 0; i < strlen(PIN); i++){
 		OutGraphicsCharFont2a((400 - strlen(PIN)*5) + i*10, 275, BLACK, BLACK, PIN[i], 0);
 	}
+
+	free(randomPin);
 
 
 	listenToTouches();

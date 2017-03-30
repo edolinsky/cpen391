@@ -13,6 +13,11 @@
 #define TRUE 1
 #define FALSE 0
 
+#define ORDER_CONTEXT 1
+#define SUCCESS_CONTEXT 2
+
+int app_context;
+
 // General purpose functions
 int getChar(volatile unsigned char* status, volatile unsigned char* rx);
 int putChar(volatile unsigned char* status, volatile unsigned char* tx, int c);

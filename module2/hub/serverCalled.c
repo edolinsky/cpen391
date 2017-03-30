@@ -1,8 +1,10 @@
 #include "serverCalled.h"
 #include "mainmenu.h"
 #include "apps/notify.h"
+#include "successScreen.h"
+#include "main.h"
 
-void drawServerCalled(void){
+void drawServerCalled(){
 	int i;
 	int leftJust = 150;
 	int instrStart = 150;
@@ -30,7 +32,13 @@ void drawServerCalled(void){
 	Element *backButton = createElement(100, 350, 600, 100, DIM_GRAY);
 
 	// Set actions
-	setElementAction(backButton, &drawOrderPage);
+	if (app_context == ORDER_CONTEXT) {
+		setElementAction(backButton, &drawOrderPage);
+	} else if (app_context == SUCCESS_CONTEXT){
+		setElementAction(backButton, &drawSuccess);
+	} else {
+		printf("Error: Invalid context.\n");
+	}
 
 	// Draw buttons
 	addElementToList(backButton);

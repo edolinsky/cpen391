@@ -5,14 +5,16 @@
  *      Author: edolinsky
  */
 
- #include "../serial/bluetooth.h"
- #include <stdlib.h>
- #include <stdio.h>
- #include <string.h>
- #include <time.h>
+#include "../serial/bluetooth.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <time.h>
 
- #define RAND_MAX 10000
- #define DEVICE_ID "0xDEFEC7EDDA7ABA5E"
+#define RAND_MAX 9000
+#define RAND_OFFSET 1000
+#define DEVICE_ID "0xDEFEC7EDDA7ABA5E"
 
 /**
  * Listens to bluetooth for a string, and compares it to the specified string.
@@ -37,7 +39,8 @@
 
      // Generate random integer.
      srand(time(NULL));
-     int pin = rand() % RAND_MAX;
+
+     int pin = (rand() % RAND_MAX) + RAND_OFFSET;
 
      // Convert integer to string.
      snprintf(buffer, maxBuf, "%d", pin);
