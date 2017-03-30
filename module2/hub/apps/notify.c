@@ -14,9 +14,5 @@
 #include "../serial/wifi.h"
 
 void call_attendant() {
-	initWiFi();
-
-	usleep(1500000);
-
-    putString(&WIFI_STATUS, &WIFI_TXDATA, "call_attendant()\r\n");
+    putString(&WIFI_STATUS, &WIFI_TXDATA, "\r\ncall_attendant()\r\n");
 }

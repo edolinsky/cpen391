@@ -6,13 +6,15 @@
  */
 
 #include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
 #include "serial/rs232.h"
 #include "serial/bluetooth.h"
 #include "serial/wifi.h"
 #include "serial/touch.h"
 #include "serial/graphics.h"
 #include "serial/colours.h"
-#include "apps/notify.h"
+#include "apps/order.h"
 #include "mainmenu.h"
 #include "main.h"
 
@@ -20,7 +22,15 @@
 int main(){
 	initTouch();
 	printf("Hello from Nios II!\n");
+
 	initWiFi();
+	usleep(1500000);
+
+	get_restaurant_id();
+	usleep(1500000);
+
+	char* restaurant_id = read_restaurant_id();
+	printf(restaurant_id);
 
 	drawMenu();
 	return 0;
