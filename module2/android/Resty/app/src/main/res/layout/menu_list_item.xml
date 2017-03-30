@@ -10,36 +10,52 @@
         android:id="@+id/itemName"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
         android:text="menu item"
         android:textAlignment="center"
-        android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="18dp"
-        app:layout_constraintLeft_toLeftOf="parent" />
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.586"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/itemAmount"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/itemAmount"
-        android:layout_width="100dp"
+        android:layout_width="50dp"
         android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="amount"
+        android:gravity="center"
+        android:hint="0"
         android:inputType="number"
-        android:textAlignment="viewStart"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
-        app:layout_constraintBaseline_toBaselineOf="@+id/itemName"
-        app:layout_constraintRight_toLeftOf="@+id/itemCost" />
+        android:textAlignment="center"
+        android:textColor="@android:color/darker_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/itemCost"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/itemCost"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="40dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
         android:gravity="center"
-        android:text="cost"
-        app:layout_constraintBaseline_toBaselineOf="@+id/itemName"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:text="0.00"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </android.support.constraint.ConstraintLayout>
