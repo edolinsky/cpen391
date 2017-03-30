@@ -18,6 +18,8 @@ import cpen391.resty.resty.menu.MenuItem;
 import cpen391.resty.resty.menu.MenuItemAdapter;
 import cpen391.resty.resty.R;
 import cpen391.resty.resty.serverRequests.RestyMenuRequest;
+import cpen391.resty.resty.serverRequests.serverCallbacks.RestyMenuCallback;
+import cpen391.resty.resty.utils.TestDataUtils;
 
 public class MenuActivity extends AppCompatActivity {
 
@@ -29,9 +31,13 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        menuListView = (ListView)findViewById(R.id.menuList);
 
-        Intent intent = getIntent();
-        String menuString = intent.getStringExtra(RestyMenuRequest.MENU);
+        RestyMenuRequest menuRequest = new RestyMenuRequest(callback);
+        menuRequest.getMenu(TestDataUtils.TEST_RESTAURANT, null);
+    }
+
+    public void onMenuFetchSuccess(String menuString){
         JsonParser parser = new JsonParser();
         JsonObject jsonMenu = (JsonObject)parser.parse(menuString);
 
@@ -42,8 +48,29 @@ public class MenuActivity extends AppCompatActivity {
         items = new ArrayList<>();
         items.addAll(menuList);
 
-        menuListView = (ListView)findViewById(R.id.menuList);
         adapter = new MenuItemAdapter(items, getApplicationContext());
         menuListView.setAdapter(adapter);
     }
+
+
+    private void fetchMenuError(RestyMenuCallback.FetchMenuError error){
+        switch (error){
+            case UnknownError:
+                break;
+            default:
+                break;
+        }
+    }
+
+    private RestyMenuCallback callback = new RestyMenuCallback() {
+        @Override
+        public void fetchMenuSuccess(String menu) {
+            onMenuFetchSuccess(menu);
+        }
+
+        @Override
+        public void fetchMenuError(FetchMenuError error) {
+            fetchMenuError(error);
+        }
+    };
 }

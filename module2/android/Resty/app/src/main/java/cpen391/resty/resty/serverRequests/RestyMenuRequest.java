@@ -9,14 +9,24 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONObject;
+
 import cpen391.resty.resty.activities.MenuActivity;
 import cpen391.resty.resty.serverRequests.ServerRequestConstants.Endpoint;
+import cpen391.resty.resty.serverRequests.serverCallbacks.RestyMenuCallback;
+import cpen391.resty.resty.serverRequests.serverCallbacks.ServerCallback;
 
-public class RestyMenuRequest extends RestyRequest {
+public class RestyMenuRequest {
 
     public static final String MENU = "cpen391.resty.resty.MENU";
 
-    public void getMenu(final String restaurant_id, @Nullable String item_type, final Context context){
+    private final RestyMenuCallback menuCallback;
+
+    public RestyMenuRequest(RestyMenuCallback callback){
+        this.menuCallback = callback;
+    }
+
+    public void getMenu(final String restaurant_id, @Nullable String item_type){
 
         if(item_type == null) {
             item_type = "";
@@ -24,38 +34,25 @@ public class RestyMenuRequest extends RestyRequest {
 
         String url = String.format(Endpoint.MENU.getUrl(), restaurant_id);
         StringRequest request = new StringRequest(Endpoint.MENU.getMethod(), url,
-                createSuccessListener(context), createErrorListener());
+                callback, callback);
 
         request.setRetryPolicy(new DefaultRetryPolicy(50000, 5,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        makeRequest(request, context);
+        RestyRequestManager.getInstance().makeRequest(request);
 
     }
 
-    @Override
-    public Response.Listener createSuccessListener(final Context context) {
-        return new Response.Listener<String>() {
+    private ServerCallback callback = new ServerCallback() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            menuCallback.fetchMenuError(RestyMenuCallback.FetchMenuError.UnknownError);
+        }
 
-            @Override
-            public void onResponse(String response) {
+        @Override
+        public void onResponse(Object response) {
+            String result = (String) response;
+            menuCallback.fetchMenuSuccess(result);
+        }
+    };
 
-                Intent intent = new Intent(context, MenuActivity.class);
-                intent.putExtra(MENU, response);
-                context.startActivity(intent);
-
-            }
-        };
-    }
-
-    @Override
-    public Response.ErrorListener createErrorListener() {
-        return new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-                 System.out.println("Hallo we have an error");
-            }
-        };
-    }
 }

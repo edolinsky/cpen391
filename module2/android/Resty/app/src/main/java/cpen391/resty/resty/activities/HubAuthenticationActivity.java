@@ -1,5 +1,6 @@
 package cpen391.resty.resty.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -19,9 +20,9 @@ public class HubAuthenticationActivity extends MainActivityBase {
     public void authenticate(View view) {
         // pretend authentication successful
 
-        // get menu
-        RestyMenuRequest menuRequest = new RestyMenuRequest();
-        menuRequest.getMenu(TestDataUtils.TEST_RESTAURANT, null, this);
+        Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
+
     }
 
 }

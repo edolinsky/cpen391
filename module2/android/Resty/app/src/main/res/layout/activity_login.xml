@@ -6,6 +6,26 @@
     android:layout_height="match_parent"
     tools:context="cpen391.resty.resty.activities.LoginActivity">
 
+    <TextView
+        android:id="@+id/LoginHeaderTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="0dp"
+        android:background="@android:color/holo_blue_dark"
+        android:elevation="10dp"
+        android:ems="10"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text="@string/loginToResty"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@android:color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <android.support.design.widget.TextInputLayout
         android:id="@+id/loginNameInputLayout"
         android:layout_width="wrap_content"
@@ -14,7 +34,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="16dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LoginHeaderTextview"
         android:layout_marginTop="32dp"
         app:layout_constraintHorizontal_bias="0.503"
         android:layout_centerHorizontal="true"
@@ -65,9 +85,10 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="32dp"
-        android:background="@android:color/holo_blue_bright"
+        android:background="@android:color/holo_blue_dark"
         android:onClick="loginOnClick"
         android:text="@string/loginButtonTitle"
+        android:textColor="@android:color/white"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -77,17 +98,18 @@
         android:id="@+id/loginSignupButton"
         android:layout_width="147dp"
         android:layout_height="45dp"
-        android:background="@android:color/holo_green_light"
-        android:text="@string/loginSignupButtonTitle"
         android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        tools:layout_editor_absoluteY="257dp"
         android:layout_marginTop="8dp"
+        android:background="@android:color/holo_green_dark"
+        android:onClick="signupOnClick"
+        android:text="@string/loginSignupButtonTitle"
+        android:textColor="@android:color/white"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        android:onClick="signupOnClick"/>
+        tools:layout_editor_absoluteY="257dp" />
 
     <TextView
         android:id="@+id/textView"

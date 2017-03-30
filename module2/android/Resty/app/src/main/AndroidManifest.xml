@@ -46,6 +46,7 @@
         <activity android:name=".activities.MenuActivity" />
         <activity android:name=".activities.MainActivityBase" />
         <activity android:name=".activities.MapsActivity" />
+        <activity android:name=".activities.SignupActivity" />
     </application>
 
 </manifest>

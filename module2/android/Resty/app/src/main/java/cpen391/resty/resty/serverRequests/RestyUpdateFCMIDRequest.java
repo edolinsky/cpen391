@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import cpen391.resty.resty.serverRequests.ServerRequestConstants.Endpoint;
 
-public class RestyUpdateFCMIDRequest extends RestyRequest {
+public class RestyUpdateFCMIDRequest {
     private static final String TAG = "UpdateFCMIDRequest";
 
     private static class UpdateFCMIDRequest {
@@ -47,18 +47,16 @@ public class RestyUpdateFCMIDRequest extends RestyRequest {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Endpoint.UPDATE_FCM_ID.getMethod(), UPDATE_FCM_ID_REQUEST_URL, requestObject,
                 createSuccessListener(context), createErrorListener());
-        makeRequest(jsonObjectRequest, context);
+        RestyRequestManager.getInstance().makeRequest(jsonObjectRequest);
 
     }
 
-    @Override
-    public Response.Listener createSuccessListener(Context context) {
+    private Response.Listener createSuccessListener(Context context) {
         Log.i(TAG, "FCM ID update request successful.");
         return null;
     }
 
-    @Override
-    public Response.ErrorListener createErrorListener() {
+    private Response.ErrorListener createErrorListener() {
         Log.i(TAG, "FCM ID update request failed.");
         return null;
     }
