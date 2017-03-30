@@ -16,6 +16,6 @@
 
 // WiFi functions
 void initWiFi(void);
-void wifiListen();
+char* wifiListen(char* buf, int maxLen);
 
 #endif /* WIFI_H_ */

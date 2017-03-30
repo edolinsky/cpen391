@@ -1,3 +1,8 @@
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include "apps/order.h"
+#include "serial/wifi.h"
 #include "orderPage.h"
 #include "serverCalled.h"
 
@@ -13,7 +18,14 @@ void drawOrderPage(void){
 	char item[] = "Item";
 	char name[] = "Customer";
 	char status[] = "Status";
-	char orders[] = "Burger and fries,Erik,Cooking;Butter Chicken,Annalies,On the Way;Pho Nachos,Reid,Ordered;Sushi,Omar,Delivered;";
+
+
+	//char orders[] = "Burger and fries,Erik,Cooking;Butter Chicken,Annalies,On the Way;Pho Nachos,Reid,Ordered;Sushi,Omar,Delivered;";
+
+	get_order("test_user", "26a00ff96d");
+	usleep(2000000);
+	char* orders = read_order();
+	printf(orders);
 
 	char title[] = "Your orders so far:";
 	// Shade out the background
@@ -55,15 +67,15 @@ void drawOrderPage(void){
 
 	// Parsing BS:
 	i = 0;
-	int semicolon = 0;
+	int lines = 0;
 	int comma = 0;
 	int cursorx = margin + 10;
 	int cursory = tablestart + vspace/2;
 	int word = 0;
 	while(orders[i] != NULL){
-		if(orders[i] == ';'){
-			semicolon++;
-			cursory = tablestart*1.5 + (semicolon - 1)*vspace;
+		if(orders[i] == '\n'){
+			lines++;
+			cursory = tablestart*1.5 + (lines - 1)*vspace;
 			cursorx = margin + 10;
 			comma = 0;
 			word = 0;
@@ -83,6 +95,8 @@ void drawOrderPage(void){
 		}
 		i++;
 	}
+
+	free(orders);
 
 	// Button:
 	initElements();
