@@ -1,7 +1,7 @@
 package cpen391.resty.resty.menu;
 
 
-public class MenuItem {
+public class RestaurantMenuItem {
     private String id;
     private String name;
     private String description;
@@ -9,7 +9,7 @@ public class MenuItem {
     private String type;
     private int amount;
 
-    public MenuItem(String id, String name, String description, String price, String type) {
+    public RestaurantMenuItem(String id, String name, String description, String price, String type) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -40,5 +40,9 @@ public class MenuItem {
 
     public int getAmount() {
         return amount;
+    }
+
+    public int incrementAmount() {
+        return ++amount;
     }
 }

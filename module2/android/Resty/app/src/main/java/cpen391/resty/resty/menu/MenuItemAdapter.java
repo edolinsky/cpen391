@@ -7,24 +7,25 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import cpen391.resty.resty.R;
 
-public class MenuItemAdapter extends ArrayAdapter<MenuItem> implements View.OnClickListener {
-    private ArrayList<MenuItem> menu;
+public class MenuItemAdapter extends ArrayAdapter<RestaurantMenuItem> implements View.OnClickListener {
+    private ArrayList<RestaurantMenuItem> menu;
     Context mContext;
 
     private static class ViewHolder {
         TextView txtName;
         TextView txtPrice;
-        EditText editNum;
+        TextView txtNum;
+        Button addButton;
     }
 
-    public MenuItemAdapter(ArrayList<MenuItem> menu, Context context) {
+    public MenuItemAdapter(ArrayList<RestaurantMenuItem> menu, Context context) {
         super(context, R.layout.menu_list_item, menu);
         this.menu = menu;
         this.mContext = context;
@@ -32,7 +33,18 @@ public class MenuItemAdapter extends ArrayAdapter<MenuItem> implements View.OnCl
 
     @Override
     public void onClick(View v) {
-        // get description of item
+        int position = (Integer) v.getTag();
+        RestaurantMenuItem item = getItem(position);
+
+        switch(v.getId()) {
+            case R.id.addItem:
+                if (item != null) {
+                    item.incrementAmount();
+                    this.notifyDataSetChanged();
+                } else {
+                    // error
+                }
+        }
     }
 
     private int lastPosition = -1;
@@ -40,7 +52,7 @@ public class MenuItemAdapter extends ArrayAdapter<MenuItem> implements View.OnCl
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        MenuItem menuItem = getItem(position);
+        RestaurantMenuItem restaurantMenuItem = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 
@@ -53,7 +65,8 @@ public class MenuItemAdapter extends ArrayAdapter<MenuItem> implements View.OnCl
             convertView = inflater.inflate(R.layout.menu_list_item, parent, false);
             viewHolder.txtName = (TextView) convertView.findViewById(R.id.itemName);
             viewHolder.txtPrice = (TextView) convertView.findViewById(R.id.itemCost);
-            viewHolder.editNum = (EditText) convertView.findViewById(R.id.itemAmount);
+            viewHolder.txtNum = (TextView) convertView.findViewById(R.id.itemAmount);
+            viewHolder.addButton = (Button) convertView.findViewById(R.id.addItem);
 
             result=convertView;
 
@@ -68,9 +81,11 @@ public class MenuItemAdapter extends ArrayAdapter<MenuItem> implements View.OnCl
         result.startAnimation(animation);
         lastPosition = position;
 
-        viewHolder.txtName.setText(menuItem.getName());
-        viewHolder.txtPrice.setText(menuItem.getPrice());
-        viewHolder.editNum.setText(String.valueOf(menuItem.getAmount()));
+        viewHolder.txtName.setText(restaurantMenuItem.getName());
+        viewHolder.txtPrice.setText(restaurantMenuItem.getPrice());
+        viewHolder.txtNum.setText(String.valueOf(restaurantMenuItem.getAmount()));
+        viewHolder.addButton.setOnClickListener(this);
+        viewHolder.addButton.setTag(position);
         // Return the completed view to render on screen
         return convertView;
     }

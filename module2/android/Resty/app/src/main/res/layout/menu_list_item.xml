@@ -11,33 +11,15 @@
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:text="menu item"
+        android:text="Menu item name goes here"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.586"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@+id/itemAmount"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/itemAmount"
-        android:layout_width="50dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:gravity="center"
-        android:hint="0"
-        android:inputType="number"
-        android:textAlignment="center"
-        android:textColor="@android:color/darker_gray"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/itemCost"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,7 +28,6 @@
         android:layout_width="50dp"
         android:layout_height="40dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginRight="18dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:gravity="center"
@@ -54,8 +35,37 @@
         android:textAlignment="center"
         android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/itemAmount"
+        android:layout_marginRight="8dp" />
+
+    <TextView
+        android:id="@+id/itemAmount"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:gravity="center"
+        android:text="0"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/addItem"
+        android:layout_marginRight="8dp" />
+
+    <Button
+        android:id="@+id/addItem"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="+"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>
