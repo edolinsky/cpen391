@@ -53,7 +53,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
-    private void fetchMenuError(RestyMenuCallback.FetchMenuError error){
+    private void onFetchMenuError(RestyMenuCallback.FetchMenuError error){
         switch (error){
             case UnknownError:
                 break;
@@ -70,7 +70,7 @@ public class MenuActivity extends AppCompatActivity {
 
         @Override
         public void fetchMenuError(FetchMenuError error) {
-            fetchMenuError(error);
+            onFetchMenuError(error);
         }
     };
 }

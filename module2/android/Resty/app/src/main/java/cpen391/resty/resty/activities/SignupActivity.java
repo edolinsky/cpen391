@@ -37,12 +37,13 @@ public class SignupActivity extends AppCompatActivity {
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
 
+        System.out.println("Hallooo");
         RestySignupRequest signupRequest = new RestySignupRequest(signupCallback);
         signupRequest.signUp(username, password);
     }
 
     public void signupOnSuccess(User user){
-
+        System.out.println("created new account");
     }
 
     private void handleSignupError(RestySignupCallback.SignupError error){

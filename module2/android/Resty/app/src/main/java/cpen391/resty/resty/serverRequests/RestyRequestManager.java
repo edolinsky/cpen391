@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import cpen391.resty.resty.activities.HubAuthenticationActivity;
-import cpen391.resty.resty.serverRequests.serverCallbacks.ServerCallback;
 
 public class RestyRequestManager{
 
@@ -48,6 +47,12 @@ public class RestyRequestManager{
 
         if (mRequestQueue == null)
             System.out.println("Make sure initManager is called before making requests");
+
+        try {
+            System.out.println(new String(request.getBody()));
+        }catch (Exception e){
+            System.out.println(request);
+        }
 
         // Add the request to the RequestQueue.
         mRequestQueue.add(request);

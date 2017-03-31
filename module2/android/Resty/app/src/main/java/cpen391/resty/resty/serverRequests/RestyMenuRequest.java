@@ -3,6 +3,7 @@ package cpen391.resty.resty.serverRequests;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
@@ -13,8 +14,8 @@ import org.json.JSONObject;
 
 import cpen391.resty.resty.activities.MenuActivity;
 import cpen391.resty.resty.serverRequests.ServerRequestConstants.Endpoint;
+import cpen391.resty.resty.serverRequests.serverCallbacks.RestyLoginCallback;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyMenuCallback;
-import cpen391.resty.resty.serverRequests.serverCallbacks.ServerCallback;
 
 public class RestyMenuRequest {
 
@@ -34,7 +35,7 @@ public class RestyMenuRequest {
 
         String url = String.format(Endpoint.MENU.getUrl(), restaurant_id);
         StringRequest request = new StringRequest(Endpoint.MENU.getMethod(), url,
-                callback, callback);
+                listener, errorListener);
 
         request.setRetryPolicy(new DefaultRetryPolicy(50000, 5,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -42,16 +43,17 @@ public class RestyMenuRequest {
 
     }
 
-    private ServerCallback callback = new ServerCallback() {
+    private final Response.Listener<String> listener = new Response.Listener<String>(){
+        @Override
+        public void onResponse(String response) {
+            menuCallback.fetchMenuSuccess(response);
+        }
+    };
+
+    private final Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
             menuCallback.fetchMenuError(RestyMenuCallback.FetchMenuError.UnknownError);
-        }
-
-        @Override
-        public void onResponse(Object response) {
-            String result = (String) response;
-            menuCallback.fetchMenuSuccess(result);
         }
     };
 

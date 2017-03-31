@@ -2,6 +2,8 @@ package cpen391.resty.resty.serverRequests;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -15,7 +17,6 @@ import cpen391.resty.resty.Objects.User;
 import cpen391.resty.resty.activities.HubAuthenticationActivity;
 import cpen391.resty.resty.serverRequests.ServerRequestConstants.Endpoint;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyLoginCallback;
-import cpen391.resty.resty.serverRequests.serverCallbacks.ServerCallback;
 
 
 public class RestyLoginRequest {
@@ -40,21 +41,23 @@ public class RestyLoginRequest {
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Endpoint.LOGIN.getMethod(), LOGIN_REQUEST_URL, requestObject,
-                        serverCallback, serverCallback);
+                        listener, errorListener);
         RestyRequestManager.getInstance().makeRequest(jsObjRequest);
 
     }
 
-    private final ServerCallback serverCallback = new ServerCallback() {
+    private final Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>(){
+        @Override
+        public void onResponse(JSONObject response) {
+            loginCallback.loginCompleted(null);
+        }
+    };
+
+    private final Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
+            Log.i("Login Error", error.toString());
             loginCallback.loginError(RestyLoginCallback.LoginError.UnknownError);
-        }
-
-        @Override
-        public void onResponse(Object response) {
-            JSONObject result = (JSONObject) response;
-            loginCallback.loginCompleted(null);
         }
     };
 

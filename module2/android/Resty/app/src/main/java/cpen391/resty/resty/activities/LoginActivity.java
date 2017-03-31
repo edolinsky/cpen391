@@ -3,6 +3,7 @@ package cpen391.resty.resty.activities;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -63,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
     private void onLoginError(RestyLoginCallback.LoginError error){
         switch (error){
             case UnknownError:
+                Log.i("ERROR","Unable to login");
                 break;
             default:
                 break;
