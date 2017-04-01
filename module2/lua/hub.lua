@@ -72,10 +72,10 @@ end
 -- Deletes the specified file, and then writes the
 -- specified content under a new file with the same filename.
 function overwrite_file(filename, content)
-    file.remove(ORDER_FILE)
-    if file.open(ORDER_FILE, "w+") then
+    file.remove(filename)
+    if file.open(filename, "w+") then
         file.write(content)
-        file.close(ORDER_FILE)
+        file.close(filename)
     end
     collectgarbage()
 end
@@ -84,7 +84,7 @@ end
 function read_file(filename)
     if file.open(filename, "r") then
         print(MSG_START .. file.read() .. MSG_END .. "\r\n")
-        file.close(ORDER_FILE)
+        file.close(filename)
     end
 end
 

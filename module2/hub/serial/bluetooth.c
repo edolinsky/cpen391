@@ -20,8 +20,8 @@ void initBluetooth(void) {
 	// setting up the 6850
 	BT_CONTROL = 0x95;	// 8 bits, no parity, 1 stop bit
 	BT_BAUD = 0x01;	// 115k baud
-	setBluetoothName("Group15");
-	setBluetoothPassword("cpen391");
+
+	setBluetoothName("CPEN391-GROUP15");
 	printf("Bluetooth initialized!\n");
 }
 
@@ -34,13 +34,12 @@ void setBluetoothName(char *name) {
 	// send the command to change the name
 	char command[25] = "SN,";
 	strcat(command, name);
-	strcat(command, "\r\n");
+	strcat(command, "\n");
 
 	putString(&BT_STATUS, &BT_TXDATA, command);
 
-
 	usleep(USLEEP_SEC);
-	putString(&BT_STATUS, &BT_TXDATA, "---"); // enter command mode
+	putString(&BT_STATUS, &BT_TXDATA, "---\n"); // enter command mode
 	usleep(USLEEP_SEC);
 }
 
@@ -53,29 +52,40 @@ void setBluetoothPassword(char *password) {
 	// send the command to change the name
 	char command[25] = "SP,";
 	strcat(command, password);
-	strcat(command, "\r\n");
+	strcat(command, "\n");
 
 	putString(&BT_STATUS, &BT_TXDATA, command);
 
 
 	usleep(USLEEP_SEC);
-	putString(&BT_STATUS, &BT_TXDATA, "---"); // enter command mode
+	putString(&BT_STATUS, &BT_TXDATA, "---\n"); // enter command mode
 	usleep(USLEEP_SEC);
 }
 
-char* bluetoothListen() {
-	int maxBuf = 40;
-	int i = 0;
-	char x = '\0';
-	char* buffer = malloc(maxBuf);
+char* bluetoothListen(char* buf, int maxLen) {
+	int i = 1;
 
-	// Read character by character until gravemarker is hit.
-	for (i = 0; x != '`' && i < maxBuf; i++) {
-		x = getChar(&BT_STATUS, &BT_RXDATA);
-		buffer[i] = x;
+	while (getChar(&BT_STATUS, &BT_RXDATA) != '`') {
+		// do nothing until gravemarker is hit.
 	}
 
-	// Replace final gravemarker (or final character) with null character
-	buffer[i - 1] = '\0';
-	return buffer;
+	char x;
+
+	// Ignore successive gravemarkers.
+	do {
+		x = getChar(&BT_STATUS, &BT_RXDATA);
+		buf[0] = x;
+	} while (x == '`');
+
+	// Read in message content.
+	while (i < maxLen) {
+		char x = getChar(&BT_STATUS, &BT_RXDATA);
+		if (x == '`') {
+			break;
+		}
+		buf[i++] = x;
+	}
+
+	buf[i] = '\0';
+	return buf;
 }

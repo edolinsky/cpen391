@@ -51,5 +51,6 @@ void drawSuccess(void){
 		OutGraphicsCharFont2a((400 - strlen(test)*5)+i*10, 250, WHITE, WHITE, test[i], 0);
 	}
 
-	listenToTouches();
+	listen_for_order_info();
+	drawOrderPage();
 }

@@ -25,6 +25,8 @@ int main(){
 	initTouch();
 	printf("Hello from Nios II!\n");
 
+	initBluetooth();
+
 	initWiFi();
 	usleep(SLEEP_INTERVAL);
 
@@ -33,9 +35,11 @@ int main(){
 
 	restaurant_id = read_restaurant_id();
 	printf(restaurant_id);
+	printf("\n");
 
 	hub_id = read_table_id();
 	printf(hub_id);
+	printf("\n");
 
 	drawMenu();
 	return 0;

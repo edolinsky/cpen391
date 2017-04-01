@@ -7,6 +7,7 @@
 #include "successScreen.h"
 #include "serverCalled.h"
 #include "apps/authenticate.h"
+#include "main.h"
 
 #define TIME_REQUEST_DELAY 2000000 // two seconds.
 
@@ -33,7 +34,11 @@ void drawMenu(void){
 	usleep(TIME_REQUEST_DELAY);
 	int time = read_time();
 
+	printf("Current time: %d\n", time);
+
 	char* randomPin = generate_random_pin(time);
+	printf(randomPin);
+	printf("\n");
 
 	// Shade out the background
 	for(i = 0; i < 480; i ++){
@@ -106,8 +111,24 @@ void drawMenu(void){
 		OutGraphicsCharFont2a((400 - strlen(PIN)*5) + i*10, 275, BLACK, BLACK, PIN[i], 0);
 	}
 
+	printf("Waiting for Auth:\n");
+	int authenticated = FALSE;
+
+	while(!authenticated) {
+		authenticated = listen_for_pin_and_check(randomPin);
+		if (authenticated) {
+			send_table_info();
+			printf("Authenticated.\n");
+			authenticated = TRUE;
+		} else {
+			send_auth_error();
+			printf("Bad pin.\n");
+
+		}
+	}
+
+	printf("On to success screen.\n");
+
 	free(randomPin);
-
-
-	listenToTouches();
+	drawSuccess();
 }

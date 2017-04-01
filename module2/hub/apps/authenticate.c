@@ -12,16 +12,26 @@
 #include <unistd.h>
 #include <time.h>
 #include "../serial/wifi.h"
+#include "../main.h"
 
-#define RAND_MAX 9000
+#define RANDOM_MAX 9000
 #define RAND_OFFSET 1000
+
+char MSG_START[] = "````````````````````";
+char MSG_END[] = "`";
 
 /**
  * Listens to bluetooth for a string, and compares it to the specified string.
  * Returns true if strings match.
  */
 int listen_for_pin_and_check(char* hub_pin) {
-	char* pin_entered = bluetoothListen();
+	int maxBuf = 10;
+	char* pin_entered = malloc(maxBuf);
+	pin_entered = bluetoothListen(pin_entered, maxBuf);
+
+	printf("Pin entered: ");
+	printf(pin_entered);
+	printf("\n");
 
     // Return true only if strings are same (strcmp 0)
     int is_valid = strcmp(hub_pin, pin_entered) ? 0 : 1;
@@ -40,7 +50,7 @@ char* generate_random_pin(int seed) {
     // Generate random integer.
     srand(seed);
 
-    int pin = (rand() % RAND_MAX) + RAND_OFFSET;
+    int pin = (rand() % RANDOM_MAX) + RAND_OFFSET;
 
     // Convert integer to string.
     snprintf(buffer, maxBuf, "%d", pin);
@@ -65,17 +75,58 @@ void authenticate(char* pin) {
 /**
  * Sends this device's device (table) ID and restaurant ID via bluetooth.
  */
-void send_table_info(char* restaurant_id) {
-    // TODO
-    return;
+void send_table_info() {
+	char message[80] = "";
+	strcat(message, MSG_START);
+	strcat(message, hub_id);
+	strcat(message, "    ");
+	strcat(message, restaurant_id);
+	strcat(message, MSG_END);
+
+    putString(&BT_STATUS, &BT_TXDATA, message);
+}
+
+void send_auth_error() {
+	char message[80] = "";
+	strcat(message, MSG_START);
+	strcat(message, "error");
+	strcat(message, MSG_END);
+	putString(&BT_STATUS, &BT_TXDATA, message);
 }
 
  /**
   * Listens for an order ID over bluetooth.
   */
-char* listen_for_order_id() {
-	// TODO
-	return;
+void listen_for_order_info() {
+	int maxBuf = 20;
+	char *info = malloc(maxBuf);
+	info = bluetoothListen(info, maxBuf);
+
+	char order_buf[20];
+	char customer_buf[20];
+
+	int i = 0;
+	int order_id_len;
+	int customer_id_len;
+	// parse info. "order_id,customer_id"
+	for (i = 0; i < maxBuf && info[i] != ','; i++) {
+		order_buf[i] = info[i];
+	}
+	order_id_len = i;	// with one extra for null character.
+	order_buf[i - 1] = '\0';
+
+	int j;
+	for (j = 0; i < maxBuf && info[i] != '\0'; i++, j++) {
+		customer_buf[j] = info[i];
+	}
+	customer_id_len = j;
+	customer_buf[j - 1] = '\0';
+
+	order_id = malloc(order_id_len);
+	customer_id = malloc(customer_id_len);
+
+	strcpy(order_id, order_buf);
+	strcpy(customer_id, customer_buf);
 }
 
 /**
@@ -93,7 +144,7 @@ int read_time() {
 	char *buf = malloc(maxBuf);
 	putString(&WIFI_STATUS, &WIFI_TXDATA, "\r\n\r\nread_file(TIME_FILE)\r\n");
 
-	wifiListen(buf, maxBuf);
+	buf = wifiListen(buf, maxBuf);
 
 	int time = atoi(buf);
 	free(buf);

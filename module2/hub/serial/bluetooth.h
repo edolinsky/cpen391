@@ -18,6 +18,6 @@
 void initBluetooth(void);
 void setBluetoothName(char *name);
 void setBluetoothPassword(char *password);
-char* bluetoothListen();
+char* bluetoothListen(char* buf, int maxLen);
 
 #endif /* BLUETOOTH_H_ */

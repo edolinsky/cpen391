@@ -77,7 +77,7 @@ void drawOrderPage(void){
 	int cursorx = margin + 10;
 	int cursory = tablestart + vspace/2;
 	int word = 0;
-	while(orders[i] != NULL){
+	while(orders[i] != '\0'){
 		if(orders[i] == '\n'){
 			lines++;
 			cursory = tablestart*1.5 + (lines - 1)*vspace;
