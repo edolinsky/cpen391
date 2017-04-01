@@ -127,8 +127,6 @@ void drawMenu(void){
 		}
 	}
 
-	printf("On to success screen.\n");
-
 	free(randomPin);
 	drawSuccess();
 }

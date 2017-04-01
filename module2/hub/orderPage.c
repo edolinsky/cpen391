@@ -27,7 +27,7 @@ void drawOrderPage(void){
 	app_context = ORDER_CONTEXT;
 
 	// Get order information from server via WiFi chip.
-	get_order("test_user", "26a00ff96d");
+	get_order(customer_id, order_id);
 	usleep(ORDER_REQUEST_DELAY);
 	char* orders = read_order();
 	printf(orders);
