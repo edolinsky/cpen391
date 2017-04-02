@@ -11,15 +11,17 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
+import com.google.common.hash.Hashing;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
 import java.net.HttpURLConnection;
+import java.nio.charset.StandardCharsets;
 
 import cpen391.resty.resty.Objects.User;
 import cpen391.resty.resty.R;
+import cpen391.resty.resty.dataStore.RestyStore;
 import cpen391.resty.resty.serverRequests.RestySignupRequest;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestySignupCallback;
 
@@ -33,11 +35,14 @@ public class SignupActivity extends AppCompatActivity {
     private View restaurantIDField;
     private View staffOnlyCheckbox;
     private Switch staffSwitch;
+    private RestyStore dataStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        dataStore = RestyStore.getInstance();
 
         usernameText = (EditText) findViewById(R.id.signupNameText);
         passwordText = (EditText) findViewById(R.id.signupPasswordText);
@@ -86,8 +91,17 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
+        // If successful, hash password and send request.
+        final String hashedPassword = Hashing.sha256()
+                .hashString(password, StandardCharsets.UTF_8)
+                .toString();
+
+        // Store username for later use.
+        dataStore.put(RestyStore.Key.USER, username);
+
+        // Send sign up request.
         RestySignupRequest signupRequest = new RestySignupRequest(signupCallback);
-        signupRequest.signUp(username, password);
+        signupRequest.signUp(username, hashedPassword);
     }
 
     public void signupOnSuccess(User user){

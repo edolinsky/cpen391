@@ -10,9 +10,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.common.hash.Hashing;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
+
+import java.nio.charset.StandardCharsets;
 
 import cpen391.resty.resty.Objects.User;
 import cpen391.resty.resty.R;
@@ -53,6 +56,8 @@ public class LoginActivity extends AppCompatActivity {
 
         int duration = Toast.LENGTH_LONG;
         CharSequence text;
+
+        // Check for valid username and password.
         if(!LoginActivity.isValidEmail(username)) {
             text = "Invalid email address.";
             Toast toast = Toast.makeText(this, text, duration);
@@ -65,9 +70,15 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        final String hashedPassword = Hashing.sha256()
+                .hashString(password, StandardCharsets.UTF_8)
+                .toString();
+
         // Store username for later queries.
         dataStore.put(RestyStore.Key.USER, username);
-        signIn(username, password);
+
+        // Send log in request.
+        signIn(username, hashedPassword);
     }
 
     public void signIn(String username, String password){

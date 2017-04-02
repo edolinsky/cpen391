@@ -5,14 +5,14 @@
     <string name="loginUsernameInputHint">email</string>
     <string name="loginPasswordInputHint">password</string>
     <string name="loginButtonTitle">Login</string>
-    <string name="loginSignupButtonTitle">Sign-up</string>
+    <string name="loginSignupButtonTitle">Sign up</string>
     <string name="loginToResty">Login To Resty</string>
 
     <!-- Signup Page Strings -->
     <string name="restaurantIDHint">Restaurant ID</string>
-    <string name="signupForResty">Sign-up For Resty</string>
+    <string name="signupForResty">Sign up for Resty</string>
     <string name="staffAccountOnly">Staff Account Only</string>
-    <string name="signupButtonTitle">Signup</string>
+    <string name="signupButtonTitle">Sign up</string>
 
 
     <!-- Navbar Strings -->
