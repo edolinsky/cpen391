@@ -20,17 +20,31 @@ public class HubAuthenticationActivity extends MainActivityBase {
     private static final Integer REQUEST_ENABLE_BT = 2;
     private RestyBluetooth restyBluetooth;
     BluetoothAdapter mBluetoothAdapter;
-    private EditText pinText;
+    private View pinText;
+    private View authButton;
     private RestyStore dataStore;
 
-    boolean testing = true;
+    boolean usingBluetooth = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         dataStore = RestyStore.getInstance();
 
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_hubverification);
+
+        pinText = findViewById(R.id.tablePin);
+        authButton = findViewById(R.id.authenticate);
+
+        // Hide authentication button until bluetooth is initialized.
+        pinText.setVisibility(View.INVISIBLE);
+        authButton.setVisibility(View.INVISIBLE);
+
+    }
+
+    public void initBluetooth(View view) {
         // When testing: skip Bluetooth initialization.
-        if (testing) {
+        if (usingBluetooth) {
             mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
             if (mBluetoothAdapter == null) {
@@ -42,6 +56,7 @@ public class HubAuthenticationActivity extends MainActivityBase {
 
                 Toast toast = Toast.makeText(this, text, duration);
                 toast.show();
+                return;
             } else if (!mBluetoothAdapter.isEnabled()) {
                 // Ensure user enables bluetooth.
 
@@ -57,14 +72,14 @@ public class HubAuthenticationActivity extends MainActivityBase {
 
                     Toast toast = Toast.makeText(this, text, duration);
                     toast.show();
+                    return;
                 }
             }
         }
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hubverification);
-
-        pinText = (EditText) findViewById(R.id.tablePin);
+        // Activate auth assets.
+        pinText.setVisibility(View.VISIBLE);
+        authButton.setVisibility(View.VISIBLE);
 
     }
 
@@ -72,7 +87,7 @@ public class HubAuthenticationActivity extends MainActivityBase {
     public void authenticate(View view) {
 
         // For testing purposes without bluetooth: skip straight to menu.
-        if (testing) {
+        if (!usingBluetooth) {
             dataStore.put(RestyStore.Key.TABLE_ID, "0xDEFEC7EDDA7ABA5E");
             dataStore.put(RestyStore.Key.RESTAURANT_ID, "test_resto");
 
@@ -81,7 +96,7 @@ public class HubAuthenticationActivity extends MainActivityBase {
             return;
         }
 
-        restyBluetooth.write(pinText.getText().toString());
+        restyBluetooth.write(((EditText) pinText).getText().toString());
         String response = restyBluetooth.listenForResponse();
         Log.d(TAG, response);
 

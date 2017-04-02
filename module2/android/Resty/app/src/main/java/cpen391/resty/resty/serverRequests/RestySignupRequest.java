@@ -54,7 +54,7 @@ public class RestySignupRequest{
         @Override
         public void onErrorResponse(VolleyError error) {
             Log.i("Login Error", error.toString());
-            signupCallback.signupError(RestySignupCallback.SignupError.unknownError);
+            signupCallback.signupError(error);
         }
     };
 

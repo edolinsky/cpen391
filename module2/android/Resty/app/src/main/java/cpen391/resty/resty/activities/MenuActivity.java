@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -58,9 +59,9 @@ public class MenuActivity extends MainActivityBase {
         menuListView.setAdapter(adapter);
     }
 
-    private void onFetchMenuError(RestyMenuCallback.FetchMenuError error){
-        switch (error){
-            case UnknownError:
+    private void onFetchMenuError(VolleyError error){
+        switch (error.networkResponse.statusCode){
+            case 500:
                 break;
             default:
                 break;
@@ -74,7 +75,7 @@ public class MenuActivity extends MainActivityBase {
         }
 
         @Override
-        public void fetchMenuError(FetchMenuError error) {
+        public void fetchMenuError(VolleyError error) {
             onFetchMenuError(error);
         }
     };

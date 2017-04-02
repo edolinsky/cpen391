@@ -7,9 +7,6 @@ import android.util.Log;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
@@ -57,7 +54,7 @@ public class RestyLoginRequest {
         @Override
         public void onErrorResponse(VolleyError error) {
             Log.i("Login Error", error.toString());
-            loginCallback.loginError(RestyLoginCallback.LoginError.UnknownError);
+            loginCallback.loginError(error);
         }
     };
 

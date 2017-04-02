@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context="cpen391.resty.resty.activities.SignupActivity">
 
 
@@ -107,9 +108,10 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="@string/restaurantIDHint"
-            android:inputType="text|numberDecimal"
+            android:inputType="text"
             android:textAlignment="viewStart"
             app:layout_constraintTop_toBottomOf="@+id/cd"
+            android:maxLength="10"
             tools:layout_editor_absoluteX="72dp" />
 
     </android.support.design.widget.TextInputLayout>
