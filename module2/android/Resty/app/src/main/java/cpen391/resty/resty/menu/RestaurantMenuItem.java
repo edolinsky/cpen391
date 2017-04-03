@@ -45,4 +45,8 @@ public class RestaurantMenuItem {
     public int incrementAmount() {
         return ++amount;
     }
+
+    public int decrementAmount() {
+        return --amount;
+    }
 }

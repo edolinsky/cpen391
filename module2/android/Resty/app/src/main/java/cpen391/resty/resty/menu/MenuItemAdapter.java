@@ -23,6 +23,8 @@ public class MenuItemAdapter extends ArrayAdapter<RestaurantMenuItem> implements
         TextView txtPrice;
         TextView txtNum;
         Button addButton;
+        Button subtractButton;
+        int position;
     }
 
     public MenuItemAdapter(ArrayList<RestaurantMenuItem> menu, Context context) {
@@ -33,17 +35,27 @@ public class MenuItemAdapter extends ArrayAdapter<RestaurantMenuItem> implements
 
     @Override
     public void onClick(View v) {
-        int position = (Integer) v.getTag();
-        RestaurantMenuItem item = getItem(position);
+        ViewHolder line = (ViewHolder) v.getTag();
+        RestaurantMenuItem item = getItem(line.position);
 
         switch(v.getId()) {
             case R.id.addItem:
                 if (item != null) {
                     item.incrementAmount();
-                    this.notifyDataSetChanged();
+                    line.txtNum.setText(Integer.toString(item.getAmount()));
                 } else {
                     // error
                 }
+                break;
+            case R.id.subtractItem:
+                if (item != null) {
+                    item.decrementAmount();
+                    line.txtNum.setText(Integer.toString(item.getAmount()));
+                } else {
+                    // error
+                }
+                break;
+
         }
     }
 
@@ -56,8 +68,6 @@ public class MenuItemAdapter extends ArrayAdapter<RestaurantMenuItem> implements
         // Check if an existing view is being reused, otherwise inflate the view
         ViewHolder viewHolder; // view lookup cache stored in tag
 
-        final View result;
-
         if (convertView == null) {
 
             viewHolder = new ViewHolder();
@@ -67,25 +77,26 @@ public class MenuItemAdapter extends ArrayAdapter<RestaurantMenuItem> implements
             viewHolder.txtPrice = (TextView) convertView.findViewById(R.id.itemCost);
             viewHolder.txtNum = (TextView) convertView.findViewById(R.id.itemAmount);
             viewHolder.addButton = (Button) convertView.findViewById(R.id.addItem);
-
-            result=convertView;
+            viewHolder.subtractButton = (Button) convertView.findViewById(R.id.subtractItem);
+            viewHolder.position = position;
 
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
-            result=convertView;
         }
 
         Animation animation = AnimationUtils.loadAnimation(mContext, (position > lastPosition) ?
                 R.anim.up_from_bottom : R.anim.down_from_top);
-        result.startAnimation(animation);
+        convertView.startAnimation(animation);
         lastPosition = position;
 
         viewHolder.txtName.setText(restaurantMenuItem.getName());
         viewHolder.txtPrice.setText(restaurantMenuItem.getPrice());
         viewHolder.txtNum.setText(String.valueOf(restaurantMenuItem.getAmount()));
         viewHolder.addButton.setOnClickListener(this);
-        viewHolder.addButton.setTag(position);
+        viewHolder.addButton.setTag(viewHolder);
+        viewHolder.subtractButton.setOnClickListener(this);
+        viewHolder.subtractButton.setTag(viewHolder);
         // Return the completed view to render on screen
         return convertView;
     }

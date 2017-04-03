@@ -95,6 +95,17 @@ public class MenuActivity extends MainActivityBase {
                 Toast t = Toast.makeText(this, "Shopping Cart", Toast.LENGTH_SHORT);
                 t.show();
 
+                // collect items in shopping cart
+                List<RestaurantMenuItem> shoppingCart = new ArrayList<>();
+                for(RestaurantMenuItem i : items) {
+                    if(i.getAmount() != 0) {
+                        shoppingCart.add(i);
+                    }
+                }
+
+                // open some view of shopping cart
+
+
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
