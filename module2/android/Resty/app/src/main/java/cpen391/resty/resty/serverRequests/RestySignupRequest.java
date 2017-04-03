@@ -10,9 +10,13 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
+import cpen391.resty.resty.Objects.StaffUser;
 import cpen391.resty.resty.Objects.User;
 import cpen391.resty.resty.serverRequests.ServerRequestConstants.Endpoint;
 import org.json.JSONObject;
+
+import java.util.IllegalFormatException;
+
 import cpen391.resty.resty.activities.HubAuthenticationActivity;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyLoginCallback;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestySignupCallback;
@@ -25,6 +29,11 @@ public class RestySignupRequest{
         this.signupCallback = signupCallback;
     }
 
+    /**
+     * Signup for a basic account for customers
+     * @param username username TODO: check for username uniqueness
+     * @param password  password TODO: add restrictions on password length and characters
+     */
     public void signUp(final String username, final String password){
 
         final String SIGNUP_REQUEST_URL = Endpoint.SIGNUP.getUrl();
@@ -43,21 +52,66 @@ public class RestySignupRequest{
 
     }
 
+    /**
+     * TODO: TEST THIS
+     * Signup for restaurant staff
+     * @param username username
+     * @param password password
+     * @param restaurant_id the id assigned to the restaurant
+     * @param staffonly pass true if user wants to use account as staff only, and never as a customer
+     */
+    public void staffSignUp(final String username, final String password, final String restaurant_id, boolean staffonly){
+
+        final String SIGNUP_REQUEST_URL = Endpoint.SIGNUP.getUrl();
+        JSONObject requestObject = null;
+
+        String affinity = staffonly ? "staff_only":"staff";
+
+        try{
+            requestObject = new JSONObject(StaffUser.getSignupJsonObject(username, password, restaurant_id, affinity));
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Endpoint.SIGNUP.getMethod(), SIGNUP_REQUEST_URL, requestObject,
+                        listener, errorListener);
+        RestyRequestManager.getInstance().makeRequest(jsObjRequest);
+
+    }
+
     private final Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>(){
         @Override
         public void onResponse(JSONObject response) {
-            signupCallback.signupCompleted(new User());
+
+            try {
+
+                /* response could be for a staff user or for a normal user
+                check affinity field to know which case this is */
+
+                String affinity = (String) response.get("affinity");
+
+                switch (affinity){
+                    case "staff":
+                        break;
+                    default:
+                        break;
+                }
+
+                signupCallback.signupCompleted(new User());
+
+            }catch (Exception e) {
+                // this should never happen
+                throw new IllegalArgumentException();
+            }
         }
     };
 
     private final Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            Log.i("Login Error", error.toString());
             signupCallback.signupError(RestySignupCallback.SignupError.unknownError);
         }
     };
-
-
 
 }

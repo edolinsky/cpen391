@@ -37,7 +37,6 @@ public class SignupActivity extends AppCompatActivity {
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
 
-        System.out.println("Hallooo");
         RestySignupRequest signupRequest = new RestySignupRequest(signupCallback);
         signupRequest.signUp(username, password);
     }
