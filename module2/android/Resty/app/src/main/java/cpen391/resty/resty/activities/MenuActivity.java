@@ -1,7 +1,7 @@
 package cpen391.resty.resty.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,18 +18,55 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpen391.resty.resty.Objects.Table;
+import cpen391.resty.resty.Objects.User;
+import cpen391.resty.resty.menu.OrderDialog;
 import cpen391.resty.resty.menu.RestaurantMenuItem;
 import cpen391.resty.resty.menu.MenuItemAdapter;
 import cpen391.resty.resty.R;
 import cpen391.resty.resty.serverRequests.RestyMenuRequest;
+import cpen391.resty.resty.serverRequests.RestyOrderRequest;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyMenuCallback;
+import cpen391.resty.resty.serverRequests.serverCallbacks.RestyOrderCallback;
 import cpen391.resty.resty.utils.TestDataUtils;
 
-public class MenuActivity extends MainActivityBase {
+public class MenuActivity extends MainActivityBase implements OrderDialog.OrderDialogListener{
 
     ArrayList<RestaurantMenuItem> items;
+    List<RestaurantMenuItem> shoppingCart;
     ListView menuListView;
+    Table connectedTable;
+    String userId;
     private static MenuItemAdapter adapter;
+
+    private RestyMenuCallback menuCallback = new RestyMenuCallback() {
+        @Override
+        public void fetchMenuSuccess(String menu) {
+            onMenuFetchSuccess(menu);
+        }
+
+        @Override
+        public void fetchMenuError(VolleyError error) {
+            onFetchMenuError(error);
+        }
+    };
+
+    private RestyOrderCallback orderCallback = new RestyOrderCallback() {
+        @Override
+        public void orderComplete() {
+            Toast orderCompleteToast = Toast.makeText(getApplicationContext(), "Order sent!",
+                    Toast.LENGTH_LONG);
+            orderCompleteToast.show();
+        }
+
+        @Override
+        public void orderError(OrderError error) {
+            Toast orderFailureToast = Toast.makeText(getApplicationContext(),
+                    "There was a problem with sending your order, please try again.",
+                    Toast.LENGTH_LONG);
+            orderFailureToast.show();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +76,13 @@ public class MenuActivity extends MainActivityBase {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        RestyMenuRequest menuRequest = new RestyMenuRequest(callback);
-        menuRequest.getMenu(TestDataUtils.TEST_RESTAURANT, null);
+        RestyMenuRequest menuRequest = new RestyMenuRequest(menuCallback);
+
+        connectedTable = new Table(TestDataUtils.TEST_RESTAURANT, TestDataUtils.TEST_TABLE);
+        userId = TestDataUtils.TEST_USER;
+        menuRequest.getMenu(connectedTable.getRestaurantId(), null);
+
+        shoppingCart = new ArrayList<>();
     }
 
 
@@ -96,15 +138,14 @@ public class MenuActivity extends MainActivityBase {
                 t.show();
 
                 // collect items in shopping cart
-                List<RestaurantMenuItem> shoppingCart = new ArrayList<>();
                 for(RestaurantMenuItem i : items) {
                     if(i.getAmount() != 0) {
                         shoppingCart.add(i);
                     }
                 }
 
-                // open some view of shopping cart
-
+                OrderDialog order = new OrderDialog();
+                order.show(getSupportFragmentManager(), "Order Dialog");
 
             default:
                 // If we got here, the user's action was not recognized.
@@ -112,5 +153,21 @@ public class MenuActivity extends MainActivityBase {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    @Override
+    public void onDialogConfirmation(DialogFragment dialog) {
+        List<RestaurantMenuItem> order = new ArrayList<>();
+        order.addAll(shoppingCart);
+        shoppingCart = new ArrayList<>();
+
+        RestyOrderRequest orderRequest = new RestyOrderRequest(orderCallback);
+        orderRequest.order(order, userId, connectedTable);
+    }
+
+    @Override
+    public void onDialogCancellation(DialogFragment dialog) {
+        // clear cart
+        shoppingCart = new ArrayList<>();
     }
 }

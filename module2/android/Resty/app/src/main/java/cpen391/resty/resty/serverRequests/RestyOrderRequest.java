@@ -1,0 +1,63 @@
+package cpen391.resty.resty.serverRequests;
+
+
+import android.util.Log;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import cpen391.resty.resty.Objects.Order;
+import cpen391.resty.resty.Objects.Table;
+import cpen391.resty.resty.Objects.User;
+import cpen391.resty.resty.menu.RestaurantMenuItem;
+import cpen391.resty.resty.serverRequests.ServerRequestConstants.Endpoint;
+import cpen391.resty.resty.serverRequests.serverCallbacks.RestyOrderCallback;
+
+public class RestyOrderRequest {
+
+    private final RestyOrderCallback orderCallback;
+
+    public RestyOrderRequest(RestyOrderCallback callback){
+        this.orderCallback = callback;
+    }
+
+    public void order(List<RestaurantMenuItem> order, String userId, Table table){
+
+        final String REQUEST_URL = Endpoint.PLACE_ORDER.getUrl();
+        JSONObject requestObject = null;
+
+        try{
+            requestObject = new JSONObject(Order.create(order, userId, table).toJson());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest
+                (Endpoint.PLACE_ORDER.getMethod(), REQUEST_URL, requestObject,
+                        listener, errorListener);
+        RestyRequestManager.getInstance().makeRequest(jsObjRequest);
+
+    }
+
+    private final Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>(){
+        @Override
+        public void onResponse(JSONObject response) {
+            orderCallback.orderComplete();
+        }
+    };
+
+    private final Response.ErrorListener errorListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Log.i("Login Error", error.toString());
+            orderCallback.orderError(RestyOrderCallback.OrderError.UnknownError);
+        }
+    };
+
+}

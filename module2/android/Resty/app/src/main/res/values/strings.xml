@@ -14,6 +14,11 @@
     <string name="staffAccountOnly">Staff Account Only</string>
     <string name="signupButtonTitle">Sign up</string>
 
+    <!-- Menu Strings -->
+    <string name="confirmOrder">Confirm Order?</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+
 
     <!-- Navbar Strings -->
     <string name="restaurant_menu">Restaurant Menu</string>

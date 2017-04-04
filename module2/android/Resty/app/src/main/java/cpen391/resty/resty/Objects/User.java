@@ -10,7 +10,7 @@ import static android.R.attr.name;
 import static android.R.attr.password;
 
 
-public class User {
+public class User extends GsonSerializable {
 
     private String user;
             String affinity;
