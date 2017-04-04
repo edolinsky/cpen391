@@ -3,21 +3,29 @@ package cpen391.resty.resty.Objects;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.json.JSONObject;
+
 public class StaffUser extends User {
 
     private String restaurantID;
     private String affinity;
 
-    public StaffUser(String username, String password, String restaurantID, String affinity){
-        super(username, password);
+    public StaffUser(){
+        super();
+        this.restaurantID = "";
+        this.affinity = "";
+    }
+
+    public StaffUser(String username, String restaurantID, String affinity){
+        super(username);
         this.affinity = affinity;
         this.restaurantID = restaurantID;
 
         validAffinityCheck();
-        validResaurantIDCheck();
+        validRestaurantIDCheck();
     }
 
-    String toJson(){
+    public String toJson(){
         Gson gson = new Gson();
         return gson.toJson(this);
     }
@@ -35,11 +43,12 @@ public class StaffUser extends User {
             throw new IllegalArgumentException();
     }
 
-    private void validResaurantIDCheck(){
-        // TODO: IMPLEMENT THIS
+    private void validRestaurantIDCheck(){
+        // TODO: Implement this
     }
 
-    public static String getSignupJsonObject(String username, String password, String restaurantID, String affinity){
-        return new StaffUser(username, password, restaurantID, affinity).toJson();
+    public static boolean validRestaurantIDCheck(String resID){
+        // TODO: Implement this
+        return !resID.isEmpty();
     }
 }

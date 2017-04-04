@@ -82,7 +82,7 @@ def login_endpoint():
     else:
         # If unsuccessful, send error message to user.
         response = jsonify({'user': user_email,
-                            'error': 'User not authorized'})
+                            'error': 'Invalid email/password combination.'})
         return response, UNAUTHORIZED
 
 
@@ -131,8 +131,8 @@ def signup_endpoint():
         except KeyError:
             response = jsonify({'user': user_email,
                                 'affinity': affinity,
-                                'error': 'Restaurant ID is required to sign up as {}.'.format(affinity)})
-            return response, 400
+                                'error': 'Restaurant ID is required to sign up as staff.'})
+            return response, BAD_REQUEST
 
         restaurant = Restaurant(restaurant_id)
 

@@ -53,7 +53,7 @@ public class RestyMenuRequest {
     private final Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            menuCallback.fetchMenuError(RestyMenuCallback.FetchMenuError.UnknownError);
+            menuCallback.fetchMenuError(error);
         }
     };
 

@@ -21,6 +21,8 @@ import cpen391.resty.resty.activities.HubAuthenticationActivity;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyLoginCallback;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestySignupCallback;
 
+import static com.android.volley.Request.Method.HEAD;
+
 public class RestySignupRequest{
 
     final RestySignupCallback signupCallback;
@@ -68,7 +70,7 @@ public class RestySignupRequest{
         String affinity = staffonly ? "staff_only":"staff";
 
         try{
-            requestObject = new JSONObject(StaffUser.getSignupJsonObject(username, password, restaurant_id, affinity));
+            requestObject = new JSONObject(getSignupJsonObject(username, password, restaurant_id, affinity));
         }catch (Exception e) {
             e.printStackTrace();
         }
@@ -85,20 +87,25 @@ public class RestySignupRequest{
         public void onResponse(JSONObject response) {
 
             try {
-
-                /* response could be for a staff user or for a normal user
-                check affinity field to know which case this is */
-
+                User resultUser;
+                Gson gson = new Gson();
                 String affinity = (String) response.get("affinity");
+                String username = (String) response.get("user");
 
                 switch (affinity){
                     case "staff":
+                    case "staff_only":
+                        resultUser = gson.fromJson(response.toString(), StaffUser.class);
+                        signupCallback.signupCompleted(resultUser, true);
+                        break;
+                    case "customer":
+                        resultUser = gson.fromJson(response.toString(), User.class);
+                        signupCallback.signupCompleted(resultUser, false);
                         break;
                     default:
-                        break;
+                        // this should never happen
+                        throw new IllegalArgumentException();
                 }
-
-                signupCallback.signupCompleted(new User());
 
             }catch (Exception e) {
                 // this should never happen
@@ -110,8 +117,19 @@ public class RestySignupRequest{
     private final Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            signupCallback.signupError(RestySignupCallback.SignupError.unknownError);
+            Log.i("Login Error", error.toString());
+            signupCallback.signupError(error);
         }
     };
+
+    private static String getSignupJsonObject(String username, String password, String restaurantID, String affinity){
+        try {
+            JSONObject signupObj = new JSONObject(new StaffUser(username, restaurantID, affinity).toJson());
+            signupObj.put("password", password);
+            return signupObj.toString();
+        }catch (Exception e) {
+            throw new IllegalArgumentException();
+        }
+    }
 
 }

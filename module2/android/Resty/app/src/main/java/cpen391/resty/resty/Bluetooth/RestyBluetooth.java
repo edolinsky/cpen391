@@ -26,6 +26,7 @@ public class RestyBluetooth {
 
     private OutputStream outputStream;
     private InputStream inputStream;
+    private BluetoothSocket btSocket;
     private BluetoothDevice device;
     public BluetoothAdapter adapter;
 
@@ -37,6 +38,8 @@ public class RestyBluetooth {
         if (pairedDevices.size() > 0) {
             // There are paired devices. Get the name and address of each paired device.
             for (BluetoothDevice btDevice : pairedDevices) {
+
+                // Choose the first device name with
                 if (btDevice.getName().contains(RESTY_BLUETOOTH_TAG)) {
                     device = btDevice;
                     break;
@@ -49,21 +52,40 @@ public class RestyBluetooth {
         }
     }
 
-
+    /**
+     * Connect to the paired device's bluetooth socket.
+     */
     public void connect() {
 
         // connect to bluetooth device.
         try {
             ParcelUuid[] uuids = device.getUuids();
-            BluetoothSocket socket = device.createRfcommSocketToServiceRecord(uuids[0].getUuid());
-            socket.connect();
-            outputStream = socket.getOutputStream();
-            inputStream = socket.getInputStream();
+            btSocket = device.createRfcommSocketToServiceRecord(uuids[0].getUuid());
+            btSocket.connect();
+            outputStream = btSocket.getOutputStream();
+            inputStream = btSocket.getInputStream();
         } catch (IOException e) {
             Log.e(TAG, "IO exception:\n" + e.toString());
         }
     }
 
+    /**
+     * Disconnect from the peired device's bluetooth socket.
+     */
+    public void disconnect() {
+        try {
+            outputStream.close();
+            inputStream.close();
+            btSocket.close();
+        } catch (IOException e) {
+            Log.e(TAG, "IO exception:\n" + e.toString());
+        }
+    }
+
+    /**
+     * Write the specified message over a bluetooth socket. Requires a previous call to connect().
+     * @param message string message to be sent via bluetooth.
+     */
     public void write(String message) {
         try {
             outputStream.write((MESSAGE_START + message + MESSAGE_END).getBytes());
@@ -72,6 +94,10 @@ public class RestyBluetooth {
         }
     }
 
+    /**
+     * Listen for a message over bluetooth. Requires connect() be called previously. Blocking.
+     * @return message string sent to this device.
+     */
     public String listenForResponse() {
         final int BUFFER_SIZE = 128;
         byte[] buffer = new byte[BUFFER_SIZE];

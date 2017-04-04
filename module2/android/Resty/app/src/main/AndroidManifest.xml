@@ -38,18 +38,24 @@
         </service>
 
         <!-- Activities -->
-        <activity android:name=".activities.LoginActivity">
+        <activity android:name=".activities.LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.HubAuthenticationActivity" />
-        <activity android:name=".activities.MenuActivity" />
-        <activity android:name=".activities.MainActivityBase" />
-        <activity android:name=".activities.MapsActivity" />
-        <activity android:name=".activities.SignupActivity" />
+        <activity android:name=".activities.HubAuthenticationActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.MenuActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.MainActivityBase"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.MapsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.SignupActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

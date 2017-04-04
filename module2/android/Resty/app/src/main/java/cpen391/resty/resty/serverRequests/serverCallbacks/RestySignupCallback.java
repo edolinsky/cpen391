@@ -1,14 +1,12 @@
 package cpen391.resty.resty.serverRequests.serverCallbacks;
 
+import com.android.volley.VolleyError;
+
 import cpen391.resty.resty.Objects.User;
 
 
 public interface RestySignupCallback{
 
-    public enum SignupError{
-        unknownError
-    }
-
-    void signupCompleted(User user);
-    void signupError(SignupError error);
+    void signupCompleted(User user, boolean isStaff);
+    void signupError(VolleyError error);
 }
