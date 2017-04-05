@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cpen391.resty.resty.menu.RestaurantMenuItem;
+import cpen391.resty.resty.utils.PublicConstants;
 import cpen391.resty.resty.utils.TestDataUtils;
+
+import static cpen391.resty.resty.utils.PublicConstants.FOR_TABLE;
 
 public class Order extends GsonSerializable {
     private final String customer_id;
@@ -22,7 +25,7 @@ public class Order extends GsonSerializable {
     private void addItems(List<RestaurantMenuItem> items) {
         for(RestaurantMenuItem item : items) {
             for(int i = 0; i < item.getAmount(); i++) {
-                this.items.add(new ItemOrder(item.getId(), TestDataUtils.FOR_TABLE));
+                this.items.add(new ItemOrder(item.getId(), FOR_TABLE));
             }
         }
     }
