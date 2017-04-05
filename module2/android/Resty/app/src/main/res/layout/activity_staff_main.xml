@@ -6,4 +6,24 @@
     android:layout_height="match_parent"
     tools:context="cpen391.resty.resty.activities.StaffMainActivity">
 
+    <TextView
+        android:id="@+id/StaffMainHeaderTextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp"
+        android:background="@android:color/holo_blue_dark"
+        android:elevation="10dp"
+        android:ems="10"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@android:color/white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

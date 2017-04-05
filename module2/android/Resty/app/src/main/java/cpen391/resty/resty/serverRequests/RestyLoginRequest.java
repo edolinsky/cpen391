@@ -57,9 +57,11 @@ public class RestyLoginRequest {
                 // Note: A switch statement looks nicer here but java is being weird about using strings in switch statements
                 if (affinity.matches("staff_only") || affinity.matches("staff")){
                     resultUser = gson.fromJson(response.toString(), StaffUser.class);
+                    User.setCurrentUser(resultUser);
                     loginCallback.loginCompleted(resultUser, true);
                 }else if (affinity.matches("customer")){
                     resultUser = gson.fromJson(response.toString(), User.class);
+                    User.setCurrentUser(resultUser);
                     loginCallback.loginCompleted(resultUser, false);
                 }
 
