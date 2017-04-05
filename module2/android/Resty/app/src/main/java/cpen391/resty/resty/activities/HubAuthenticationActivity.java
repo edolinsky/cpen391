@@ -24,8 +24,6 @@ public class HubAuthenticationActivity extends MainActivityBase {
     private View authButton;
     private RestyStore dataStore;
 
-    boolean usingBluetooth = false;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         dataStore = RestyStore.getInstance();
@@ -44,7 +42,7 @@ public class HubAuthenticationActivity extends MainActivityBase {
 
     public void initBluetooth(View view) {
         // When testing: skip Bluetooth initialization.
-        if (usingBluetooth) {
+        if (RestyBluetooth.usingBluetooth) {
             mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
             if (mBluetoothAdapter == null) {
@@ -65,7 +63,7 @@ public class HubAuthenticationActivity extends MainActivityBase {
                 mBluetoothAdapter.enable();
             } else {
                 try {
-                    restyBluetooth = new RestyBluetooth(mBluetoothAdapter);
+                    restyBluetooth = RestyBluetooth.getInstance(mBluetoothAdapter);
                     restyBluetooth.connect();
                 } catch (IOException e) {
                     CharSequence text = "Please connect to Resty Hub via Bluetooth.";
@@ -88,7 +86,7 @@ public class HubAuthenticationActivity extends MainActivityBase {
     public void authenticate(View view) {
 
         // For testing purposes without bluetooth: skip straight to menu.
-        if (!usingBluetooth) {
+        if (!RestyBluetooth.usingBluetooth) {
             dataStore.put(RestyStore.Key.TABLE_ID, "0xDEFEC7EDDA7ABA5E");
             dataStore.put(RestyStore.Key.RESTAURANT_ID, "test_resto");
 
@@ -102,11 +100,15 @@ public class HubAuthenticationActivity extends MainActivityBase {
         Log.d(TAG, response);
 
         if (response.contains("error")) {
+            // Pin entry was not successful. Show error message and wait for further input.
             CharSequence text = "Incorrect Pin.";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(this, text, duration);
             toast.show();
+
+            // Clear existing user input
+            ((EditText) pinText).getText().clear();
         } else {
             // Pin entry was successful. Table and Restaurant IDs have been
             // sent back, separated by whitespace.

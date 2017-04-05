@@ -3,6 +3,7 @@ package cpen391.resty.resty.activities;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -18,8 +19,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+import cpen391.resty.resty.Bluetooth.RestyBluetooth;
 import cpen391.resty.resty.Objects.Table;
 import cpen391.resty.resty.Objects.User;
+import cpen391.resty.resty.dataStore.RestyStore;
 import cpen391.resty.resty.menu.OrderDialog;
 import cpen391.resty.resty.menu.RestaurantMenuItem;
 import cpen391.resty.resty.menu.MenuItemAdapter;
@@ -32,11 +35,15 @@ import cpen391.resty.resty.utils.TestDataUtils;
 
 public class MenuActivity extends MainActivityBase implements OrderDialog.OrderDialogListener{
 
+    private static final String TAG = "MenuActivity";
+
     ArrayList<RestaurantMenuItem> items;
     ListView menuListView;
     Table connectedTable;
     String userId;
     private static MenuItemAdapter adapter;
+    private RestyBluetooth restyBluetooth;
+    private RestyStore restyStore;
 
     private RestyMenuCallback menuCallback = new RestyMenuCallback() {
         @Override
@@ -61,6 +68,18 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
             Toast orderCompleteToast = Toast.makeText(getApplicationContext(), "Order sent!",
                     Toast.LENGTH_LONG);
             orderCompleteToast.show();
+
+            // Send order ID and user ID to hub via Bluetooth.
+            String orderId = restyStore.getString(RestyStore.Key.ORDER_ID);
+            String customerId = restyStore.getString(RestyStore.Key.USER_ID);
+            Log.d(TAG, "Order ID: " + orderId + " Customer ID: " + customerId);
+
+            // If using bluetooth, format information and send to hub.
+            if (RestyBluetooth.usingBluetooth) {
+                String message = formatOrderCustomerCSV(orderId, customerId);
+                Log.d(TAG, "message: " + message);
+                restyBluetooth.write(message);
+            }
         }
 
         @Override
@@ -69,6 +88,10 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
                     "There was a problem with sending your order, please try again.",
                     Toast.LENGTH_LONG);
             orderFailureToast.show();
+        }
+
+        private String formatOrderCustomerCSV(String orderId, String customerId) {
+            return orderId + "," + customerId;
         }
     };
 
@@ -82,8 +105,15 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
 
         RestyMenuRequest menuRequest = new RestyMenuRequest(menuCallback);
 
-        connectedTable = new Table(TestDataUtils.TEST_RESTAURANT, TestDataUtils.TEST_TABLE);
-        userId = TestDataUtils.TEST_USER;
+        if (RestyBluetooth.usingBluetooth) {
+            restyBluetooth = RestyBluetooth.getInstance();
+        }
+
+        restyStore = RestyStore.getInstance();
+
+        connectedTable = new Table(restyStore.getString(RestyStore.Key.RESTAURANT_ID),
+                restyStore.getString(RestyStore.Key.TABLE_ID));
+        userId = restyStore.getString(RestyStore.Key.USER_ID);
         menuRequest.getMenu(connectedTable.getRestaurantId(), null);
     }
 

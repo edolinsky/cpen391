@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 
 import cpen391.resty.resty.Objects.StaffUser;
 import cpen391.resty.resty.Objects.User;
+import cpen391.resty.resty.dataStore.RestyStore;
 import cpen391.resty.resty.serverRequests.ServerRequestConstants.Endpoint;
 import org.json.JSONObject;
 
@@ -26,8 +27,10 @@ import static com.android.volley.Request.Method.HEAD;
 public class RestySignupRequest{
 
     final RestySignupCallback signupCallback;
+    private RestyStore restyStore;
 
     public RestySignupRequest(RestySignupCallback signupCallback){
+        restyStore = RestyStore.getInstance();
         this.signupCallback = signupCallback;
     }
 
@@ -89,7 +92,12 @@ public class RestySignupRequest{
             try {
                 User resultUser;
                 Gson gson = new Gson();
-                String affinity = (String) response.get("affinity");
+
+                // Store user ID.
+                String userId = response.getString("id");
+                restyStore.put(RestyStore.Key.USER_ID, userId);
+
+                String affinity = response.getString("affinity");
 
                 switch (affinity){
                     case "staff":

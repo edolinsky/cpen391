@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 import cpen391.resty.resty.Objects.Order;
 import cpen391.resty.resty.Objects.Table;
 import cpen391.resty.resty.Objects.User;
+import cpen391.resty.resty.dataStore.RestyStore;
 import cpen391.resty.resty.menu.RestaurantMenuItem;
 import cpen391.resty.resty.serverRequests.ServerRequestConstants.Endpoint;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyOrderCallback;
@@ -23,9 +25,13 @@ import cpen391.resty.resty.serverRequests.serverCallbacks.RestyOrderCallback;
 public class RestyOrderRequest {
 
     private final RestyOrderCallback orderCallback;
+    private static final String TAG = "OrderRequest";
+    private RestyStore restyStore;
 
     public RestyOrderRequest(RestyOrderCallback callback){
+
         this.orderCallback = callback;
+        restyStore = RestyStore.getInstance();
     }
 
     public void order(List<RestaurantMenuItem> order, String userId, Table table){
@@ -51,6 +57,17 @@ public class RestyOrderRequest {
     private final Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>(){
         @Override
         public void onResponse(JSONObject response) {
+            String orderId = "";
+            try {
+                orderId = response.getString("order_id");
+            } catch (JSONException e) {
+                Log.e(TAG, "Order ID not included in response.");
+            }
+
+            // Store Order ID in data store.
+            restyStore.put(RestyStore.Key.ORDER_ID, orderId);
+
+            // Trigger action in activity.
             orderCallback.orderComplete();
         }
     };
