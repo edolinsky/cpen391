@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -24,13 +25,17 @@ public class RestyBluetooth {
     private static final String MESSAGE_END = "`";
     private static final char SPECIAL_CHAR = '`';
 
+    public static final boolean usingBluetooth = false;
+
     private OutputStream outputStream;
     private InputStream inputStream;
     private BluetoothSocket btSocket;
     private BluetoothDevice device;
     public BluetoothAdapter adapter;
 
-    public RestyBluetooth(BluetoothAdapter bluetoothAdapter) throws IOException {
+    private static RestyBluetooth restyBluetooth;
+
+    private RestyBluetooth(BluetoothAdapter bluetoothAdapter) throws IOException {
         adapter = bluetoothAdapter;
 
         Set<BluetoothDevice> pairedDevices = adapter.getBondedDevices();
@@ -50,6 +55,22 @@ public class RestyBluetooth {
         if (pairedDevices.size() <= 0 || device == null) {
             throw new IOException();
         }
+    }
+
+    public static RestyBluetooth getInstance(BluetoothAdapter bluetoothAdapter) throws IOException {
+        if (restyBluetooth == null) {
+            restyBluetooth = new RestyBluetooth(bluetoothAdapter);
+        }
+
+        return restyBluetooth;
+    }
+
+    public static RestyBluetooth getInstance() {
+        if (restyBluetooth != null) {
+            return restyBluetooth;
+        }
+
+        throw new IllegalArgumentException("Should use getInstance(BluetoothAdapter) at least once before using this method.");
     }
 
     /**
@@ -88,7 +109,7 @@ public class RestyBluetooth {
      */
     public void write(String message) {
         try {
-            outputStream.write((MESSAGE_START + message + MESSAGE_END).getBytes());
+            outputStream.write((MESSAGE_START + message + MESSAGE_END).getBytes(StandardCharsets.US_ASCII));
         } catch (IOException e) {
             Log.e(TAG, "IO exception\n:" + e.toString());
         }

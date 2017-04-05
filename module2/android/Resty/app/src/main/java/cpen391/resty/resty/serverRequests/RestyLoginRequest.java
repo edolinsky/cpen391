@@ -14,15 +14,19 @@ import org.json.JSONObject;
 
 import cpen391.resty.resty.Objects.StaffUser;
 import cpen391.resty.resty.Objects.User;
+import cpen391.resty.resty.dataStore.RestyStore;
 import cpen391.resty.resty.serverRequests.ServerRequestConstants.Endpoint;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyLoginCallback;
 
 
 public class RestyLoginRequest {
 
+    private static final String TAG = "LoginRequest";
     private final RestyLoginCallback loginCallback;
+    private RestyStore restyStore;
 
     public RestyLoginRequest(RestyLoginCallback callback){
+        restyStore = RestyStore.getInstance();
         this.loginCallback = callback;
     }
 
@@ -52,7 +56,11 @@ public class RestyLoginRequest {
             try {
                 User resultUser;
                 Gson gson = new Gson();
-                String affinity = (String) response.get("affinity");
+
+                String userId = response.getString("id");
+                restyStore.put(RestyStore.Key.USER_ID, userId);
+
+                String affinity = response.getString("affinity");
 
                 // Note: A switch statement looks nicer here but java is being weird about using strings in switch statements
                 if (affinity.matches("staff_only") || affinity.matches("staff")){

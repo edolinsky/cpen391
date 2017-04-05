@@ -1,12 +1,10 @@
 #include "successScreen.h"
 #include "serverCalled.h"
 #include "main.h"
+#include "apps/authenticate.h"
 
 void drawSuccess(void){
 	int i;
-	int leftJust = 150;
-	int instrStart = 150;
-	int incr = 15;
 	char title[] = "Orders will appear here after you order on your phone";
 	char call[] = "Call your server";
 	char test[] = "test";
@@ -51,6 +49,15 @@ void drawSuccess(void){
 		OutGraphicsCharFont2a((400 - strlen(test)*5)+i*10, 250, WHITE, WHITE, test[i], 0);
 	}
 
+	printf("Waiting for order info:\n");
 	listen_for_order_info();
+
+	printf("Order ID: ");
+	printf(order_id);
+	printf("\nCustomer ID:");
+	printf(customer_id);
+	printf("\n");
+
+
 	drawOrderPage();
 }

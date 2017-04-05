@@ -98,35 +98,36 @@ void send_auth_error() {
   * Listens for an order ID over bluetooth.
   */
 void listen_for_order_info() {
-	int maxBuf = 20;
-	char *info = malloc(maxBuf);
+	int maxBuf = 40;
+	char* info = malloc(maxBuf);
 	info = bluetoothListen(info, maxBuf);
 
-	char order_buf[20];
-	char customer_buf[20];
+	printf(info);
+	printf("\n");
+
+	order_id = malloc(maxBuf / 2);
+	customer_id = malloc(maxBuf / 2);
 
 	int i = 0;
 	int order_id_len;
 	int customer_id_len;
 	// parse info. "order_id,customer_id"
+	// Parse Order ID.
 	for (i = 0; i < maxBuf && info[i] != ','; i++) {
-		order_buf[i] = info[i];
+		order_id[i] = info[i];
 	}
-	order_id_len = i;	// with one extra for null character.
-	order_buf[i - 1] = '\0';
+	order_id[i] = '\0';
 
+	// Skip over single comma delimiter.
+	i++;
+
+	// Parse Customer ID.
 	int j;
 	for (j = 0; i < maxBuf && info[i] != '\0'; i++, j++) {
-		customer_buf[j] = info[i];
+		customer_id[j] = info[i];
 	}
-	customer_id_len = j;
-	customer_buf[j - 1] = '\0';
+	customer_id[j] = '\0';
 
-	order_id = malloc(order_id_len);
-	customer_id = malloc(customer_id_len);
-
-	strcpy(order_id, order_buf);
-	strcpy(customer_id, customer_buf);
 }
 
 /**
