@@ -39,7 +39,7 @@ class CreateTable:
                      "`id` varchar(10) NOT NULL,"
                      "`menu_id` varchar(10) NOT NULL,"
                      "`order_id` varchar(10) NOT NULL,"
-                     "`table_id` varchar(10) NOT NULL,"
+                     "`table_id` varchar(18) NOT NULL,"
                      "`customer_name` tinytext,"
                      "`customer_id` varchar(10) DEFAULT NULL,"
                      "`status` enum('placed','prep','ready','served','complete','cancelled') DEFAULT NULL,"

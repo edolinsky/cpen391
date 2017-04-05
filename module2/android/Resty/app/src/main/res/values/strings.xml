@@ -4,9 +4,9 @@
     <!-- Main Login Page Strings -->
     <string name="loginUsernameInputHint">email</string>
     <string name="loginPasswordInputHint">password</string>
-    <string name="loginButtonTitle">Login</string>
+    <string name="loginButtonTitle">Log In</string>
     <string name="loginSignupButtonTitle">Sign up</string>
-    <string name="loginToResty">Login To Resty</string>
+    <string name="loginToResty">Log in to Resty</string>
 
     <!-- Signup Page Strings -->
     <string name="restaurantIDHint">Restaurant ID</string>
