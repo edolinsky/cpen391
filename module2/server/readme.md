@@ -515,9 +515,23 @@ Methods supported: `GET, POST, DELETE`
 This endpoint allows staff users to manage the assignment of waitstaff to individual tables.
 
 ### Server Hub Map GET
-_GET http:\/\/piquemedia.me\/server\_hub\_map?table\_id=test\_table_
+_GET http:\/\/piquemedia.me\/server\_hub\_map?restaurant\_id=test\_resto_
 
 This request supplies the set of all current mappings for the specified restaurant.
+
+Response on Success:
+```json
+{
+  "mappings": [
+    {
+      "attendant_id": "5f797dfb5f", 
+      "email": "test_staff@dolins.ky", 
+      "table_id": "0xDEFEC7EDDA7ABA5E", 
+      "table_name": "Table 1"
+    }
+  ]
+}
+```
 
 ### Server Hub Map POST
 _POST http:\/\/piquemedia.me\/server\_hub\_map_
