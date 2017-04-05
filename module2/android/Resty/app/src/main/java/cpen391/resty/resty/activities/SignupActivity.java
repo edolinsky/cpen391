@@ -1,9 +1,8 @@
 package cpen391.resty.resty.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -16,7 +15,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 
-import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 
 import cpen391.resty.resty.Objects.StaffUser;
@@ -25,8 +23,6 @@ import cpen391.resty.resty.R;
 import cpen391.resty.resty.dataStore.RestyStore;
 import cpen391.resty.resty.serverRequests.RestySignupRequest;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestySignupCallback;
-
-import static com.android.volley.Request.Method.HEAD;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
@@ -122,10 +118,11 @@ public class SignupActivity extends AppCompatActivity {
 
     public void signupOnSuccess(User user, boolean isStaff){
         if (isStaff){
-            StaffUser staffUser = (StaffUser) user;
-            System.out.println("Back! " + staffUser.getUser() + " " + staffUser.getRestaurantID());
+            StaffUser staffUser = (StaffUser) user; // probably wanna do sth with this
+            Intent intent = new Intent(this, StaffPickusageActivity.class);
+            startActivity(intent);
         }else{
-            System.out.println("Back! " + user.getUser());
+
         }
     }
 

@@ -90,7 +90,6 @@ public class RestySignupRequest{
                 User resultUser;
                 Gson gson = new Gson();
                 String affinity = (String) response.get("affinity");
-                String username = (String) response.get("user");
 
                 switch (affinity){
                     case "staff":
@@ -117,7 +116,6 @@ public class RestySignupRequest{
     private final Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            Log.i("Login Error", error.toString());
             signupCallback.signupError(error);
         }
     };

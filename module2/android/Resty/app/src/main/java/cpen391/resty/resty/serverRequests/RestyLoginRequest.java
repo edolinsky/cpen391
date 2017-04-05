@@ -1,17 +1,19 @@
 package cpen391.resty.resty.serverRequests;
 
-import android.content.Context;
-import android.content.Intent;
+import android.nfc.Tag;
 import android.util.Log;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import cpen391.resty.resty.Objects.StaffUser;
 import cpen391.resty.resty.Objects.User;
-import cpen391.resty.resty.activities.HubAuthenticationActivity;
 import cpen391.resty.resty.serverRequests.ServerRequestConstants.Endpoint;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyLoginCallback;
 
@@ -46,14 +48,30 @@ public class RestyLoginRequest {
     private final Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>(){
         @Override
         public void onResponse(JSONObject response) {
-            loginCallback.loginCompleted(null);
+
+            try {
+                User resultUser;
+                Gson gson = new Gson();
+                String affinity = (String) response.get("affinity");
+
+                // Note: A switch statement looks nicer here but java is being weird about using strings in switch statements
+                if (affinity.matches("staff_only") || affinity.matches("staff")){
+                    resultUser = gson.fromJson(response.toString(), StaffUser.class);
+                    loginCallback.loginCompleted(resultUser, true);
+                }else if (affinity.matches("customer")){
+                    resultUser = gson.fromJson(response.toString(), User.class);
+                    loginCallback.loginCompleted(resultUser, false);
+                }
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
         }
     };
 
     private final Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            Log.i("Login Error", error.toString());
             loginCallback.loginError(error);
         }
     };

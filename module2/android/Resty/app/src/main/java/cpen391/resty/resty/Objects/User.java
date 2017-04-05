@@ -13,7 +13,9 @@ import static android.R.attr.password;
 public class User {
 
     private String user;
+            String affinity;
     private String android_reg_id;
+
 
     public String getUser() {
         return user;
@@ -23,14 +25,20 @@ public class User {
         return android_reg_id;
     }
 
-    public User(){
+    User(){
         user = "";
+        affinity = "";
         this.android_reg_id = FirebaseInstanceId.getInstance().getToken();
     }
 
     User(String name) {
         this.user = name;
+        this.affinity = "";
         this.android_reg_id = FirebaseInstanceId.getInstance().getToken();
+    }
+
+    public String getAffinity() {
+        return affinity;
     }
 
     public String toJson(){
@@ -49,6 +57,7 @@ public class User {
         try {
             JSONObject loginObj = new JSONObject(new User(username).toJson());
             loginObj.put("password", password);
+            loginObj.remove("affinity"); // dont need for login
             return loginObj.toString();
         }catch (Exception e) {
             throw new IllegalArgumentException();

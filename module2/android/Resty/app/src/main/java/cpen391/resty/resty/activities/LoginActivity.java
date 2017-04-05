@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,7 +21,6 @@ import cpen391.resty.resty.R;
 import cpen391.resty.resty.dataStore.RestyStore;
 import cpen391.resty.resty.serverRequests.RestyLoginRequest;
 import cpen391.resty.resty.serverRequests.RestyRequestManager;
-import cpen391.resty.resty.serverRequests.RestySignupRequest;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyLoginCallback;
 
 public class LoginActivity extends AppCompatActivity {
@@ -92,7 +90,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onLoginSuccess(User user){
-        Intent intent = new Intent(this, HubAuthenticationActivity.class);
+        String affinity = user.getAffinity();
+        Intent intent;
+        switch (affinity){
+            case "customer":
+                intent = new Intent(this, HubAuthenticationActivity.class);
+                break;
+            case "staff":
+                intent = new Intent(this, StaffPickusageActivity.class);
+                break;
+            case "staff_only":
+                intent = new Intent(this, StaffMainActivity.class);
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+
         startActivity(intent);
     }
 
@@ -120,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private RestyLoginCallback loginCallback = new RestyLoginCallback() {
         @Override
-        public void loginCompleted(User user) {
+        public void loginCompleted(User user, boolean isStaff) {
             onLoginSuccess(user);
         }
 

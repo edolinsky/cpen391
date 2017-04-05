@@ -1,25 +1,21 @@
 package cpen391.resty.resty.Objects;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import org.json.JSONObject;
 
 public class StaffUser extends User {
 
-    private String restaurantID;
-    private String affinity;
+    private String restaurant_id;
 
     public StaffUser(){
         super();
-        this.restaurantID = "";
+        this.restaurant_id = "";
         this.affinity = "";
     }
 
     public StaffUser(String username, String restaurantID, String affinity){
         super(username);
         this.affinity = affinity;
-        this.restaurantID = restaurantID;
+        this.restaurant_id = restaurantID;
 
         validAffinityCheck();
         validRestaurantIDCheck();
@@ -30,8 +26,8 @@ public class StaffUser extends User {
         return gson.toJson(this);
     }
 
-    public String getRestaurantID() {
-        return restaurantID;
+    public String getRestaurant_id() {
+        return restaurant_id;
     }
 
     public String getAffinity() {

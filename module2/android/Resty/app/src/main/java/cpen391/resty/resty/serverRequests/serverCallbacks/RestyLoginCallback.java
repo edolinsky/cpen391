@@ -6,6 +6,6 @@ import cpen391.resty.resty.Objects.User;
 
 public interface RestyLoginCallback {
 
-    void loginCompleted(User user);
+    void loginCompleted(User user, boolean isStaff);
     void loginError(VolleyError error);
 }
