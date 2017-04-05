@@ -112,18 +112,6 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
         }
     }
 
-    private RestyMenuCallback callback = new RestyMenuCallback() {
-        @Override
-        public void fetchMenuSuccess(String menu) {
-            onMenuFetchSuccess(menu);
-        }
-
-        @Override
-        public void fetchMenuError(VolleyError error) {
-            onFetchMenuError(error);
-        }
-    };
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
