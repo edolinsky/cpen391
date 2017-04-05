@@ -3,6 +3,7 @@ package cpen391.resty.resty.serverRequests;
 
 import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -41,6 +42,8 @@ public class RestyOrderRequest {
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
                 (Endpoint.PLACE_ORDER.getMethod(), REQUEST_URL, requestObject,
                         listener, errorListener);
+        jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(50000, 5,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RestyRequestManager.getInstance().makeRequest(jsObjRequest);
 
     }
@@ -55,8 +58,8 @@ public class RestyOrderRequest {
     private final Response.ErrorListener errorListener = new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-            Log.i("Login Error", error.toString());
-            orderCallback.orderError(RestyOrderCallback.OrderError.UnknownError);
+            Log.i("Order Error", error.toString());
+            orderCallback.orderError(error);
         }
     };
 

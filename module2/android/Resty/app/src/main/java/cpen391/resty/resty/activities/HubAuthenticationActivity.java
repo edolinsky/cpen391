@@ -24,7 +24,7 @@ public class HubAuthenticationActivity extends MainActivityBase {
     private View authButton;
     private RestyStore dataStore;
 
-    boolean usingBluetooth = true;
+    boolean usingBluetooth = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

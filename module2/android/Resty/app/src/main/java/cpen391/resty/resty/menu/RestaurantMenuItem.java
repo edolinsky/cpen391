@@ -49,4 +49,8 @@ public class RestaurantMenuItem {
     public int decrementAmount() {
         return --amount;
     }
+
+    public void reset() {
+        amount = 0;
+    }
 }

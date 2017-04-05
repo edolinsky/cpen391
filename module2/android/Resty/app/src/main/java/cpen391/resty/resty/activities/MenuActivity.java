@@ -33,7 +33,6 @@ import cpen391.resty.resty.utils.TestDataUtils;
 public class MenuActivity extends MainActivityBase implements OrderDialog.OrderDialogListener{
 
     ArrayList<RestaurantMenuItem> items;
-    List<RestaurantMenuItem> shoppingCart;
     ListView menuListView;
     Table connectedTable;
     String userId;
@@ -54,13 +53,18 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
     private RestyOrderCallback orderCallback = new RestyOrderCallback() {
         @Override
         public void orderComplete() {
+            for(RestaurantMenuItem i : items) {
+                i.reset();
+            }
+            adapter.notifyDataSetChanged();
+
             Toast orderCompleteToast = Toast.makeText(getApplicationContext(), "Order sent!",
                     Toast.LENGTH_LONG);
             orderCompleteToast.show();
         }
 
         @Override
-        public void orderError(OrderError error) {
+        public void orderError(VolleyError error) {
             Toast orderFailureToast = Toast.makeText(getApplicationContext(),
                     "There was a problem with sending your order, please try again.",
                     Toast.LENGTH_LONG);
@@ -81,8 +85,6 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
         connectedTable = new Table(TestDataUtils.TEST_RESTAURANT, TestDataUtils.TEST_TABLE);
         userId = TestDataUtils.TEST_USER;
         menuRequest.getMenu(connectedTable.getRestaurantId(), null);
-
-        shoppingCart = new ArrayList<>();
     }
 
 
@@ -133,16 +135,6 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_shopping_cart:
-                // User chose the "Settings" item, show the app settings UI...
-                Toast t = Toast.makeText(this, "Shopping Cart", Toast.LENGTH_SHORT);
-                t.show();
-
-                // collect items in shopping cart
-                for(RestaurantMenuItem i : items) {
-                    if(i.getAmount() != 0) {
-                        shoppingCart.add(i);
-                    }
-                }
 
                 OrderDialog order = new OrderDialog();
                 order.show(getSupportFragmentManager(), "Order Dialog");
@@ -158,8 +150,13 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
     @Override
     public void onDialogConfirmation(DialogFragment dialog) {
         List<RestaurantMenuItem> order = new ArrayList<>();
-        order.addAll(shoppingCart);
-        shoppingCart = new ArrayList<>();
+
+        // collect items in shopping cart
+        for(RestaurantMenuItem i : items) {
+            if(i.getAmount() != 0) {
+                order.add(i);
+            }
+        }
 
         RestyOrderRequest orderRequest = new RestyOrderRequest(orderCallback);
         orderRequest.order(order, userId, connectedTable);
@@ -167,7 +164,6 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
 
     @Override
     public void onDialogCancellation(DialogFragment dialog) {
-        // clear cart
-        shoppingCart = new ArrayList<>();
+        // nothing
     }
 }

@@ -1,12 +1,10 @@
 package cpen391.resty.resty.serverRequests.serverCallbacks;
 
 
+import com.android.volley.VolleyError;
+
 public interface RestyOrderCallback {
 
-    enum OrderError{
-        UnknownError
-    }
-
     void orderComplete();
-    void orderError(OrderError error);
+    void orderError(VolleyError error);
 }

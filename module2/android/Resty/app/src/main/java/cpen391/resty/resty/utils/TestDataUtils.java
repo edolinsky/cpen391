@@ -7,5 +7,6 @@ public class TestDataUtils {
     public static final String TEST_RESTAURANT = "test_resto";
     public static final String TEST_TABLE = "0xDEFEC7EDDA7ABA5E";
     public static final String TEST_USER = "96e24092e8";
+    public static final String FOR_TABLE = "Table";
 
 }
