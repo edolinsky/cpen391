@@ -85,23 +85,7 @@ void drawMenu(void){
 
 	initElements();
 
-	//createElement(int x, int y, int width, int height, int colour);
-
-	// Create three buttons
-	Element *launchButton = createElement(100, 350, 600, 100, DIM_GRAY);
-
-	// Set actions
-	setElementAction(launchButton, &drawSuccess);
-
-	// Draw buttons
-	addElementToList(launchButton);
-
 	refresh();
-
-	// Write get started button title
-	for(i = 0; i < 17; i++){
-		OutGraphicsCharFont2a(310+i*10, 400, WHITE, WHITE, getStarted[i], 0);
-	}
 
 	for(i = 0; i < strlen(randomPin); i++){
 		OutGraphicsCharFont2a((400 - strlen(randomPin)*5) + i*10, 300, BLACK, BLACK, randomPin[i], 0);

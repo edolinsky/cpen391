@@ -39,7 +39,8 @@
         <!-- Activities -->
         <activity
             android:name=".activities.LoginActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:noHistory="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -60,7 +61,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SignupActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:noHistory="true" />
         <activity
             android:name=".activities.StaffPickusageActivity"
             android:screenOrientation="portrait" />

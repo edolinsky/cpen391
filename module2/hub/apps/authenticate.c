@@ -94,6 +94,14 @@ void send_auth_error() {
 	putString(&BT_STATUS, &BT_TXDATA, message);
 }
 
+void send_auth_ack() {
+	char message[80] = "";
+	strcat(message, MSG_START);
+	strcat(message, "OK");
+	strcat(message, MSG_END);
+	putString(&BT_STATUS, &BT_TXDATA, message);
+}
+
  /**
   * Listens for an order ID over bluetooth.
   */

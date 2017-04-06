@@ -58,6 +58,9 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
     };
 
     private RestyOrderCallback orderCallback = new RestyOrderCallback() {
+
+        static final int MAX_BT_SEND_ATTEMPTS = 10;
+
         @Override
         public void orderComplete() {
             for(RestaurantMenuItem i : items) {
@@ -78,7 +81,23 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
             if (RestyBluetooth.usingBluetooth) {
                 String message = formatOrderCustomerCSV(orderId, customerId);
                 Log.d(TAG, "message: " + message);
-                restyBluetooth.write(message);
+
+                String response;
+                int attempts = 0;
+                do {
+                    restyBluetooth.write(message);
+                    response = restyBluetooth.listenForResponse();
+                    attempts++;
+                } while (!response.contains("OK") && attempts < MAX_BT_SEND_ATTEMPTS);
+
+                // If we have retried sending the message the maximum number of times,
+                // display error message to user.
+                if (attempts >= MAX_BT_SEND_ATTEMPTS) {
+                    Toast sendOrderInfoFailureToast = Toast.makeText(getApplicationContext(),
+                            "There was a problem with your order. Please contact your server.",
+                            Toast.LENGTH_LONG);
+                    sendOrderInfoFailureToast.show();
+                }
             }
         }
 
