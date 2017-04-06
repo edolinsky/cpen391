@@ -6,7 +6,8 @@
 
 void drawSuccess(void){
 	int i;
-	char title[] = "Orders will appear here after you order on your phone";
+	char authSuccess[] =  "Resty App Authorized!";
+	char nextStepMessage[] = "Orders will appear here after you order on your phone";
 
 	app_context = SUCCESS_CONTEXT;
 
@@ -15,9 +16,14 @@ void drawSuccess(void){
 		HLine(0, i, 800, GRAY);
 	}
 
-	// Write page title
-	for(i = 0; i < strlen(title); i++){
-		OutGraphicsCharFont2a((400 - strlen(title)*5)+i*10, 50, WHITE, WHITE, title[i], 0);
+	// Write authorization success message.
+	for(i = 0; i < strlen(authSuccess); i++){
+		OutGraphicsCharFont2a((400 - strlen(authSuccess)*5)+i*10, 50, WHITE, WHITE, authSuccess[i], 0);
+	}
+
+	// Write instruction message.
+	for(i = 0; i < strlen(nextStepMessage); i++){
+		OutGraphicsCharFont2a((400 - strlen(nextStepMessage)*5)+i*10, 75, WHITE, WHITE, nextStepMessage[i], 0);
 	}
 
 	initElements();
@@ -46,6 +52,6 @@ void drawSuccess(void){
 	printf(customer_id);
 	printf("\n");
 
-
+	// We have the order ID and customer ID, so we can move on to the order page.
 	drawOrderPage();
 }

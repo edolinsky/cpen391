@@ -24,6 +24,10 @@ void initWiFi(void) {
 	printf("WiFi initialized!\n");
 }
 
+/**
+ * Block until a message is received from the WiFi chip. A message is padded
+ * by any number of '`' characters on either end.
+ */
 char* wifiListen(char* buf, int maxLen) {
 	int i = 1;
 	

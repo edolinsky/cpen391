@@ -20,7 +20,7 @@ import java.util.Set;
 public class RestyBluetooth {
 
     private static final String TAG = "RestyBluetooth";
-    private static final String RESTY_BLUETOOTH_TAG = "GROUP15";
+    private static final String RESTY_BLUETOOTH_TAG = "RESTY";
     private static final String MESSAGE_START = "````````````````````";
     private static final String MESSAGE_END = "`";
     private static final char SPECIAL_CHAR = '`';

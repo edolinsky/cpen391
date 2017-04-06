@@ -6,9 +6,6 @@
 
 void drawServerCalled(){
 	int i;
-	int leftJust = 150;
-	int instrStart = 150;
-	int incr = 15;
 	char title[] = "Your server has been called";
 	char back[] = "Back to main screen";
 

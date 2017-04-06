@@ -21,7 +21,7 @@ void initBluetooth(void) {
 	BT_CONTROL = 0x95;	// 8 bits, no parity, 1 stop bit
 	BT_BAUD = 0x01;	// 115k baud
 
-	setBluetoothName("CPEN391-GROUP15");
+	setBluetoothName("RESTY-1");
 	printf("Bluetooth initialized!\n");
 }
 
@@ -62,6 +62,10 @@ void setBluetoothPassword(char *password) {
 	usleep(USLEEP_SEC);
 }
 
+/**
+ * Wait for a message to be received on the bluetooth chip. A message is padded
+ * by any number of '`' characters before and after the message.
+ */
 char* bluetoothListen(char* buf, int maxLen) {
 	int i = 1;
 

@@ -86,6 +86,9 @@ void send_table_info() {
     putString(&BT_STATUS, &BT_TXDATA, message);
 }
 
+/**
+ * Sends a simple "error" string.
+ */
 void send_auth_error() {
 	char message[80] = "";
 	strcat(message, MSG_START);
@@ -94,6 +97,9 @@ void send_auth_error() {
 	putString(&BT_STATUS, &BT_TXDATA, message);
 }
 
+/**
+ * Sends a simple "OK" string.
+ */
 void send_auth_ack() {
 	char message[80] = "";
 	strcat(message, MSG_START);
