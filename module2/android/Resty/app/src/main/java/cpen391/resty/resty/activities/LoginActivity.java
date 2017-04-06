@@ -105,7 +105,6 @@ public class LoginActivity extends AppCompatActivity {
             default:
                 throw new IllegalArgumentException();
         }
-
         startActivity(intent);
     }
 

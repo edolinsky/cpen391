@@ -103,10 +103,12 @@ public class RestySignupRequest{
                     case "staff":
                     case "staff_only":
                         resultUser = gson.fromJson(response.toString(), StaffUser.class);
+                        User.setCurrentUser(resultUser);
                         signupCallback.signupCompleted(resultUser, true);
                         break;
                     case "customer":
                         resultUser = gson.fromJson(response.toString(), User.class);
+                        User.setCurrentUser(resultUser);
                         signupCallback.signupCompleted(resultUser, false);
                         break;
                     default:

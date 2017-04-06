@@ -12,10 +12,13 @@ import static android.R.attr.password;
 
 public class User extends GsonSerializable {
 
+    // after sign in, use User.getCurrentUser to get this object from anywhere
+    // cast to StaffUser if signed in as staff
+    private static User currentUser = null;
+
     private String user;
             String affinity;
     private String android_reg_id;
-
 
     public String getUser() {
         return user;
@@ -62,6 +65,22 @@ public class User extends GsonSerializable {
         }catch (Exception e) {
             throw new IllegalArgumentException();
         }
+    }
+
+    /**
+     * @return the current user, or null if not signed in
+     * Note: cast current user to StaffUser if signed in as staff
+     */
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+
+    /**
+     * Set current user after login
+     * @param currentUser the newly logged in user
+     */
+    public static void setCurrentUser(User currentUser) {
+        User.currentUser = currentUser;
     }
 
 }
