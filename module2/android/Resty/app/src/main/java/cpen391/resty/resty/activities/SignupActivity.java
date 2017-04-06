@@ -121,7 +121,7 @@ public class SignupActivity extends AppCompatActivity {
         Intent intent;
         switch (affinity){
             case "customer":
-                intent = new Intent(this, HubAuthenticationActivity.class);
+                intent = new Intent(this, MainActivity.class);
                 break;
             case "staff":
                 intent = new Intent(this, StaffPickusageActivity.class);

@@ -23,7 +23,7 @@ public class StaffPickusageActivity extends AppCompatActivity {
         pickCustomerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, HubAuthenticationFragment.class);
+                Intent intent = new Intent(context, MainActivity.class);
                 startActivity(intent);
             }
         });
