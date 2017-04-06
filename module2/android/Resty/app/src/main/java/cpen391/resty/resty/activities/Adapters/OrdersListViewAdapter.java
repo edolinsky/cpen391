@@ -1,5 +1,6 @@
 package cpen391.resty.resty.activities.Adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -45,6 +46,7 @@ public class OrdersListViewAdapter extends ArrayAdapter<RSOrder> implements View
 
         selectedOrder = item;
         StaffOrderStatusDialog dialog = new StaffOrderStatusDialog();
+        dialog.show(((Activity)mContext).getFragmentManager(), "update-status");
     }
 
     public static RSOrder getSelectedOrder() {
@@ -74,6 +76,7 @@ public class OrdersListViewAdapter extends ArrayAdapter<RSOrder> implements View
             viewHolder.txtTable = (TextView) convertView.findViewById(R.id.OrdersItemTable);
             viewHolder.position = position;
             result = convertView;
+            convertView.setOnClickListener(this);
             convertView.setTag(viewHolder);
 
         } else {

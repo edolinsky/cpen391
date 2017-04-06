@@ -41,13 +41,14 @@ public class StaffOrderStatusDialog extends DialogFragment {
                 String newStatus = OrderStatus.values()[i].name();
                 RSOrder[] orders = new RSOrder[1];
                 orders[0] = order;
+                orders[0].setStatus(newStatus);
                 // make request to update order status
                 RestyOrderPatchRequest request = new RestyOrderPatchRequest(callback);
                 request.patchOrders(orders, StaffUser.getCurrentUser().getRestaurant_id());
             }
         });
 
-        return builder.show();
+        return builder.create();
     }
 
     final RestyOrdersPatchCallback callback = new RestyOrdersPatchCallback() {

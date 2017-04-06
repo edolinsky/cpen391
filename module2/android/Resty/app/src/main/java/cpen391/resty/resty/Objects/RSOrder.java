@@ -9,6 +9,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -74,9 +76,9 @@ public class RSOrder{
         try {
 
             obj.put("restaurant_id", restaurant_id);
-            JSONArray updates = new JSONArray(getpatches(orders));
-            obj.put("items", updates);
-            Log.i("RSOrder", obj.toString());
+            Gson gson = new Gson();
+            String updates = gson.toJson(getpatches(orders)).replaceAll("/", "");
+            obj.put("items", new JSONArray(updates));
 
         }catch (Exception e){
             throw new IllegalArgumentException();
