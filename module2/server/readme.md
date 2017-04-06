@@ -378,20 +378,22 @@ Response on Success:
 {
   "orders": [
     {
-      "customer_name": "Erik", 
-      "id": "179a6f7f56", 
-      "menu_id": "HMw4vmcmqy", 
-      "name": "Corona", 
-      "status": "placed", 
-      "table_id": "test_table"
-    }, 
+      "customer_name": "Table", 
+      "id": "003052f8e3", 
+      "menu_id": "GgaStDohcb", 
+      "name": "Rocky Road Ice Cream Cake", 
+      "order_id": "9db00128d2", 
+      "status": "prep", 
+      "table_id": "0xDEFEC7EDDA7ABA5E"
+    },
     {
-      "customer_name": "Erik", 
-      "id": "3838e0e86c", 
+      "customer_name": "Table", 
+      "id": "fdb45d9b26", 
       "menu_id": "2rs7U6patW", 
       "name": "Caesar Salad", 
-      "status": "prep", 
-      "table_id": "test_table"
+      "order_id": "f3c2d6a776", 
+      "status": "placed", 
+      "table_id": "0xDEFEC7EDDA7ABA5E"
     }
   ], 
   "restaurant_id": "test_resto"
@@ -401,6 +403,7 @@ Parameters:
 * `orders`: contains a list of order objects, each with the following fields:
     * `customer_name`: name of customer to receive order item
     * `id`: unique ID of the order item
+    * `order_id`: grouping order ID
     * `name`: name of the item
     * `status`: order status
     * `table_id`: unique ID of hub at table in restaurant
@@ -413,13 +416,22 @@ Request Body:
 {
   "restaurant_id": "test_resto",
   "items": [ 
-    {"id": "3838e0e86c", "status": "prep"},
-    {"id": "b5e1d81c47", "status": "ready"},
-    ]
+    {
+      "id": "f5fe1eb5a6", 
+      "order_id": "8125e89e7a", 
+      "status": "placed"
+    }, 
+    {
+      "id": "fa1e2dbc57",
+      "order_id": "c923471e76", 
+      "status": "placed"
+    }
+  ]
 }
 ```
 Requests contain the following fields:
 * `restaurant_id`: the unique ID of the restaurant.
+* `order_id`: grouping order ID
 * `items`: a list, containing objects with the following fields:
     * `id`: the unique ID of the order item.
     * `status`: the new status of the item, which can be one of the following:

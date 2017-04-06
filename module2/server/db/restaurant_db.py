@@ -73,7 +73,7 @@ class RestaurantDb(Database):
 
     def select_all_open_orders(self, restaurant_id):
 
-        query = ("SELECT o.id, o.customer_name, o.status, m.name, m.id as menu_id, o.table_id FROM {} o "
+        query = ("SELECT o.id, o.order_id, o.customer_name, o.status, m.name, m.id as menu_id, o.table_id FROM {} o "
                  "JOIN menu m ON m.id = o.menu_id "
                  "WHERE o.status NOT IN ('served','complete', 'cancelled');").format(restaurant_id)
 
