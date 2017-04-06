@@ -131,5 +131,6 @@ void drawOrderPage(void){
 		OutGraphicsCharFont2a(75 + i*10, 450, WHITE, WHITE, reload[i], 0);
 	}
 
+	// Wait for user input.
 	listenToTouches();
 }

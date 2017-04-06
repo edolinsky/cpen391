@@ -13,10 +13,16 @@
 #include "../serial/rs232.h"
 #include "../serial/wifi.h"
 
+/**
+ * Command WiFi chip to retrieve the restaurant ID for this device from the API.
+ */
 void get_restaurant_id() {
 	putString(&WIFI_STATUS, &WIFI_TXDATA, "\r\n\r\nget_restaurant_id()\r\n");
 }
 
+/**
+ * Read the restaurant ID stored on the WiFi chip.
+ */
 char* read_restaurant_id() {
 	int maxBuf = 100;
 	char *buf = malloc(maxBuf);
@@ -25,6 +31,9 @@ char* read_restaurant_id() {
     return wifiListen(buf, maxBuf);
 }
 
+/**
+ * Read this device's unique ID from the WiFi chip.
+ */
 char* read_table_id() {
 	int maxBuf = 20;
 	char *buf = malloc(maxBuf);

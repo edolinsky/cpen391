@@ -84,7 +84,6 @@ void drawMenu(void){
 	}
 
 	initElements();
-
 	refresh();
 
 	for(i = 0; i < strlen(randomPin); i++){
@@ -95,15 +94,19 @@ void drawMenu(void){
 		OutGraphicsCharFont2a((400 - strlen(PIN)*5) + i*10, 275, BLACK, BLACK, PIN[i], 0);
 	}
 
+	// Wait for user input.
 	printf("Waiting for Auth:\n");
 	int authenticated = FALSE;
 
+	// Only move on when correct pin has been entered.
 	while(!authenticated) {
 		authenticated = listen_for_pin_and_check(randomPin);
+
 		if (authenticated) {
 			send_table_info();
 			printf("Authenticated.\n");
 			authenticated = TRUE;
+
 		} else {
 			send_auth_error();
 			printf("Bad pin.\n");
@@ -111,6 +114,7 @@ void drawMenu(void){
 		}
 	}
 
+	// Move on to success page.
 	free(randomPin);
 	drawSuccess();
 }
