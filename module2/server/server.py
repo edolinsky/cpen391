@@ -408,8 +408,38 @@ def orders_endpoint(query='open', restaurant_id=''):
             update_request.update({'error': 'Specified restaurant does not exist.'})
             return jsonify(update_request), BAD_REQUEST
 
+        if 'items' not in update_request:
+            update_request.update({'error': 'Order update items list not specified.'})
+            return jsonify(update_request), BAD_REQUEST
+        elif len(update_request['items']) <= 0:
+            update_request.update({'error': 'Order update items list is empty.'})
+            return jsonify(update_request), BAD_REQUEST
+
+        for order_update in update_request['items']:
+            if 'id' not in order_update:
+                update_request.update({'error': 'Item ID not specified.'})
+                return jsonify(update_request), BAD_REQUEST
+            if 'order_id' not in order_update:
+                update_request.update({'error': 'Order ID not specified.'})
+                return jsonify(update_request), BAD_REQUEST
+            if 'status' not in order_update:
+                update_request.update({'error': 'Item status not specified.'})
+                return jsonify(update_request), BAD_REQUEST
+
         order = Order(restaurant_id=restaurant_id)
         update_info = order.update_status(update_info=update_request)
+
+        # Prepare set of customer IDs with "ready" items from updated orders.
+        customer_id_set = set()
+        for order_update in update_request['items']:
+            if order_update['status'] == 'ready':
+                customer_id_set.add(order.get_customer(order_update['order_id']))
+
+        # Send notification to each user.
+        for customer in customer_id_set:
+            user = User('')
+            customer_app_id = user.get_app_id(customer)
+            order.trigger_ready_notification(customer_app_id)
 
         if 'error' in update_info:
             return jsonify(update_info), SERVER_ERROR

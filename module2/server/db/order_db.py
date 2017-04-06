@@ -102,3 +102,20 @@ class OrderDb(Database):
         self.conn.commit()
         self.close()
         return update_info
+
+    def get_customer_id(self, order_id, restaurant_id):
+        self.connect()
+
+        customer_id = ''
+        query = ("SELECT customer_id FROM {} "
+                 "WHERE order_id = '{}';").format(restaurant_id, order_id)
+        try:
+            self.cursor.execute(query)
+            result = self.cursor.fetchone()
+            if result is not None:
+                customer_id = result['customer_id']
+        except MySQLdb.Error:
+            print "Error: Unable to fetch data."
+
+        self.close()
+        return customer_id
