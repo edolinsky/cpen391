@@ -1,5 +1,7 @@
 package cpen391.resty.resty.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -37,9 +39,10 @@ import cpen391.resty.resty.serverRequests.RestyOrderRequest;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyMenuCallback;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyOrderCallback;
 
-public class MenuFragment extends Fragment implements OrderDialog.OrderDialogListener{
+public class MenuFragment extends Fragment {
 
     private static final String TAG = "MenuFragment";
+    private static final int ORDER_DIALOG = 1;
 
     ArrayList<RestaurantMenuItem> items;
     ListView menuListView;
@@ -121,7 +124,10 @@ public class MenuFragment extends Fragment implements OrderDialog.OrderDialogLis
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        menuListView = (ListView)getView().findViewById(R.id.menuList);
+        setHasOptionsMenu(true);
+        View view = inflater.inflate(R.layout.menu, container, false);
+
+        menuListView = (ListView)view.findViewById(R.id.menuList);
 
         RestyMenuRequest menuRequest = new RestyMenuRequest(menuCallback);
 
@@ -136,10 +142,8 @@ public class MenuFragment extends Fragment implements OrderDialog.OrderDialogLis
         userId = restyStore.getString(RestyStore.Key.USER_ID);
         menuRequest.getMenu(connectedTable.getRestaurantId(), null);
 
-        setHasOptionsMenu(true);
-
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.menu, container, false);
+        return view;
     }
 
 
@@ -167,8 +171,7 @@ public class MenuFragment extends Fragment implements OrderDialog.OrderDialogLis
         }
     }
 
-    @Override
-    public void onDialogConfirmation(DialogFragment dialog) {
+    public void onDialogConfirmation() {
         List<RestaurantMenuItem> order = new ArrayList<>();
 
         // collect items in shopping cart
@@ -182,8 +185,7 @@ public class MenuFragment extends Fragment implements OrderDialog.OrderDialogLis
         orderRequest.order(order, userId, connectedTable);
     }
 
-    @Override
-    public void onDialogCancellation(DialogFragment dialog) {
+    public void onDialogCancellation() {
         // nothing
     }
 
@@ -199,13 +201,32 @@ public class MenuFragment extends Fragment implements OrderDialog.OrderDialogLis
             case R.id.action_shopping_cart:
 
                 OrderDialog order = new OrderDialog();
-                order.show(getActivity().getSupportFragmentManager(), "Order Dialog");
+                order.setTargetFragment(this, ORDER_DIALOG);
+                order.show(getChildFragmentManager(), "Order Dialog");
+                break;
 
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
 
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case ORDER_DIALOG:
+
+                if (resultCode == Activity.RESULT_OK) {
+                    onDialogConfirmation();
+                } else if (resultCode == Activity.RESULT_CANCELED){
+                    onDialogCancellation();
+                }
+
+                break;
         }
     }
 }

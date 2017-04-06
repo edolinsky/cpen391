@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,7 +19,7 @@ import cpen391.resty.resty.Bluetooth.RestyBluetooth;
 import cpen391.resty.resty.R;
 import cpen391.resty.resty.dataStore.RestyStore;
 
-public class HubAuthenticationFragment extends Fragment {
+public class HubAuthenticationFragment extends Fragment implements View.OnClickListener {
 
     private static final String TAG = "HubAuth";
     private static final Integer REQUEST_ENABLE_BT = 2;
@@ -29,6 +30,7 @@ public class HubAuthenticationFragment extends Fragment {
     private RestyStore dataStore;
 
     private HubAuthListener authListener;
+
     public interface HubAuthListener {
         void onAuth();
     }
@@ -52,17 +54,20 @@ public class HubAuthenticationFragment extends Fragment {
                              Bundle savedInstanceState) {
         dataStore = RestyStore.getInstance();
 
-        pinText = getView().findViewById(R.id.tablePin);
-        authButton = getView().findViewById(R.id.authenticate);
+        setHasOptionsMenu(false);
+        View view = inflater.inflate(R.layout.hubverification, container, false);
+
+        pinText = view.findViewById(R.id.tablePin);
+        authButton = view.findViewById(R.id.authenticate);
+        authButton.setOnClickListener(this);
+
+        view.findViewById(R.id.initBluetooth).setOnClickListener(this);
 
         // Hide authentication button until bluetooth is initialized.
         pinText.setVisibility(View.INVISIBLE);
         authButton.setVisibility(View.INVISIBLE);
 
-        setHasOptionsMenu(false);
-
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.hubverification, container, false);
+        return view;
     }
 
     public void initBluetooth(View view) {
@@ -144,6 +149,20 @@ public class HubAuthenticationFragment extends Fragment {
 
             authListener.onAuth();
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.initBluetooth:
+                initBluetooth(v);
+                break;
+            case R.id.authenticate:
+                authenticate(v);
+                break;
+        }
+
     }
 
 }
