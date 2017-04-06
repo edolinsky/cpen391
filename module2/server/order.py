@@ -76,12 +76,6 @@ class Order:
         # Insert into database.
         return self.db.insert_order(order_info=updated_order)
 
-    def update_order(self, order):
-        pass
-
-    def cancel_order(self):
-        pass
-
     def update_status(self, update_info):
         """
         Updates solely the status of each of the order IDs specified in the list

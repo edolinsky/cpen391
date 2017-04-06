@@ -20,6 +20,19 @@ class MenuDb(Database):
         Database.close(self)
 
     def create_menu(self, menu_info):
+        """
+        Create menu entries based on the specified menu_info object.
+        :param menu_info: the object should contain a list called items, containing
+        objects with the following parameters:
+            - id
+            - restaurant_id
+            - type
+            - name
+            - description
+            - price
+        Consult the API documentation (server/readme.md) for more details about these fields.
+        :return:
+        """
 
         # Prepare list of tuples from specified list of dicts.
         menu_tuples = []
