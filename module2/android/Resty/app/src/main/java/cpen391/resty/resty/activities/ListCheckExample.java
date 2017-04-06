@@ -1,12 +1,11 @@
-package com.example.restaurantside;
+package cpen391.resty.resty.activities;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.BoolRes;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +20,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import cpen391.resty.resty.Objects.tempTable;
+import cpen391.resty.resty.R;
+
 /**
  * Created by annal on 2017-04-01.
  */
@@ -34,6 +36,9 @@ public class ListCheckExample extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_check_example);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         setTitle("Edit your tables");
 

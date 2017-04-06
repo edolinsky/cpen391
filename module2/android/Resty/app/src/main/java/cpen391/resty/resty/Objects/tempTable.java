@@ -1,15 +1,16 @@
-package com.example.restaurantside;
+package cpen391.resty.resty.Objects;
 
 /**
- * Created by annal on 2017-04-01.
+ * Created by annal on 2017-04-05.
  */
 
-public class Table {
+public class tempTable {
+
     int id;
     String servers;
     boolean selected;
 
-    public Table(int id, String servers, boolean selected){
+    public tempTable(int id, String servers, boolean selected){
         this.id = id;
         this.servers = servers;
         this.selected = selected;

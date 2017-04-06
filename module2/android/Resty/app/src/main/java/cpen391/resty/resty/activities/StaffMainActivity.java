@@ -1,5 +1,6 @@
 package cpen391.resty.resty.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -58,6 +59,9 @@ public class StaffMainActivity extends AppCompatActivity {
     public void manageTablesOnClick(View view){
         Toast toast = Toast.makeText(this, "open Annalies's table thingy in StaffMainActivity", Toast.LENGTH_LONG);
         toast.show();
+        Intent intent = new Intent(this, TableList.class);
+
+        startActivity(intent);
     }
 
     private RestyRSOrdersCallback ordersCallback = new RestyRSOrdersCallback() {

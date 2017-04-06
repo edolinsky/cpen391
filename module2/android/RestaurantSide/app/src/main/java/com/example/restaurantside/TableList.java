@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class TableList extends AppCompatActivity {
     int tableCount = 7;
     ArrayList<String> printList = new ArrayList<String>();
     ListView list;
@@ -22,11 +22,39 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_table_list);
+
+        setTitle("Tables");
 
         setTableCount(tableCount);
 
+        for (int i = 1; i <= tableCount; i++) {
+            //String temp = getElement(i);
+            String temp = "Table " + Integer.toString(i) + "\nServers:" + getElement(i);
+            Log.d("Value", temp);
+            if (temp == null) {
+                Log.d("AW SHIT: ", "shit broke");
+            }
 
+            printList.add(temp);
+        }
+
+        final String [] finalList = printList.toArray(new String[printList.size()]);
+
+        CustomList adapter = new
+                CustomList(TableList.this, finalList, imageId);
+        list=(ListView)findViewById(R.id.list);
+        list.setAdapter(adapter);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Toast.makeText(TableList.this, "This is your " + id + "th order"/*finalList[+ position]*/,
+                        Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 
     public void setTableCount(int i){
@@ -61,13 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void testList(View view){
-        Intent intent = new Intent(this, TableList.class);
-
-        startActivity(intent);
-    }
-
-    public void orderButton(View view){
-        Intent intent = new Intent(this, OrderList.class);
+        Intent intent = new Intent(this, ListCheckExample.class);
 
         startActivity(intent);
     }
