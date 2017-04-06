@@ -1,10 +1,14 @@
 package cpen391.resty.resty.activities;
 
 import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -14,7 +18,7 @@ import cpen391.resty.resty.Bluetooth.RestyBluetooth;
 import cpen391.resty.resty.R;
 import cpen391.resty.resty.dataStore.RestyStore;
 
-public class HubAuthenticationActivity extends MainActivityBase {
+public class HubAuthenticationFragment extends Fragment {
 
     private static final String TAG = "HubAuth";
     private static final Integer REQUEST_ENABLE_BT = 2;
@@ -24,20 +28,41 @@ public class HubAuthenticationActivity extends MainActivityBase {
     private View authButton;
     private RestyStore dataStore;
 
+    private HubAuthListener authListener;
+    public interface HubAuthListener {
+        void onAuth();
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            authListener = (HubAuthListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement HubAuthListener");
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         dataStore = RestyStore.getInstance();
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_hubverification);
-
-        pinText = findViewById(R.id.tablePin);
-        authButton = findViewById(R.id.authenticate);
+        pinText = getView().findViewById(R.id.tablePin);
+        authButton = getView().findViewById(R.id.authenticate);
 
         // Hide authentication button until bluetooth is initialized.
         pinText.setVisibility(View.INVISIBLE);
         authButton.setVisibility(View.INVISIBLE);
 
+        setHasOptionsMenu(false);
+
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.hubverification, container, false);
     }
 
     public void initBluetooth(View view) {
@@ -52,7 +77,7 @@ public class HubAuthenticationActivity extends MainActivityBase {
                         "You will not be able to use Resty.";
                 int duration = Toast.LENGTH_LONG;
 
-                Toast toast = Toast.makeText(this, text, duration);
+                Toast toast = Toast.makeText(getActivity(), text, duration);
                 toast.show();
                 return;
             } else if (!mBluetoothAdapter.isEnabled()) {
@@ -69,7 +94,7 @@ public class HubAuthenticationActivity extends MainActivityBase {
                     CharSequence text = "Please connect to Resty Hub via Bluetooth.";
                     int duration = Toast.LENGTH_LONG;
 
-                    Toast toast = Toast.makeText(this, text, duration);
+                    Toast toast = Toast.makeText(getActivity(), text, duration);
                     toast.show();
                     return;
                 }
@@ -90,8 +115,7 @@ public class HubAuthenticationActivity extends MainActivityBase {
             dataStore.put(RestyStore.Key.TABLE_ID, "0xDEFEC7EDDA7ABA5E");
             dataStore.put(RestyStore.Key.RESTAURANT_ID, "test_resto");
 
-            Intent intent = new Intent(this, MenuActivity.class);
-            startActivity(intent);
+            authListener.onAuth();
             return;
         }
 
@@ -104,7 +128,7 @@ public class HubAuthenticationActivity extends MainActivityBase {
             CharSequence text = "Incorrect Pin.";
             int duration = Toast.LENGTH_SHORT;
 
-            Toast toast = Toast.makeText(this, text, duration);
+            Toast toast = Toast.makeText(getActivity(), text, duration);
             toast.show();
 
             // Clear existing user input
@@ -118,8 +142,7 @@ public class HubAuthenticationActivity extends MainActivityBase {
             dataStore.put(RestyStore.Key.TABLE_ID, info[0]);
             dataStore.put(RestyStore.Key.RESTAURANT_ID, info[1]);
 
-            Intent intent = new Intent(this, MenuActivity.class);
-            startActivity(intent);
+            authListener.onAuth();
         }
     }
 

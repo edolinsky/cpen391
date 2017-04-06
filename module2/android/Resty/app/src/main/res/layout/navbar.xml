@@ -14,7 +14,7 @@
     app:theme="@style/Base.Theme.AppCompat.CompactMenu">
 
     <LinearLayout
-        android:id="@+id/toolbarmenucontainer"
+        android:id="@+id/navbarmenu_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"

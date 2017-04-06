@@ -94,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent;
         switch (affinity){
             case "customer":
-                intent = new Intent(this, HubAuthenticationActivity.class);
+                intent = new Intent(this, HubAuthenticationFragment.class);
                 break;
             case "staff":
                 intent = new Intent(this, StaffPickusageActivity.class);

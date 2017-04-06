@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    tools:context="cpen391.resty.resty.activities.HubAuthenticationActivity">
+    tools:context="cpen391.resty.resty.activities.HubAuthenticationFragment">
 
     <EditText
         android:id="@+id/tablePin"
@@ -33,9 +33,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tablePin" />
-
-    <include layout="@layout/navbar"
-        android:id="@+id/include2" />
 
     <Button
         android:id="@+id/initBluetooth"
