@@ -1,5 +1,7 @@
 package cpen391.resty.resty.Objects;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +12,16 @@ import cpen391.resty.resty.utils.TestDataUtils;
 import static cpen391.resty.resty.utils.PublicConstants.FOR_TABLE;
 
 public class Order extends GsonSerializable {
+
+    public enum OrderStatus{
+        placed,
+        prep,
+        ready,
+        served,
+        complete,
+        cancelled
+    }
+
     private final String customer_id;
     private final String restaurant_id;
     private final String table_id;

@@ -5,13 +5,23 @@ This class is for the Order items as received from the orders get method,
 called from the restaurant side of the app, hence the RS in the name
  */
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class RSOrder {
+import static android.R.attr.order;
+
+public class RSOrder{
 
     private String customer_name;
     private String id;
+    private String order_id;
     private String menu_id;
     private String name;
     private String status;
@@ -20,6 +30,7 @@ public class RSOrder {
     public RSOrder(){
         customer_name = "";
         id = "";
+        order_id = "";
         menu_id = "";
         name = "";
         status = "";
@@ -48,6 +59,54 @@ public class RSOrder {
 
     public String getTable_id() {
         return table_id;
+    }
+
+    public String getOrder_id() {
+        return order_id;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public static JSONObject createJSONOrdersPatch(RSOrder[] orders, String restaurant_id){
+        JSONObject obj = new JSONObject();
+        try {
+
+            obj.put("restaurant_id", restaurant_id);
+            JSONArray updates = new JSONArray(getpatches(orders));
+            obj.put("items", updates);
+            Log.i("RSOrder", obj.toString());
+
+        }catch (Exception e){
+            throw new IllegalArgumentException();
+        }
+
+        return obj;
+    }
+
+    private static OrderPatch[] getpatches(RSOrder[] orders) {
+        OrderPatch[] retval = new OrderPatch[orders.length];
+        int i = 0;
+        for (RSOrder order : orders) {
+            retval[i] = new OrderPatch(order.id, order.order_id, order.status);
+            i++;
+        }
+        return retval;
+    }
+
+
+    private static class OrderPatch{
+
+        String id;
+        String order_id;
+        String status;
+
+        OrderPatch(String id, String order_id, String status){
+            this.id = id;
+            this.order_id = order_id;
+            this.status = status;
+        }
     }
 
 }

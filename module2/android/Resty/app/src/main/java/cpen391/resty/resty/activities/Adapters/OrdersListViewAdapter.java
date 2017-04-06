@@ -1,6 +1,7 @@
 package cpen391.resty.resty.activities.Adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +10,14 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import junit.framework.Assert;
+
 import java.util.ArrayList;
 
 import cpen391.resty.resty.Objects.RSOrder;
 import cpen391.resty.resty.R;
+import cpen391.resty.resty.activities.Fragments.StaffOrderStatusDialog;
 
 public class OrdersListViewAdapter extends ArrayAdapter<RSOrder> implements View.OnClickListener{
 
@@ -36,9 +41,17 @@ public class OrdersListViewAdapter extends ArrayAdapter<RSOrder> implements View
     public void onClick(View v) {
         ViewHolder view = (ViewHolder) v.getTag();
         RSOrder item = getItem(view.position);
+        if (item == null) return;
 
+        selectedOrder = item;
+        StaffOrderStatusDialog dialog = new StaffOrderStatusDialog();
     }
 
+    public static RSOrder getSelectedOrder() {
+        return selectedOrder;
+    }
+
+    private static RSOrder selectedOrder = null;
     private int lastPosition = -1;
 
     @Override

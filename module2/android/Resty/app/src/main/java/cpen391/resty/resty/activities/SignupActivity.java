@@ -117,13 +117,22 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void signupOnSuccess(User user, boolean isStaff){
-        if (isStaff){
-            StaffUser staffUser = (StaffUser) user; // probably wanna do sth with this
-            Intent intent = new Intent(this, StaffPickusageActivity.class);
-            startActivity(intent);
-        }else{
-
+        String affinity = user.getAffinity();
+        Intent intent;
+        switch (affinity){
+            case "customer":
+                intent = new Intent(this, HubAuthenticationActivity.class);
+                break;
+            case "staff":
+                intent = new Intent(this, StaffPickusageActivity.class);
+                break;
+            case "staff_only":
+                intent = new Intent(this, StaffMainActivity.class);
+                break;
+            default:
+                throw new IllegalArgumentException();
         }
+        startActivity(intent);
     }
 
     private void handleSignupError(VolleyError error){
