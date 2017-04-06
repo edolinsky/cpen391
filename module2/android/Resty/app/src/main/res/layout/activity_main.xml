@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
-    tools:context="cpen391.resty.resty.activities.MenuActivity"
+    tools:context="cpen391.resty.resty.activities.MenuFragment"
     android:layout_width="match_parent"
     android:orientation="vertical">
 
@@ -16,13 +16,13 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <ListView
-        android:id="@+id/menuList"
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
 
-    />
+        />
 
     <include layout="@layout/navbar" />
 

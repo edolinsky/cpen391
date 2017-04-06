@@ -1,11 +1,18 @@
 package cpen391.resty.resty.activities;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -18,10 +25,10 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.Inflater;
 
 import cpen391.resty.resty.Bluetooth.RestyBluetooth;
 import cpen391.resty.resty.Objects.Table;
-import cpen391.resty.resty.Objects.User;
 import cpen391.resty.resty.dataStore.RestyStore;
 import cpen391.resty.resty.menu.OrderDialog;
 import cpen391.resty.resty.menu.RestaurantMenuItem;
@@ -31,11 +38,11 @@ import cpen391.resty.resty.serverRequests.RestyMenuRequest;
 import cpen391.resty.resty.serverRequests.RestyOrderRequest;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyMenuCallback;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyOrderCallback;
-import cpen391.resty.resty.utils.TestDataUtils;
 
-public class MenuActivity extends MainActivityBase implements OrderDialog.OrderDialogListener{
+public class MenuFragment extends Fragment {
 
-    private static final String TAG = "MenuActivity";
+    private static final String TAG = "MenuFragment";
+    private static final int ORDER_DIALOG = 1;
 
     ArrayList<RestaurantMenuItem> items;
     ListView menuListView;
@@ -68,7 +75,7 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
             }
             adapter.notifyDataSetChanged();
 
-            Toast orderCompleteToast = Toast.makeText(getApplicationContext(), "Order sent!",
+            Toast orderCompleteToast = Toast.makeText(getActivity(), "Order sent!",
                     Toast.LENGTH_LONG);
             orderCompleteToast.show();
 
@@ -93,7 +100,7 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
                 // If we have retried sending the message the maximum number of times,
                 // display error message to user.
                 if (attempts >= MAX_BT_SEND_ATTEMPTS) {
-                    Toast sendOrderInfoFailureToast = Toast.makeText(getApplicationContext(),
+                    Toast sendOrderInfoFailureToast = Toast.makeText(getActivity(),
                             "There was a problem with your order. Please contact your server.",
                             Toast.LENGTH_LONG);
                     sendOrderInfoFailureToast.show();
@@ -103,7 +110,7 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
 
         @Override
         public void orderError(VolleyError error) {
-            Toast orderFailureToast = Toast.makeText(getApplicationContext(),
+            Toast orderFailureToast = Toast.makeText(getActivity(),
                     "There was a problem with sending your order, please try again.",
                     Toast.LENGTH_LONG);
             orderFailureToast.show();
@@ -115,12 +122,12 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu);
-        menuListView = (ListView)findViewById(R.id.menuList);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+        View view = inflater.inflate(R.layout.menu, container, false);
+
+        menuListView = (ListView)view.findViewById(R.id.menuList);
 
         RestyMenuRequest menuRequest = new RestyMenuRequest(menuCallback);
 
@@ -134,6 +141,9 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
                 restyStore.getString(RestyStore.Key.TABLE_ID));
         userId = restyStore.getString(RestyStore.Key.USER_ID);
         menuRequest.getMenu(connectedTable.getRestaurantId(), null);
+
+        // Inflate the layout for this fragment
+        return view;
     }
 
 
@@ -148,7 +158,7 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
         items = new ArrayList<>();
         items.addAll(menuList);
 
-        adapter = new MenuItemAdapter(items, getApplicationContext());
+        adapter = new MenuItemAdapter(items, getActivity());
         menuListView.setAdapter(adapter);
     }
 
@@ -161,31 +171,7 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_shopping_cart:
-
-                OrderDialog order = new OrderDialog();
-                order.show(getSupportFragmentManager(), "Order Dialog");
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
-
-    @Override
-    public void onDialogConfirmation(DialogFragment dialog) {
+    public void onDialogConfirmation() {
         List<RestaurantMenuItem> order = new ArrayList<>();
 
         // collect items in shopping cart
@@ -199,8 +185,48 @@ public class MenuActivity extends MainActivityBase implements OrderDialog.OrderD
         orderRequest.order(order, userId, connectedTable);
     }
 
-    @Override
-    public void onDialogCancellation(DialogFragment dialog) {
+    public void onDialogCancellation() {
         // nothing
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_shopping_cart:
+
+                OrderDialog order = new OrderDialog();
+                order.setTargetFragment(this, ORDER_DIALOG);
+                order.show(getChildFragmentManager(), "Order Dialog");
+                break;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch(requestCode) {
+            case ORDER_DIALOG:
+
+                if (resultCode == Activity.RESULT_OK) {
+                    onDialogConfirmation();
+                } else if (resultCode == Activity.RESULT_CANCELED){
+                    onDialogCancellation();
+                }
+
+                break;
+        }
     }
 }
