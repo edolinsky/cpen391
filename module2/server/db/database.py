@@ -41,6 +41,10 @@ class Database:
 
     @staticmethod
     def generate_id():
+        """
+        Generates a 10-digit ID string.
+        :return:
+        """
         return str(uuid.uuid4().hex)[-10:]
 
 

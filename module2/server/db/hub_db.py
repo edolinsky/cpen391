@@ -19,6 +19,12 @@ class HubDb(Database):
         Database.close(self)
 
     def hub_is_affiliated(self, hub_id, restaurant_id):
+        """
+        Determines whether the specified Hub ID is associated with the specified restaurant ID
+        :param hub_id:
+        :param restaurant_id:
+        :return:
+        """
         exists = 0
         query = ("SELECT EXISTS(SELECT * FROM hubs "
                  "WHERE id = '{}' AND restaurant_id = '{}')AS HUB_AFFILIATED;").format(
@@ -41,6 +47,11 @@ class HubDb(Database):
             return False
 
     def get_hub_attendant_id(self, hub_id):
+        """
+        Get the user ID of the attendant currently assigned to the specified hub.
+        :param hub_id:
+        :return:
+        """
         attendant_id = ''
         query = "SELECT attendant FROM hub_attendant WHERE hub_id = '{}';".format(hub_id)
 
@@ -57,6 +68,11 @@ class HubDb(Database):
         return attendant_id
 
     def get_table_name(self, hub_id):
+        """
+        Get the human-readable table name for the specified hub id.
+        :param hub_id:
+        :return:
+        """
         table_name = ''
         query = "SELECT table_name FROM hub_attendant WHERE hub_id = '{}';".format(hub_id)
 
@@ -73,6 +89,11 @@ class HubDb(Database):
         return table_name
 
     def get_hub_restaurant_id(self, hub_id):
+        """
+        Get the restaurant ID of the restaurant to which this hub belongs.
+        :param hub_id:
+        :return:
+        """
         restaurant_id = ''
         query = "SELECT restaurant_id FROM hubs WHERE id = '{}';".format(hub_id)
 

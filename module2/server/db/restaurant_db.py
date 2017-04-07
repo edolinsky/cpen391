@@ -22,6 +22,13 @@ class RestaurantDb(Database):
         pass
 
     def create_restaurant(self, restaurant_id, name):
+        """
+        Creates a new restaurant entry in the restaurant table, and a new orders table
+        identified by the restaurant ID.
+        :param restaurant_id:
+        :param name:
+        :return:
+        """
         tablecreator = CreateTable()
         query = "INSERT INTO restaurants (id, name) VALUES (\"{}\", \"{}\");".format(restaurant_id, name)
         self.connect()
@@ -50,6 +57,11 @@ class RestaurantDb(Database):
                 'message': 'Restaurant Created.'}
 
     def restaurant_exists(self, restaurant_id):
+        """
+        Determines whether the specified restaurant exists.
+        :param restaurant_id:
+        :return:
+        """
 
         exists = 0
         query = "SELECT EXISTS(SELECT * FROM restaurants where id = '{}')AS RESTAURANT_EXISTS;".format(
@@ -72,6 +84,11 @@ class RestaurantDb(Database):
             return False
 
     def select_all_open_orders(self, restaurant_id):
+        """
+        Select all order items that are open (states: placed, prep, ready) for the specified restaurant.
+        :param restaurant_id:
+        :return:
+        """
 
         query = ("SELECT o.id, o.order_id, o.customer_name, o.status, m.name, m.id as menu_id, o.table_id FROM {} o "
                  "JOIN menu m ON m.id = o.menu_id "
@@ -92,6 +109,11 @@ class RestaurantDb(Database):
         return orders_info
 
     def get_staff_hub_mappings(self, restaurant_id):
+        """
+        Get all staff-table device mappings for the specified restaurant.
+        :param restaurant_id:
+        :return:
+        """
         mappings = {}
         query = ("SELECT h.id AS table_id, ha.table_name, u.id AS attendant_id, u.email AS email FROM hubs h "
                  "JOIN hub_attendant ha on h.id = ha.hub_id "
@@ -111,6 +133,15 @@ class RestaurantDb(Database):
         return mappings
 
     def update_staff_hub_mappings(self, mapping_info):
+        """
+        Update the staff-hub mappings with the specified information.
+        :param mapping_info: Object, containing list called 'mappings',
+        with each object in list containing:
+            - attendant_id (user ID of user to be assigned to attend the table)
+            - table_id (hub device id)
+        :return:
+        """
+
         mapping_tuples = []
         for mapping in mapping_info['mappings']:
             mapping_tuples.append((mapping['attendant_id'], mapping['table_id']))
@@ -134,6 +165,11 @@ class RestaurantDb(Database):
         return mapping_info
 
     def remove_staff_from_mappings(self, user_id):
+        """
+        Remove the specified user from all hub mappings.
+        :param user_id:
+        :return:
+        """
 
         query = "UPDATE hub_attendant SET attendant = NULL WHERE attendant = '{}'".format(user_id)
 
