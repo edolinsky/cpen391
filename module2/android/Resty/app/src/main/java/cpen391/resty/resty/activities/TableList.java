@@ -2,6 +2,7 @@ package cpen391.resty.resty.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,7 +30,7 @@ import cpen391.resty.resty.Objects.tempTable;
 import cpen391.resty.resty.R;
 import cpen391.resty.resty.activities.Adapters.CustomList;
 import cpen391.resty.resty.dataStore.RestyStore;
-import cpen391.resty.resty.menu.MenuItemAdapter;
+import cpen391.resty.resty.activities.Adapters.MenuItemAdapter;
 import cpen391.resty.resty.serverRequests.RestyTableRequest;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyTableCallback;
 
@@ -51,7 +52,7 @@ public class TableList extends AppCompatActivity {
         dataStore = RestyStore.getInstance();
 
         setTitle("Tables");
-
+        setTitleColor(Color.WHITE);
 
         // START OF SERVER
         Runnable fetchOrders = new Runnable() {

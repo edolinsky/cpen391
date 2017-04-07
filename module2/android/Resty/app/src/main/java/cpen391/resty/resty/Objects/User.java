@@ -12,6 +12,8 @@ import static android.R.attr.password;
 
 public class User extends GsonSerializable {
 
+
+
     // after sign in, use User.getCurrentUser to get this object from anywhere
     // cast to StaffUser if signed in as staff
     private static User currentUser = null;

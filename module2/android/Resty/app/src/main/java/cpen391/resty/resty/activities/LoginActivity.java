@@ -41,8 +41,9 @@ public class LoginActivity extends AppCompatActivity {
         dataStore = RestyStore.getInstance(this);
 
         if(RestyStore.getInstance().getBoolean(RestyStore.Key.LOGGED_IN)) {
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-            this.startActivity(intent);
+            signIn(dataStore.getString(RestyStore.Key.USER),
+                    dataStore.getString(RestyStore.Key.PASSWORD));
+            return;
         }
 
         setContentView(R.layout.activity_login);
@@ -75,6 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         final String hashedPassword = Hashing.sha256()
                 .hashString(password, StandardCharsets.UTF_8)
                 .toString();
+        dataStore.put(RestyStore.Key.PASSWORD, hashedPassword);
 
         // Send log in request.
         signIn(username, hashedPassword);
@@ -117,6 +119,9 @@ public class LoginActivity extends AppCompatActivity {
     private void onLoginError(VolleyError error){
         CharSequence text;
         int duration = Toast.LENGTH_LONG;
+
+        // remove incorrectly stored password
+        dataStore.clear();
 
         switch (error.networkResponse.statusCode){
             case SERVER_ERROR:
