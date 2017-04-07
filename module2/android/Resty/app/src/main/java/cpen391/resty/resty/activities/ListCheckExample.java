@@ -231,15 +231,6 @@ public class ListCheckExample extends AppCompatActivity {
     }
 
     public void addServer(int i, String order){
-/*        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-
-        String newServer = order;
-        editor.putString(Integer.toString(i), order);
-
-        editor.commit();
-
-        */
         dataStore.put(Integer.toString(i), order);
         putServer();
     }
@@ -279,33 +270,6 @@ public class ListCheckExample extends AppCompatActivity {
         }
 
         orderRequest.changeServer(mapping);
-    }
-
-    public Boolean getChecked(int i){
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-
-        return pref.getBoolean("Boolean" + Integer.toString(i), false);
-    }
-
-    public void isItChecked(int i){
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-
-
-        editor.putBoolean("Boolean" + Integer.toString(i), !getChecked(i));
-
-        editor.commit();
-    }
-
-    public int getCount(){
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-
-        int count = pref.getInt("Tables", 0);
-
-        Log.d("COUNT: ", Integer.toString(count));
-        return count;
     }
 
 }
