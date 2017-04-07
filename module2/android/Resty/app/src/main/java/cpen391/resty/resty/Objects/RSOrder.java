@@ -5,13 +5,28 @@ This class is for the Order items as received from the orders get method,
 called from the restaurant side of the app, hence the RS in the name
  */
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-public class RSOrder {
+import static android.R.attr.order;
+
+public class RSOrder{
 
     private String customer_name;
     private String id;
+    private String order_id;
     private String menu_id;
     private String name;
     private String status;
@@ -20,6 +35,7 @@ public class RSOrder {
     public RSOrder(){
         customer_name = "";
         id = "";
+        order_id = "";
         menu_id = "";
         name = "";
         status = "";
@@ -48,6 +64,83 @@ public class RSOrder {
 
     public String getTable_id() {
         return table_id;
+    }
+
+    public String getOrder_id() {
+        return order_id;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public static JSONObject createJSONOrdersPatch(RSOrder[] orders, String restaurant_id){
+        JSONObject obj = new JSONObject();
+        try {
+
+            obj.put("restaurant_id", restaurant_id);
+            Gson gson = new Gson();
+            String updates = gson.toJson(getpatches(orders)).replaceAll("/", "");
+            obj.put("items", new JSONArray(updates));
+
+        }catch (Exception e){
+            throw new IllegalArgumentException();
+        }
+
+        return obj;
+    }
+
+    /**
+     * Makes orders with the same order id appear consequtively in the list
+     * and sorts items with the same order id based on status (see OrderStatus enum)
+     */
+    public static ArrayList<Object> groupAndSort(List<RSOrder> orders){
+        Collections.sort(orders, new RSOrderComparator());
+        ArrayList<Object> objects = new ArrayList<Object>();
+        String lastID = "";
+        for (int i = 0; i < orders.size(); i++){
+            RSOrder next = orders.get(i);
+            if (!next.getOrder_id().matches(lastID)) {
+                lastID = next.getOrder_id();
+                objects.add(next.getOrder_id());
+            }
+            objects.add(orders.get(i));
+        }
+        return objects;
+    }
+
+    private static OrderPatch[] getpatches(RSOrder[] orders) {
+        OrderPatch[] retval = new OrderPatch[orders.length];
+        int i = 0;
+        for (RSOrder order : orders) {
+            retval[i] = new OrderPatch(order.id, order.order_id, order.status);
+            i++;
+        }
+        return retval;
+    }
+
+
+    private static class OrderPatch{
+
+        String id;
+        String order_id;
+        String status;
+
+        OrderPatch(String id, String order_id, String status){
+            this.id = id;
+            this.order_id = order_id;
+            this.status = status;
+        }
+    }
+
+    private static class RSOrderComparator implements Comparator<RSOrder>{
+        @Override
+        public int compare(RSOrder r1, RSOrder r2){
+            int tableComparator = new BigInteger(r2.getOrder_id().getBytes()).compareTo(new BigInteger(r1.getOrder_id().getBytes()));
+            if (tableComparator == 0){
+                return (Order.OrderStatus.valueOf(r1.getStatus()).ordinal() > Order.OrderStatus.valueOf(r2.getStatus()).ordinal()) ? 1:-1;
+            }else return tableComparator;
+        }
     }
 
 }

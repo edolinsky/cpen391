@@ -55,6 +55,13 @@ class OrderDb(Database):
         return order_info
 
     def get_order(self, restaurant_id, order_id):
+        """
+        Get all items within the order identified by the specified order ID at the specified
+        restaurant ID.
+        :param restaurant_id:
+        :param order_id:
+        :return:
+        """
 
         query = ("SELECT o.id, m.name, m.id as menu_id, m.price, m.description, m.type, o.customer_name, o.status "
                  "from {} o "
@@ -74,12 +81,16 @@ class OrderDb(Database):
         self.close()
         return order_info
 
-    def update_order(self, restaurant_id, table_id, order_id, order):
-        # todo: implement
-        # "INSERT ON DUPLICATE KEY UPDATE"
-        pass
-
     def update_status(self, update_info):
+        """
+        Update the status fields of the specified orders.
+        :param update_info: object containing
+            - restaurant_id
+            - list called items, with objects containing the following fields:
+                - id
+                - status
+        :return:
+        """
 
         query = "UPDATE {} SET status = %s WHERE id = %s;".format(update_info['restaurant_id'])
 
@@ -102,3 +113,27 @@ class OrderDb(Database):
         self.conn.commit()
         self.close()
         return update_info
+
+    def get_customer_id(self, order_id, restaurant_id):
+        """
+        Get the customer ID of the customer that placed the specified order at the
+        specified restaurant.
+        :param order_id:
+        :param restaurant_id:
+        :return:
+        """
+        self.connect()
+
+        customer_id = ''
+        query = ("SELECT customer_id FROM {} "
+                 "WHERE order_id = '{}';").format(restaurant_id, order_id)
+        try:
+            self.cursor.execute(query)
+            result = self.cursor.fetchone()
+            if result is not None:
+                customer_id = result['customer_id']
+        except MySQLdb.Error:
+            print "Error: Unable to fetch data."
+
+        self.close()
+        return customer_id

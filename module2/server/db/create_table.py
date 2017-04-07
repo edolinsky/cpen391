@@ -60,4 +60,9 @@ class CreateTable:
 
     @staticmethod
     def create_restaurant_table(restaurant_id):
+        """
+        Creates the request string to create a restaurant orders table with the specified restaurant_id.
+        :param restaurant_id:
+        :return:
+        """
         return CreateTable.orders_create.format(restaurant_id)

@@ -14,7 +14,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -48,16 +48,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.HubAuthenticationActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.MenuActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.MainActivityBase"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".activities.MapsActivity"
+            android:name=".activities.MainActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SignupActivity"
@@ -66,10 +57,10 @@
         <activity
             android:name=".activities.StaffPickusageActivity"
             android:screenOrientation="portrait" />
-        />
-        <activity android:name=".activities.StaffMainActivity"></activity>
+        <activity android:name=".activities.StaffMainActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".activities.TableList"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait"/>
         <activity android:name=".activities.ListCheckExample">
             android:parentActivityName=".TableList" >
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -77,6 +68,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.TableList" />
         </activity>
+
     </application>
 
 </manifest>

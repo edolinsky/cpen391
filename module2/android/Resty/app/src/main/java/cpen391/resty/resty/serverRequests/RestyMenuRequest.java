@@ -1,20 +1,13 @@
 package cpen391.resty.resty.serverRequests;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 
-import org.json.JSONObject;
-
-import cpen391.resty.resty.activities.MenuActivity;
 import cpen391.resty.resty.serverRequests.ServerRequestConstants.Endpoint;
-import cpen391.resty.resty.serverRequests.serverCallbacks.RestyLoginCallback;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyMenuCallback;
 
 public class RestyMenuRequest {

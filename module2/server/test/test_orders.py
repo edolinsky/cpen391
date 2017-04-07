@@ -28,7 +28,11 @@ class OrdersTests(LiveServerTestCase):
                        'query': 'open'}
         self.request_body = {"restaurant_id": "test_resto",
                              "items": [
-                                 {"id": "3838e0e86c", "status": "placed"}
+                                 {
+                                     "id": "3838e0e86c",
+                                     "status": "placed",
+                                     "order_id": "3be0d4a448"
+                                 }
                              ]
                              }
         self.order_id = "3be0d4a448"
@@ -89,6 +93,41 @@ class OrdersTests(LiveServerTestCase):
 
     def test_patch_restaurant_nonexistent(self):
         self.request_body.update({'restaurant_id': 'garbage'})
+
+        r = self.orders_patch()
+        self.assertEqual(r.status_code, server.BAD_REQUEST)
+        self.assertTrue('error' in r.json())
+
+    def test_patch_empty_items(self):
+        self.request_body.update({'items': []})
+
+        r = self.orders_patch()
+        self.assertEqual(r.status_code, server.BAD_REQUEST)
+        self.assertTrue('error' in r.json())
+
+    def test_patch_no_items(self):
+        self.request_body.pop('items')
+
+        r = self.orders_patch()
+        self.assertEqual(r.status_code, server.BAD_REQUEST)
+        self.assertTrue('error' in r.json())
+
+    def test_patch_no_id(self):
+        self.request_body['items'][0].pop('id')
+
+        r = self.orders_patch()
+        self.assertEqual(r.status_code, server.BAD_REQUEST)
+        self.assertTrue('error' in r.json())
+
+    def test_patch_no_order_id(self):
+        self.request_body['items'][0].pop('order_id')
+
+        r = self.orders_patch()
+        self.assertEqual(r.status_code, server.BAD_REQUEST)
+        self.assertTrue('error' in r.json())
+
+    def test_patch_no_status(self):
+        self.request_body['items'][0].pop('status')
 
         r = self.orders_patch()
         self.assertEqual(r.status_code, server.BAD_REQUEST)

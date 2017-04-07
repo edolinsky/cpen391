@@ -26,6 +26,10 @@ public class StaffUser extends User {
         return gson.toJson(this);
     }
 
+    public static StaffUser getCurrentUser(){
+        return (StaffUser) User.getCurrentUser();
+    }
+
     public String getRestaurant_id() {
         return restaurant_id;
     }

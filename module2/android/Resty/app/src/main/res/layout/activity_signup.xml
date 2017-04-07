@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    tools:context="cpen391.resty.resty.activities.SignupActivity">
+    tools:context="cpen391.resty.resty.activities.SignupActivity"
+    android:background="@color/colorBackground">
 
 
     <TextView
@@ -15,7 +16,7 @@
         android:layout_marginLeft="0dp"
         android:layout_marginRight="0dp"
         android:layout_marginTop="0dp"
-        android:background="@android:color/holo_blue_dark"
+        android:background="@color/colorPrimaryDark"
         android:elevation="10dp"
         android:ems="10"
         android:paddingBottom="8dp"
@@ -151,7 +152,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="24dp"
-        android:background="@android:color/holo_blue_dark"
+        android:background="@color/colorPrimary"
         android:onClick="signupOnClick"
         android:text="@string/signupButtonTitle"
         android:textColor="@android:color/white"

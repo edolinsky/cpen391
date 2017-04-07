@@ -11,15 +11,18 @@ from order import Order
 
 app = flask.Flask(__name__)
 
+# Success codes.
 OK = 200
 CREATED = 201
 
+# Client error codes.
 BAD_REQUEST = 400
 UNAUTHORIZED = 401
 FORBIDDEN = 403
 NOT_FOUND = 404
 TEAPOT = 418
 
+# Server error codes.
 SERVER_ERROR = 500
 
 
@@ -29,6 +32,8 @@ def login_endpoint():
     Handles user login.
     :return: JSON response body and status code.
     """
+
+    # Ensure email and password are specified and non-empty.
     request_body = request.get_json()
     if 'user' in request_body:
         user_email = request_body['user']
@@ -68,6 +73,7 @@ def login_endpoint():
             user_data.update({'error': 'Unable to fetch user information.'})
             return jsonify(user_data), SERVER_ERROR
 
+        # If a staff user, retrieve the restaurant ID with which the user is affiliated.
         elif affinity in user.staff_users:
             restaurant_id = user.get_my_restaurant(user_id=user_id)
 
@@ -93,7 +99,7 @@ def signup_endpoint():
     :return: JSON response body and status code.
     """
 
-    # Parse request body and throw errors if required fields are not included.
+    # Ensure email and password are specified.
     request_body = request.get_json()
     if 'affinity' in request_body:
         affinity = request_body['affinity']
@@ -370,6 +376,7 @@ def orders_endpoint(query='open', restaurant_id=''):
         restaurant_id = request.args.get('restaurant_id', restaurant_id)
         query = request.args.get('query', query)
 
+        # Restaurant ID must be specified, and query must be valid.
         if not restaurant_id:
             response = jsonify({'error': 'Restaurant ID is not specified.'})
             return response, BAD_REQUEST
@@ -408,8 +415,40 @@ def orders_endpoint(query='open', restaurant_id=''):
             update_request.update({'error': 'Specified restaurant does not exist.'})
             return jsonify(update_request), BAD_REQUEST
 
+        # Items list must be specified.
+        if 'items' not in update_request:
+            update_request.update({'error': 'Order update items list not specified.'})
+            return jsonify(update_request), BAD_REQUEST
+        elif len(update_request['items']) <= 0:
+            update_request.update({'error': 'Order update items list is empty.'})
+            return jsonify(update_request), BAD_REQUEST
+
+        # ID, Order ID, and Status must be specified within each object in list.
+        for order_update in update_request['items']:
+            if 'id' not in order_update:
+                update_request.update({'error': 'Item ID not specified.'})
+                return jsonify(update_request), BAD_REQUEST
+            if 'order_id' not in order_update:
+                update_request.update({'error': 'Order ID not specified.'})
+                return jsonify(update_request), BAD_REQUEST
+            if 'status' not in order_update:
+                update_request.update({'error': 'Item status not specified.'})
+                return jsonify(update_request), BAD_REQUEST
+
         order = Order(restaurant_id=restaurant_id)
         update_info = order.update_status(update_info=update_request)
+
+        # Prepare set of customer IDs with "ready" items from updated orders.
+        customer_id_set = set()
+        for order_update in update_request['items']:
+            if order_update['status'] == 'ready':
+                customer_id_set.add(order.get_customer(order_update['order_id']))
+
+        # Send notification to each user.
+        for customer in customer_id_set:
+            user = User('')
+            customer_app_id = user.get_app_id(customer)
+            order.trigger_ready_notification(customer_app_id)
 
         if 'error' in update_info:
             return jsonify(update_info), SERVER_ERROR
@@ -431,12 +470,15 @@ def restaurant_endpoint(table_id=''):
         hub = Hub('')
         hub.get_restaurant_id(hub_id=hub_id)
 
+        # if Mime Type is CSV, respond with simple restaurant ID string.
         if request.content_type == 'text/csv':
             print hub.restaurant_id
             if hub.restaurant_id:
                 return hub.restaurant_id, OK
             else:
                 return 'error', BAD_REQUEST
+
+        # Otherwise, respond in JSON format.
         else:
             if hub.restaurant_id:
                 return jsonify({'table_id': hub_id,
@@ -447,6 +489,7 @@ def restaurant_endpoint(table_id=''):
 
     elif request.method == 'POST':
         request_body = flask.request.get_json()
+
         # Restaurant name must be supplied in request body.
         if 'name' in request_body:
             restaurant_name = request_body['name']
@@ -526,6 +569,7 @@ def server_hub_map_endpoint(restaurant_id='', attendant_id=''):
         attendant_id = request.args.get('attendant_id', attendant_id)
         request_body = {}
 
+    # Restaurant ID must be specified.
     if not restaurant_id:
         request_body.update({'error': 'Restaurant ID not specified.'})
         return jsonify(request_body), BAD_REQUEST
@@ -554,6 +598,7 @@ def server_hub_map_endpoint(restaurant_id='', attendant_id=''):
             hub = Hub(restaurant_id=restaurant_id)
             hub_id = mapping.get('table_id', '')
 
+            # User must exist, and be associated with the specified restaurant.
             if not user.exists():
                 request_body.update({'error': 'Specified user {} does not exist.'.format(user_id)})
                 return jsonify(request_body), BAD_REQUEST
@@ -563,6 +608,7 @@ def server_hub_map_endpoint(restaurant_id='', attendant_id=''):
                     {'error': 'Specified user {} is not affiliated with specified restaurant.'.format(user_id)})
                 return jsonify(request_body), UNAUTHORIZED
 
+            # Specified hub must be associated with the specified restaurant.
             if not hub.is_registered(hub_id=hub_id):
                 request_body.update({
                     'error': 'Specified table ID {} is not affiliated with specified restaurant.'.format(hub_id)})
@@ -583,6 +629,7 @@ def server_hub_map_endpoint(restaurant_id='', attendant_id=''):
 
     elif request.method == 'DELETE':
 
+        # Attendant ID must be specified.
         if not attendant_id:
             request_body.update({'error': 'User ID not specified.'})
             return jsonify(request_body), BAD_REQUEST
@@ -590,6 +637,7 @@ def server_hub_map_endpoint(restaurant_id='', attendant_id=''):
         user = User('')
         user.get_email(user_id=attendant_id)
 
+        # Specified user must exist and be associated with the specified restaurant.
         if not user.exists():
             request_body.update({'error': 'Specified user does not exist.'})
             return jsonify(request_body), BAD_REQUEST
@@ -647,16 +695,28 @@ def update_fcm_id_endpoint():
 
 @app.route('/hello')
 def hello_world():
+    """
+    For testing.
+    :return: An OK status and simple message.
+    """
     return jsonify({'message': 'Hello World!'}), OK
 
 
 @app.route('/teapot')
 def teapot():
+    """
+    For testing.
+    :return: A TEAPOT status and simple message.
+    """
     return jsonify({'type': 'teapot'}), TEAPOT
 
 
 @app.route('/time')
 def time_endpoint():
+    """
+    Provides a simple Unix Epoch timestamp, in seconds.
+    :return:
+    """
     return str(int(time.time())), OK
 
 

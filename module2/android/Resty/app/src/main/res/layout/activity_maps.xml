@@ -28,7 +28,8 @@ tools:context="cpen391.resty.resty.activities.MapsActivity">
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="findRestaurants"
-            android:text="@string/findRestaurants" />
+            android:text="@string/findRestaurants"
+            android:background="@color/colorPrimary"/>
 
     </RelativeLayout>
 

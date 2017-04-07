@@ -1,6 +1,10 @@
 import db
 import copy
+import os
 from db.order_db import OrderDb
+from pyfcm import FCMNotification
+
+api_key = os.environ.get('fcm_api_key')
 
 
 class Order:
@@ -72,12 +76,6 @@ class Order:
         # Insert into database.
         return self.db.insert_order(order_info=updated_order)
 
-    def update_order(self, order):
-        pass
-
-    def cancel_order(self):
-        pass
-
     def update_status(self, update_info):
         """
         Updates solely the status of each of the order IDs specified in the list
@@ -86,3 +84,25 @@ class Order:
         :return:
         """
         return self.db.update_status(update_info=update_info)
+
+    def get_customer(self, order_id):
+        return self.db.get_customer_id(order_id=order_id,
+                                       restaurant_id=self.restaurant_id)
+
+    @staticmethod
+    def trigger_ready_notification(customer_app_id):
+        push_service = FCMNotification(api_key=api_key)
+
+        message_title = "Resty Update"
+        message_body = "Your order is ready!"
+
+        message = {'message_title': message_title,
+                   'message_body': message_body}
+
+        result = push_service.notify_single_device(registration_id=customer_app_id,
+                                                   data_message=message)
+        if result['success'] == 1:
+            return True
+        else:
+            print "Notification error: {}".format(result)
+            return False

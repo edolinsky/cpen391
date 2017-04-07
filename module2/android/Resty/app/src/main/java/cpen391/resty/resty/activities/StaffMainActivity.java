@@ -1,8 +1,10 @@
 package cpen391.resty.resty.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -21,22 +23,31 @@ import cpen391.resty.resty.Objects.respTable;
 import cpen391.resty.resty.R;
 import cpen391.resty.resty.activities.Adapters.OrdersListViewAdapter;
 import cpen391.resty.resty.serverRequests.RestyRSOrdersRequest;
+
 import cpen391.resty.resty.serverRequests.RestyTableRequest;
+
+import cpen391.resty.resty.serverRequests.serverCallbacks.RestyOrdersPatchCallback;
+
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyRSOrdersCallback;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyTableCallback;
 
+import static cpen391.resty.resty.Objects.RSOrder.groupAndSort;
+
 public class StaffMainActivity extends AppCompatActivity {
 
+    private static final String TAG = "StaffMain";
     private ListView ordersView;
+    private OrdersListViewAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_main);
 
+        // Display welcome message with user's email mailbox name.
         TextView topBar = (TextView) findViewById(R.id.StaffMainHeaderTextview);
         StaffUser user = (StaffUser) User.getCurrentUser();
-        String title = "Welcome, " + user.getUser().split("@")[0];
+        String title = "Welcome " + user.getUser().split("@")[0];
         topBar.setText(title);
         topBar.setMaxLines(1);
 
@@ -71,14 +82,14 @@ public class StaffMainActivity extends AppCompatActivity {
     }
 
     private void displayOrders(ArrayList<RSOrder> orders){
-        ordersView.setAdapter(new OrdersListViewAdapter(orders, this));
+        Log.i("COUNT", "" + orders.size());
+        ArrayList<Object> groupedOrders = RSOrder.groupAndSort(orders);
+        listAdapter = new OrdersListViewAdapter(groupedOrders, this, callback);
+        ordersView.setAdapter(listAdapter);
     }
 
     public void manageTablesOnClick(View view){
-        Toast toast = Toast.makeText(this, "open Annalies's table thingy in StaffMainActivity", Toast.LENGTH_LONG);
-        toast.show();
         Intent intent = new Intent(this, TableList.class);
-
         startActivity(intent);
     }
 
@@ -94,6 +105,7 @@ public class StaffMainActivity extends AppCompatActivity {
         }
     };
 
+
     private RestyTableCallback tablesCallback = new RestyTableCallback() {
         @Override
         public void tablesRetrieved(ArrayList<respTable> table) {
@@ -102,6 +114,28 @@ public class StaffMainActivity extends AppCompatActivity {
 
         @Override
         public void tablesError(VolleyError error) {
+
+        }
+    };
+
+    public void updateDataset(){
+        listAdapter.notifyDataSetChanged();
+    }
+
+    final RestyOrdersPatchCallback callback = new RestyOrdersPatchCallback() {
+        @Override
+        public void ordersUpdateSuccess(Activity activity) {
+            if (activity != null){
+                updateDataset();
+                Toast toast = Toast.makeText(activity, "Order status updated", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
+
+        @Override
+        public void ordersUpdateError(VolleyError error) {
+            Log.e(TAG, "failure with patching: " + error.getMessage());
+
 
         }
     };

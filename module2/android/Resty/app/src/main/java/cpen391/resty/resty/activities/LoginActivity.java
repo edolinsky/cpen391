@@ -72,9 +72,6 @@ public class LoginActivity extends AppCompatActivity {
                 .hashString(password, StandardCharsets.UTF_8)
                 .toString();
 
-        // Store username for later queries.
-        dataStore.put(RestyStore.Key.USER, username);
-
         // Send log in request.
         signIn(username, hashedPassword);
     }
@@ -90,11 +87,15 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onLoginSuccess(User user){
+        // Store username for later queries.
+        dataStore.put(RestyStore.Key.USER, user.getUser());
+        dataStore.put(RestyStore.Key.HUB_AUTH, false);
+
         String affinity = user.getAffinity();
         Intent intent;
         switch (affinity){
             case "customer":
-                intent = new Intent(this, HubAuthenticationActivity.class);
+                intent = new Intent(this, MainActivity.class);
                 break;
             case "staff":
                 intent = new Intent(this, StaffPickusageActivity.class);

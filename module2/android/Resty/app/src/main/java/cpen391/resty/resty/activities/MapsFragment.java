@@ -15,8 +15,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import cpen391.resty.resty.map.PlacesFinder;
 import cpen391.resty.resty.R;
@@ -26,10 +31,11 @@ import cpen391.resty.resty.utils.PermissionUtils;
  * Contains some code from the google maps android ap example project at
  * https://github.com/googlemaps/android-samples
  */
-public class MapsActivity extends MainActivityBase implements OnMapReadyCallback,
+public class MapsFragment extends Fragment implements View.OnClickListener, OnMapReadyCallback,
         OnMyLocationButtonClickListener, ActivityCompat.OnRequestPermissionsResultCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
+    private AppCompatActivity activity;
     private GoogleMap mMap;
     private Location mLastLocation;
     private GoogleApiClient gApiClient;
@@ -48,21 +54,42 @@ public class MapsActivity extends MainActivityBase implements OnMapReadyCallback
     private boolean mPermissionDenied = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        setHasOptionsMenu(false);
+        ((Toolbar) getActivity().findViewById(R.id.toolbar)).setNavigationIcon(null);
+        View view = inflater.inflate(R.layout.map_fragment, container, false);
+
+        try {
+            activity = (AppCompatActivity) getActivity();
+
+        } catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString()
+                    + " must extend AppCompatActivity");
+        }
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         if (gApiClient == null) {
-            gApiClient = new GoogleApiClient.Builder(this)
+            gApiClient = new GoogleApiClient.Builder(getContext())
                     .addApi(LocationServices.API)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
                     .build();
         }
+
+        view.findViewById(R.id.findRestaurantsButton).setOnClickListener(this);
+
+        return view;
+
     }
 
 
@@ -81,14 +108,26 @@ public class MapsActivity extends MainActivityBase implements OnMapReadyCallback
         enableMyLocation();
     }
 
-    protected void onStart() {
+    @Override
+    public void onStart() {
         gApiClient.connect();
         super.onStart();
     }
 
-    protected void onStop() {
+    @Override
+    public void onStop() {
         gApiClient.disconnect();
         super.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mPermissionDenied) {
+            // Permission was not granted, display error dialog.
+            showMissingPermissionError();
+            mPermissionDenied = false;
+        }
     }
 
 
@@ -96,11 +135,12 @@ public class MapsActivity extends MainActivityBase implements OnMapReadyCallback
      * Enables the My Location layer if the fine location permission has been granted.
      */
     private void enableMyLocation() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
-            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+            PermissionUtils.requestPermission(activity, LOCATION_PERMISSION_REQUEST_CODE,
                     Manifest.permission.ACCESS_FINE_LOCATION, true);
+
         } else if (mMap != null) {
             // Access to the location has been granted to the app.
             mMap.setMyLocationEnabled(true);
@@ -124,37 +164,31 @@ public class MapsActivity extends MainActivityBase implements OnMapReadyCallback
         }
     }
 
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        if (mPermissionDenied) {
-            // Permission was not granted, display error dialog.
-            showMissingPermissionError();
-            mPermissionDenied = false;
-        }
-    }
-
     /**
      * Displays a dialog with error message explaining that the location permission is missing.
      */
     private void showMissingPermissionError() {
         PermissionUtils.PermissionDeniedDialog
-                .newInstance(true).show(getSupportFragmentManager(), "dialog");
+                .newInstance(true).show(activity.getSupportFragmentManager(), "dialog");
     }
 
     /**
      * called when the user taps the "Find Restaurants" Button
      */
     public void findRestaurants(View view) {
-        PlacesFinder finder = new PlacesFinder(mMap, this);
+        PlacesFinder finder = new PlacesFinder(mMap, getContext());
         finder.findRestaurants(mLastLocation);
     }
 
     @Override
     public boolean onMyLocationButtonClick() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                &&
+            ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
             // Permission to access the location is missing.
-            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+            PermissionUtils.requestPermission(activity, LOCATION_PERMISSION_REQUEST_CODE,
                     Manifest.permission.ACCESS_FINE_LOCATION, true);
         }
 
@@ -174,6 +208,17 @@ public class MapsActivity extends MainActivityBase implements OnMapReadyCallback
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.findRestaurantsButton:
+                findRestaurants(v);
+                break;
+        }
 
     }
 }
