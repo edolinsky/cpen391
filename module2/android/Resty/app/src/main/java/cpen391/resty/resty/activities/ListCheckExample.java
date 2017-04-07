@@ -51,7 +51,7 @@ public class ListCheckExample extends AppCompatActivity {
 
         dataStore = RestyStore.getInstance();
 
-        username = dataStore.getString(RestyStore.Key.USER);
+        username = dataStore.getString(RestyStore.Key.USER_ID);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

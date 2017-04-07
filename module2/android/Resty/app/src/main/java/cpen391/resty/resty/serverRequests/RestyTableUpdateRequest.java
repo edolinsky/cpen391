@@ -42,7 +42,7 @@ public class RestyTableUpdateRequest {
 
         //String restaurant_id = restyStore.getString(RestyStore.Key.RESTAURANT_ID);
         String restaurant_id = "test_resto";
-        Log.d("restauarant id", restaurant_id);
+        //Log.d("restauarant id", restaurant_id);
 
         try{
             requestObject = new JSONObject(new Mapping(restaurant_id, mappings).toJson());
