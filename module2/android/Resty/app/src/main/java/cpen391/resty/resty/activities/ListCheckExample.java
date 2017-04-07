@@ -69,18 +69,18 @@ public class ListCheckExample extends AppCompatActivity {
     private void displayListView() {
 
         //Array list of countries
-        ArrayList<tempTable> countryList = new ArrayList<tempTable>();
+        ArrayList<tempTable> tableList = new ArrayList<tempTable>();
 
         int count = dataStore.getInt("Tables");
 
         for(int i = 1; i <= count; i++){
             tempTable temp = new tempTable(i, "Table " + Integer.toString(i), false);
-            countryList.add(temp);
+            tableList.add(temp);
         }
 
         //create an ArrayAdaptar from the String Array
         dataAdapter = new MyCustomAdapter(this,
-                R.layout.row, countryList);
+                R.layout.row, tableList);
         ListView listView = (ListView) findViewById(R.id.listView1);
         // Assign adapter to ListView
         listView.setAdapter(dataAdapter);
@@ -101,13 +101,13 @@ public class ListCheckExample extends AppCompatActivity {
 
     private class MyCustomAdapter extends ArrayAdapter<tempTable> {
 
-        private ArrayList<tempTable> countryList;
+        private ArrayList<tempTable> tableList;
 
         public MyCustomAdapter(Context context, int textViewResourceId,
-                               ArrayList<tempTable> countryList) {
-            super(context, textViewResourceId, countryList);
-            this.countryList = new ArrayList<tempTable>();
-            this.countryList.addAll(countryList);
+                               ArrayList<tempTable> tableList) {
+            super(context, textViewResourceId, tableList);
+            this.tableList = new ArrayList<tempTable>();
+            this.tableList.addAll(tableList);
         }
 
         private class ViewHolder {
@@ -134,12 +134,12 @@ public class ListCheckExample extends AppCompatActivity {
                 holder.name.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         CheckBox cb = (CheckBox) v;
-                        tempTable country = (tempTable) cb.getTag();
+                        tempTable table = (tempTable) cb.getTag();
                         Toast.makeText(getApplicationContext(),
                                 "Clicked on Checkbox: " + cb.getText() +
                                         " is " + cb.isChecked(),
                                 Toast.LENGTH_LONG).show();
-                        country.setSelected(cb.isChecked());
+                        table.setSelected(cb.isChecked());
 
                     }
                 });
@@ -147,12 +147,12 @@ public class ListCheckExample extends AppCompatActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            tempTable country = countryList.get(position);
+            tempTable table = tableList.get(position);
 
-            holder.name.setText(country.getServers());
-            holder.name.setChecked(country.isSelected());
+            holder.name.setText(table.getServers());
+            holder.name.setChecked(table.isSelected());
             //holder.name.setChecked(getChecked(position));
-            holder.name.setTag(country);
+            holder.name.setTag(table);
             if(getElement(position+1) != null) {
                 String temp;
                 temp = getElement(position+1);
@@ -185,10 +185,10 @@ public class ListCheckExample extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                ArrayList<tempTable> countryList = dataAdapter.countryList;
-                for(int i=1;i<=countryList.size();i++){
-                    tempTable country = countryList.get(i-1);
-                    if(country.isSelected()) {
+                ArrayList<tempTable> tableList = dataAdapter.tableList;
+                for(int i=1;i<=tableList.size();i++){
+                    tempTable table = tableList.get(i-1);
+                    if(table.isSelected()) {
 
                         addServer(i,username);
                         /*
