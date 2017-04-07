@@ -29,6 +29,7 @@ import static cpen391.resty.resty.Objects.RSOrder.groupAndSort;
 
 public class StaffMainActivity extends AppCompatActivity {
 
+    private static final String TAG = "StaffMain";
     private ListView ordersView;
     private OrdersListViewAdapter listAdapter;
 
@@ -37,9 +38,10 @@ public class StaffMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_main);
 
+        // Display welcome message with user's email mailbox name.
         TextView topBar = (TextView) findViewById(R.id.StaffMainHeaderTextview);
         StaffUser user = (StaffUser) User.getCurrentUser();
-        String title = "Welcome, " + user.getUser().split("@")[0];
+        String title = "Welcome " + user.getUser().split("@")[0];
         topBar.setText(title);
         topBar.setMaxLines(1);
 
@@ -98,7 +100,7 @@ public class StaffMainActivity extends AppCompatActivity {
 
         @Override
         public void ordersUpdateError(VolleyError error) {
-            Log.e("Patch Fail", "failure with patching dude: " + error.getMessage());
+            Log.e(TAG, "failure with patching: " + error.getMessage());
 
         }
     };

@@ -23,12 +23,13 @@
 
     <Button
         android:id="@+id/authenticate"
-        android:layout_width="147dp"
+        android:layout_width="146dp"
         android:layout_height="45dp"
         android:layout_marginTop="16dp"
-        android:background="@android:color/holo_green_light"
+        android:background="@color/colorPrimaryLight"
         android:onClick="authenticate"
         android:text="@string/authenticateTitle"
+        android:textColor="@android:color/white"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -36,18 +37,19 @@
 
     <Button
         android:id="@+id/initBluetooth"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_width="146dp"
+        android:layout_height="45dp"
         android:layout_marginBottom="240dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:background="@android:color/holo_blue_dark"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
         android:onClick="initBluetooth"
         android:text="@string/initBluetooth"
         app:layout_constraintBottom_toTopOf="@+id/include2"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/authenticate" />
+        app:layout_constraintTop_toBottomOf="@+id/authenticate"
+        tools:layout_editor_absoluteY="212dp" />
 </android.support.constraint.ConstraintLayout>

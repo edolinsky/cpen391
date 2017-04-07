@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -55,7 +54,7 @@ public class HubAuthenticationFragment extends Fragment implements View.OnClickL
         dataStore = RestyStore.getInstance();
 
         setHasOptionsMenu(false);
-        View view = inflater.inflate(R.layout.hubverification, container, false);
+        View view = inflater.inflate(R.layout.activity_hub_verification, container, false);
 
         pinText = view.findViewById(R.id.tablePin);
         authButton = view.findViewById(R.id.authenticate);
