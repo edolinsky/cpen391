@@ -1,4 +1,4 @@
-package cpen391.resty.resty.activities;
+package cpen391.resty.resty.activities.Fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -29,9 +29,8 @@ import java.util.List;
 import cpen391.resty.resty.Bluetooth.RestyBluetooth;
 import cpen391.resty.resty.Objects.Table;
 import cpen391.resty.resty.dataStore.RestyStore;
-import cpen391.resty.resty.menu.OrderDialog;
-import cpen391.resty.resty.menu.RestaurantMenuItem;
-import cpen391.resty.resty.menu.MenuItemAdapter;
+import cpen391.resty.resty.Objects.RestaurantMenuItem;
+import cpen391.resty.resty.activities.Adapters.MenuItemAdapter;
 import cpen391.resty.resty.R;
 import cpen391.resty.resty.serverRequests.RestyMenuRequest;
 import cpen391.resty.resty.serverRequests.RestyOrderRequest;
@@ -45,6 +44,7 @@ public class MenuFragment extends Fragment {
     static final int MAX_BT_SEND_ATTEMPTS = 10;
 
     ArrayList<RestaurantMenuItem> items;
+    List<RestaurantMenuItem> order;
     ListView menuListView;
     Table connectedTable;
     String userId;
@@ -71,11 +71,11 @@ public class MenuFragment extends Fragment {
     private RestyOrderCallback orderCallback = new RestyOrderCallback() {
         @Override
         public void orderComplete() {
-            onOrderConfirm();
+            onOrderSuccess();
         }
         @Override
         public void orderError(VolleyError error) {
-            onOrderCancel();
+            onOrderFailure();
         }
     };
 
@@ -152,7 +152,7 @@ public class MenuFragment extends Fragment {
         }
     }
 
-    private void onOrderConfirm() {
+    private void onOrderSuccess() {
         for(RestaurantMenuItem i : items) {
             i.reset();
         }
@@ -191,7 +191,7 @@ public class MenuFragment extends Fragment {
         }
     }
 
-    private void onOrderCancel() {
+    private void onOrderFailure() {
         Toast orderFailureToast = Toast.makeText(getActivity(),
                 "There was a problem with sending your order, please try again.",
                 Toast.LENGTH_LONG);
@@ -203,21 +203,13 @@ public class MenuFragment extends Fragment {
     }
 
     public void onDialogConfirmation() {
-        List<RestaurantMenuItem> order = new ArrayList<>();
-
-        // collect items in shopping cart
-        for(RestaurantMenuItem i : items) {
-            if(i.getAmount() != 0) {
-                order.add(i);
-            }
-        }
-
         RestyOrderRequest orderRequest = new RestyOrderRequest(orderCallback);
         orderRequest.order(order, userId, connectedTable);
+        order.clear();
     }
 
     public void onDialogCancellation() {
-        // nothing
+        order.clear();
     }
 
     @Override
@@ -230,6 +222,15 @@ public class MenuFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_shopping_cart:
+
+                order = new ArrayList<>();
+
+                // collect items in shopping cart
+                for(RestaurantMenuItem i : items) {
+                    if(i.getAmount() != 0) {
+                        order.add(i);
+                    }
+                }
 
                 OrderDialog order = new OrderDialog();
                 order.setTargetFragment(this, ORDER_DIALOG);
@@ -244,6 +245,11 @@ public class MenuFragment extends Fragment {
         }
 
         return true;
+    }
+
+    // for the dialog to see the order
+    public List<RestaurantMenuItem> getOrder() {
+        return order;
     }
 
     @Override

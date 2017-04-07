@@ -1,4 +1,4 @@
-package cpen391.resty.resty.activities;
+package cpen391.resty.resty.activities.Fragments;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;

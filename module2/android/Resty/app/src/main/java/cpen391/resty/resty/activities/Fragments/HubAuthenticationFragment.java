@@ -1,4 +1,4 @@
-package cpen391.resty.resty.activities;
+package cpen391.resty.resty.activities.Fragments;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Context;

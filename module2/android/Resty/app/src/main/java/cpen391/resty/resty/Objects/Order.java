@@ -1,13 +1,7 @@
 package cpen391.resty.resty.Objects;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import cpen391.resty.resty.menu.RestaurantMenuItem;
-import cpen391.resty.resty.utils.PublicConstants;
-import cpen391.resty.resty.utils.TestDataUtils;
 
 import static cpen391.resty.resty.utils.PublicConstants.FOR_TABLE;
 
