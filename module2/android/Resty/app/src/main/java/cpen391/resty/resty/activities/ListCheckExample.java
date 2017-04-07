@@ -190,6 +190,8 @@ public class ListCheckExample extends AppCompatActivity {
                     tempTable country = countryList.get(i-1);
                     if(country.isSelected()) {
 
+                        addServer(i,username);
+                        /*
                         if(getElement(i) == null || getElement(i) == ""){
                             addServer(i, username);
                             Log.d("Test:", "In second else if");
@@ -217,7 +219,7 @@ public class ListCheckExample extends AppCompatActivity {
 
                             Log.d("String contents::", getElement(i));
                         }
-
+    */
 
                     }
                 }
