@@ -41,22 +41,19 @@ public class RestyRSOrdersRequest {
         request.setRetryPolicy(new DefaultRetryPolicy(50000, 5,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         RestyRequestManager.getInstance().makeRequest(request);
-
     }
 
     private final Response.Listener<String> listener = new Response.Listener<String>(){
         @Override
         public void onResponse(String response) {
 
-            Log.i("Fetched orders", response);
             JsonParser parser = new JsonParser();
             JsonObject jsonMenu = (JsonObject)parser.parse(response);
 
             Gson gson = new Gson();
             Type rsorderType = new TypeToken<List<RSOrder>>(){}.getType();
             ArrayList<RSOrder> orders = gson.fromJson(jsonMenu.getAsJsonArray("orders"), rsorderType);
-
-           ordersCallback.ordersRetrieved(orders);
+            ordersCallback.ordersRetrieved(orders);
         }
     };
 

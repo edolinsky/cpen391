@@ -1,8 +1,10 @@
 package cpen391.resty.resty.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -20,11 +22,15 @@ import cpen391.resty.resty.Objects.User;
 import cpen391.resty.resty.R;
 import cpen391.resty.resty.activities.Adapters.OrdersListViewAdapter;
 import cpen391.resty.resty.serverRequests.RestyRSOrdersRequest;
+import cpen391.resty.resty.serverRequests.serverCallbacks.RestyOrdersPatchCallback;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyRSOrdersCallback;
+
+import static cpen391.resty.resty.Objects.RSOrder.groupAndSort;
 
 public class StaffMainActivity extends AppCompatActivity {
 
     private ListView ordersView;
+    private OrdersListViewAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +59,14 @@ public class StaffMainActivity extends AppCompatActivity {
     }
 
     private void displayOrders(ArrayList<RSOrder> orders){
-        ordersView.setAdapter(new OrdersListViewAdapter(orders, this));
+        Log.i("COUNT", "" + orders.size());
+        ArrayList<Object> groupedOrders = RSOrder.groupAndSort(orders);
+        listAdapter = new OrdersListViewAdapter(groupedOrders, this, callback);
+        ordersView.setAdapter(listAdapter);
     }
 
     public void manageTablesOnClick(View view){
-        Toast toast = Toast.makeText(this, "open Annalies's table thingy in StaffMainActivity", Toast.LENGTH_LONG);
-        toast.show();
         Intent intent = new Intent(this, TableList.class);
-
         startActivity(intent);
     }
 
@@ -72,6 +78,27 @@ public class StaffMainActivity extends AppCompatActivity {
 
         @Override
         public void ordersError(VolleyError error) {
+
+        }
+    };
+
+    public void updateDataset(){
+        listAdapter.notifyDataSetChanged();
+    }
+
+    final RestyOrdersPatchCallback callback = new RestyOrdersPatchCallback() {
+        @Override
+        public void ordersUpdateSuccess(Activity activity) {
+            if (activity != null){
+                updateDataset();
+                Toast toast = Toast.makeText(activity, "Order status updated", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        }
+
+        @Override
+        public void ordersUpdateError(VolleyError error) {
+            Log.e("Patch Fail", "failure with patching dude: " + error.getMessage());
 
         }
     };

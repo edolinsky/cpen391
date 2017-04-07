@@ -14,7 +14,10 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static android.R.attr.order;
@@ -87,6 +90,25 @@ public class RSOrder{
         return obj;
     }
 
+    /**
+     * Makes orders with the same order id appear consequtively in the list
+     * and sorts items with the same order id based on status (see OrderStatus enum)
+     */
+    public static ArrayList<Object> groupAndSort(List<RSOrder> orders){
+        Collections.sort(orders, new RSOrderComparator());
+        ArrayList<Object> objects = new ArrayList<Object>();
+        String lastID = "";
+        for (int i = 0; i < orders.size(); i++){
+            RSOrder next = orders.get(i);
+            if (!next.getOrder_id().matches(lastID)) {
+                lastID = next.getOrder_id();
+                objects.add(next.getOrder_id());
+            }
+            objects.add(orders.get(i));
+        }
+        return objects;
+    }
+
     private static OrderPatch[] getpatches(RSOrder[] orders) {
         OrderPatch[] retval = new OrderPatch[orders.length];
         int i = 0;
@@ -108,6 +130,16 @@ public class RSOrder{
             this.id = id;
             this.order_id = order_id;
             this.status = status;
+        }
+    }
+
+    private static class RSOrderComparator implements Comparator<RSOrder>{
+        @Override
+        public int compare(RSOrder r1, RSOrder r2){
+            int tableComparator = new BigInteger(r2.getOrder_id().getBytes()).compareTo(new BigInteger(r1.getOrder_id().getBytes()));
+            if (tableComparator == 0){
+                return (Order.OrderStatus.valueOf(r1.getStatus()).ordinal() > Order.OrderStatus.valueOf(r2.getStatus()).ordinal()) ? 1:-1;
+            }else return tableComparator;
         }
     }
 

@@ -1,5 +1,6 @@
 package cpen391.resty.resty.serverRequests;
 
+import android.app.Activity;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -20,12 +21,20 @@ import cpen391.resty.resty.serverRequests.ServerRequestConstants.Endpoint;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyOrdersPatchCallback;
 
 public class RestyOrderPatchRequest {
+
     private final RestyOrdersPatchCallback orderPatchCallback;
     private static final String TAG = "OrderPatch";
     private RestyStore restyStore;
+    private final Activity activity;
 
     public RestyOrderPatchRequest(RestyOrdersPatchCallback callback){
+        this.activity = null;
+        this.orderPatchCallback = callback;
+        restyStore = RestyStore.getInstance();
+    }
 
+    public RestyOrderPatchRequest(RestyOrdersPatchCallback callback, Activity activity){
+        this.activity = activity;
         this.orderPatchCallback = callback;
         restyStore = RestyStore.getInstance();
     }
@@ -53,7 +62,7 @@ public class RestyOrderPatchRequest {
     private final Response.Listener<JSONObject> listener = new Response.Listener<JSONObject>(){
         @Override
         public void onResponse(JSONObject response) {
-            orderPatchCallback.ordersUpdateSuccess();
+            orderPatchCallback.ordersUpdateSuccess(activity);
         }
     };
 
