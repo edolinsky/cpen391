@@ -10,7 +10,7 @@
         android:id="@+id/StaffMainHeaderTextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_blue_dark"
+        android:background="@color/colorPrimaryDark"
         android:elevation="10dp"
         android:ems="10"
         android:paddingBottom="8dp"
@@ -39,7 +39,7 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
@@ -47,9 +47,11 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="All Orders"
-            android:textAlignment="center"
+            android:textAlignment="textStart"
+            android:textColor="@color/colorDarkText"
             android:textSize="30sp"
             android:textStyle="bold"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -58,7 +60,6 @@
             android:id="@+id/StaffMainOredersListView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginTop="0dp"
             app:layout_constraintTop_toBottomOf="@+id/textView3"
             android:layout_marginRight="8dp"
             app:layout_constraintRight_toRightOf="parent"
@@ -66,7 +67,9 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/StaffMainManageTablesButton" />
+            app:layout_constraintBottom_toTopOf="@+id/StaffMainManageTablesButton"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" />
 
         <Button
             android:id="@+id/StaffMainManageTablesButton"
@@ -75,7 +78,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:background="@android:color/holo_blue_dark"
+            android:background="@color/colorPrimary"
             android:elevation="10dp"
             android:onClick="manageTablesOnClick"
             android:text="Manage Tables"
@@ -84,7 +87,8 @@
             app:layout_constraintHorizontal_bias="0.502"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            tools:layout_editor_absoluteY="439dp" />
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp" />
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

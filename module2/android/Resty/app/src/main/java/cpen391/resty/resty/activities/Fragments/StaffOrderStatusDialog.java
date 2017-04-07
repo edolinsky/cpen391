@@ -1,11 +1,13 @@
 package cpen391.resty.resty.activities.Fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 
@@ -43,26 +45,13 @@ public class StaffOrderStatusDialog extends DialogFragment {
                 orders[0] = order;
                 orders[0].setStatus(newStatus);
                 // make request to update order status
-                RestyOrderPatchRequest request = new RestyOrderPatchRequest(callback);
+                RestyOrderPatchRequest request = new RestyOrderPatchRequest(OrdersListViewAdapter.getOrdersPatchCallback(), getActivity());
                 request.patchOrders(orders, StaffUser.getCurrentUser().getRestaurant_id());
             }
         });
 
         return builder.create();
     }
-
-    final RestyOrdersPatchCallback callback = new RestyOrdersPatchCallback() {
-        @Override
-        public void ordersUpdateSuccess() {
-            Log.i("Patch Success", "successfull patching dude");
-        }
-
-        @Override
-        public void ordersUpdateError(VolleyError error) {
-            Log.e("Patch Fail", "failure with patching dude: " + error.getMessage());
-
-        }
-    };
 
     private static String[] getNames(Class<? extends Enum<?>> e) {
         return Arrays.toString(e.getEnumConstants()).replaceAll("^.|.$", "").split(", ");
