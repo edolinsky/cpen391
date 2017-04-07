@@ -96,7 +96,15 @@ public class TableList extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(TableList.this, "This is your " + id + "th order"/*finalList[+ position]*/,
+                String server = dataStore.getString(Integer.toString(position + 1), null);
+                String username = dataStore.getString(RestyStore.Key.USER_ID);
+                String temp;
+                if(server.contains(username)){
+                    temp = "";
+                } else {
+                    temp = "not ";
+                }
+                Toast.makeText(TableList.this, "This is your " + temp + "table"/*finalList[+ position]*/,
                         Toast.LENGTH_SHORT).show();
 
             }
