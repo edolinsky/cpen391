@@ -8,8 +8,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import cpen391.resty.resty.R;
-import cpen391.resty.resty.activities.HubAuthenticationFragment.HubAuthListener;
-import cpen391.resty.resty.activities.MenuFragment.MenuBackListener;
+import cpen391.resty.resty.activities.Fragments.HubAuthenticationFragment;
+import cpen391.resty.resty.activities.Fragments.HubAuthenticationFragment.HubAuthListener;
+import cpen391.resty.resty.activities.Fragments.MapsFragment;
+import cpen391.resty.resty.activities.Fragments.MenuFragment;
+import cpen391.resty.resty.activities.Fragments.MenuFragment.MenuBackListener;
 import cpen391.resty.resty.dataStore.RestyStore;
 
 public class MainActivity extends AppCompatActivity implements HubAuthListener, MenuBackListener {

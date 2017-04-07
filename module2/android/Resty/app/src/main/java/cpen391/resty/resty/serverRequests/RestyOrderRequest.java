@@ -11,14 +11,12 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import cpen391.resty.resty.Objects.Order;
 import cpen391.resty.resty.Objects.Table;
-import cpen391.resty.resty.Objects.User;
 import cpen391.resty.resty.dataStore.RestyStore;
-import cpen391.resty.resty.menu.RestaurantMenuItem;
+import cpen391.resty.resty.Objects.RestaurantMenuItem;
 import cpen391.resty.resty.serverRequests.ServerRequestConstants.Endpoint;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyOrderCallback;
 
