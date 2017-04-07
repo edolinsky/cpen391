@@ -18,24 +18,40 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.android.volley.VolleyError;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cpen391.resty.resty.Objects.SingleMapping;
+import cpen391.resty.resty.Objects.respTable;
 import cpen391.resty.resty.Objects.tempTable;
 import cpen391.resty.resty.R;
+import cpen391.resty.resty.dataStore.RestyStore;
+import cpen391.resty.resty.serverRequests.RestyOrderRequest;
+import cpen391.resty.resty.serverRequests.RestyTableUpdateRequest;
+import cpen391.resty.resty.serverRequests.serverCallbacks.RestyTableCallback;
+import cpen391.resty.resty.serverRequests.serverCallbacks.RestyTableUpdateCallback;
 
 /**
- * Created by annal on 2017-04-01.
+ * Created by anna on 2017-04-01.
  */
 
 public class ListCheckExample extends AppCompatActivity {
 
     MyCustomAdapter dataAdapter = null;
     Intent intent;
+    private RestyStore dataStore;
+    String username;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_check_example);
+
+        dataStore = RestyStore.getInstance();
+
+        username = dataStore.getString(RestyStore.Key.USER);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -55,7 +71,7 @@ public class ListCheckExample extends AppCompatActivity {
         //Array list of countries
         ArrayList<tempTable> countryList = new ArrayList<tempTable>();
 
-        int count = getCount();
+        int count = dataStore.getInt("Tables");
 
         for(int i = 1; i <= count; i++){
             tempTable temp = new tempTable(i, "Table " + Integer.toString(i), false);
@@ -141,9 +157,10 @@ public class ListCheckExample extends AppCompatActivity {
                 String temp;
                 temp = getElement(position+1);
 
-                Log.d("Count:", Integer.toString(position));
-                Boolean b = temp.contains("Jeff");
-                if(temp.contains("Jeff")){
+                Log.d("Current servers:", temp);
+                Log.d("Position", Integer.toString(position));
+                Boolean b = temp.contains(username);
+                if(temp.contains(username)){
                     holder.code.setText(" (You are currently a server for this table)");
                 } else {
                     holder.code.setText(" (Not your table)");
@@ -174,19 +191,19 @@ public class ListCheckExample extends AppCompatActivity {
                     if(country.isSelected()) {
 
                         if(getElement(i) == null || getElement(i) == ""){
-                            addServer(i, "Jeff");
+                            addServer(i, username);
                             Log.d("Test:", "In second else if");
-                        }else if (getElement(i).contains(", Jeff")) {
+                        }else if (getElement(i).contains(", " + username)) {
                             String temp = getElement(i);
-                            temp = temp.replace(", Jeff", "");
+                            temp = temp.replace(", " + username, "");
 
                             Log.d("Test:", "in first else if");
 
                             addServer(i, temp);
                             Log.d("String contents:", getElement(i));
-                        } else if (getElement(i).contains("Jeff")) {
+                        } else if (getElement(i).contains(username)) {
                             String temp = getElement(i);
-                            temp = temp.replace("Jeff", "");
+                            temp = temp.replace(username, "");
                             Log.d("Test:","In if");
                             addServer(i, temp);
                             Log.d("String contents::", getElement(i));
@@ -194,7 +211,7 @@ public class ListCheckExample extends AppCompatActivity {
                         }else{
                             Log.d("test:", "in else");
                             String temp = getElement(i);
-                            String temp1 = temp + ", Jeff";
+                            String temp1 = temp + ", " + username;
 
                             addServer(i, temp1);
 
@@ -212,23 +229,54 @@ public class ListCheckExample extends AppCompatActivity {
     }
 
     public void addServer(int i, String order){
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+/*        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
 
         String newServer = order;
         editor.putString(Integer.toString(i), order);
 
         editor.commit();
+
+        */
+        dataStore.put(Integer.toString(i), order);
+        putServer();
     }
 
     public String getElement(int i){
         String element;
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
 
-        element = pref.getString(Integer.toString(i), null);
-
+        element = dataStore.getString(Integer.toString(i), null);
+        //Log.d("servers", element);
+        if(element == null){
+            element = "";
+        }
         return element;
+    }
+
+    private RestyTableUpdateCallback updateCallback = new RestyTableUpdateCallback() {
+        @Override
+        public void updateRetrieved(String table) {
+
+        }
+
+        @Override
+        public void updateError(VolleyError error) {
+
+        }
+    };
+
+    public void putServer(){
+        RestyTableUpdateRequest orderRequest = new RestyTableUpdateRequest(updateCallback);
+
+        int count = dataStore.getInt("Tables");
+        List<SingleMapping> mapping = new ArrayList<SingleMapping>();
+
+        for(int i = 0; i < count; i++){
+            SingleMapping temp = new SingleMapping(dataStore.getString(Integer.toString(i)), "Table"+Integer.toString(i));
+            mapping.add(temp);
+        }
+
+        orderRequest.changeServer(mapping);
     }
 
     public Boolean getChecked(int i){

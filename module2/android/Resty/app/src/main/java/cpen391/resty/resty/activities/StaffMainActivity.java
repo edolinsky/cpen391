@@ -17,10 +17,13 @@ import java.util.List;
 import cpen391.resty.resty.Objects.RSOrder;
 import cpen391.resty.resty.Objects.StaffUser;
 import cpen391.resty.resty.Objects.User;
+import cpen391.resty.resty.Objects.respTable;
 import cpen391.resty.resty.R;
 import cpen391.resty.resty.activities.Adapters.OrdersListViewAdapter;
 import cpen391.resty.resty.serverRequests.RestyRSOrdersRequest;
+import cpen391.resty.resty.serverRequests.RestyTableRequest;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyRSOrdersCallback;
+import cpen391.resty.resty.serverRequests.serverCallbacks.RestyTableCallback;
 
 public class StaffMainActivity extends AppCompatActivity {
 
@@ -39,6 +42,19 @@ public class StaffMainActivity extends AppCompatActivity {
 
         ordersView = (ListView) findViewById(R.id.StaffMainOredersListView);
 
+        // Preload the tables
+        Runnable fetchTables = new Runnable() {
+            @Override
+            public void run() {
+                RestyTableRequest request = new RestyTableRequest(tablesCallback);
+                request.getTables("test_resto");
+                // ABOVE LINE IS BAD
+            }
+        };
+
+        Thread fetchTablesThread = new Thread(fetchTables);
+        fetchTablesThread.run();
+
         // fetch orders
         Runnable fetchOrders = new Runnable() {
             @Override
@@ -50,6 +66,8 @@ public class StaffMainActivity extends AppCompatActivity {
 
         Thread fetchOrdersThread = new Thread(fetchOrders);
         fetchOrdersThread.run();
+
+
     }
 
     private void displayOrders(ArrayList<RSOrder> orders){
@@ -72,6 +90,18 @@ public class StaffMainActivity extends AppCompatActivity {
 
         @Override
         public void ordersError(VolleyError error) {
+
+        }
+    };
+
+    private RestyTableCallback tablesCallback = new RestyTableCallback() {
+        @Override
+        public void tablesRetrieved(ArrayList<respTable> table) {
+
+        }
+
+        @Override
+        public void tablesError(VolleyError error) {
 
         }
     };

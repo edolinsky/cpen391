@@ -16,7 +16,7 @@ public class ServerRequestConstants {
         PLACE_ORDER("order", POST),
         VIEW_ORDERS("orders?restaurant_id=%1$s&query=%2$s", GET),
         UPDATE_ORDERS("orders", PATCH),
-        GET_TABLE_ATTENDANTS("server_hub_map?table_id=%1$s", GET),
+        GET_TABLE_ATTENDANTS("server_hub_map?restaurant_id=%1$s", GET),
         EDIT_TABLE_ATTENDANTS("server_hub_map", POST),
         REMOVE_ATTENDANT_FROM_TABLES("server_hub_map?restaurant_id=%1$s&attendant_id=%2$s", DELETE),
 
