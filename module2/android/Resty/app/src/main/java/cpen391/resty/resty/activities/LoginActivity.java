@@ -35,15 +35,19 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
         // TODO: the request manager singleton needs to be initialized before making requests, is this the best place to do that?
         RestyRequestManager.getInstance().initManager(this);
+        dataStore = RestyStore.getInstance(this);
 
+        if(RestyStore.getInstance().getBoolean(RestyStore.Key.LOGGED_IN)) {
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            this.startActivity(intent);
+        }
+
+        setContentView(R.layout.activity_login);
         usernameText = (EditText) findViewById(R.id.loginNameText);
         passwordText = (EditText) findViewById(R.id.loginPasswordText);
-
-        dataStore = RestyStore.getInstance(this);
 
     }
 
@@ -90,6 +94,7 @@ public class LoginActivity extends AppCompatActivity {
         // Store username for later queries.
         dataStore.put(RestyStore.Key.USER, user.getUser());
         dataStore.put(RestyStore.Key.HUB_AUTH, false);
+        dataStore.put(RestyStore.Key.LOGGED_IN, true);
 
         String affinity = user.getAffinity();
         Intent intent;

@@ -13,6 +13,7 @@ import cpen391.resty.resty.activities.Fragments.HubAuthenticationFragment.HubAut
 import cpen391.resty.resty.activities.Fragments.MapsFragment;
 import cpen391.resty.resty.activities.Fragments.MenuFragment;
 import cpen391.resty.resty.activities.Fragments.MenuFragment.MenuBackListener;
+import cpen391.resty.resty.activities.Fragments.SettingsFragment;
 import cpen391.resty.resty.dataStore.RestyStore;
 
 public class MainActivity extends AppCompatActivity implements HubAuthListener, MenuBackListener {
@@ -66,22 +67,19 @@ public class MainActivity extends AppCompatActivity implements HubAuthListener, 
     }
 
     private void gotoAuth() {
-        Fragment fragment = new HubAuthenticationFragment();
-        loadFragment(fragment);
+        loadFragment(new HubAuthenticationFragment());
     }
 
     private void gotoMenu() {
-        Fragment fragment = new MenuFragment();
-        loadFragment(fragment);
+        loadFragment(new MenuFragment());
     }
 
     private void gotoMaps() {
-        Fragment fragment = new MapsFragment();
-        loadFragment(fragment);
+        loadFragment(new MapsFragment());
     }
 
     private void gotoSettings() {
-        // not implemented
+        loadFragment(new SettingsFragment());
     }
 
     @Override
