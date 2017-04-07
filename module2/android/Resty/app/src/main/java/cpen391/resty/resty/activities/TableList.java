@@ -84,8 +84,6 @@ public class TableList extends AppCompatActivity {
             printList.add(temp);
         }
 
-        Log.d("servername", getElement(1));
-
         final String [] finalList = printList.toArray(new String[printList.size()]);
 
         CustomList adapter = new

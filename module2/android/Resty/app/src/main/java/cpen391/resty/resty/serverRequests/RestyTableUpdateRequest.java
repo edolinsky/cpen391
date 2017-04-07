@@ -40,7 +40,9 @@ public class RestyTableUpdateRequest {
         final String REQUEST_URL = ServerRequestConstants.Endpoint.EDIT_TABLE_ATTENDANTS.getUrl();
         JSONObject requestObject = null;
 
-        String restaurant_id = restyStore.getString(RestyStore.Key.RESTAURANT_ID);
+        //String restaurant_id = restyStore.getString(RestyStore.Key.RESTAURANT_ID);
+        String restaurant_id = "test_resto";
+        Log.d("restauarant id", restaurant_id);
 
         try{
             requestObject = new JSONObject(new Mapping(restaurant_id, mappings).toJson());

@@ -271,8 +271,8 @@ public class ListCheckExample extends AppCompatActivity {
         int count = dataStore.getInt("Tables");
         List<SingleMapping> mapping = new ArrayList<SingleMapping>();
 
-        for(int i = 0; i < count; i++){
-            SingleMapping temp = new SingleMapping(dataStore.getString(Integer.toString(i)), "Table"+Integer.toString(i));
+        for(int i = 1; i <= count; i++){
+            SingleMapping temp = new SingleMapping(dataStore.getString(Integer.toString(i)), dataStore.getString("Table id"+Integer.toString(i)));
             mapping.add(temp);
         }
 

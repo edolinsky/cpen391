@@ -62,6 +62,7 @@ public class RestyTableRequest {
 
             for(int i = 1; i <= tables.size(); i++){
                 dataStore.put("Table" + Integer.toString(i), tables.get(i-1).getEmail());
+                dataStore.put("Table id"+Integer.toString(i), tables.get(i-1).getTable_id());
                 //dataStore.put(Integer.toString(i), tables.get(i-1).getAttendant_id());
             }
 

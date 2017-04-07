@@ -9,8 +9,9 @@ import java.util.List;
  */
 
 public class Mapping {
-    List<SingleMapping> mappings;
     String restaurant_id;
+    List<SingleMapping> mappings;
+
 
     public Mapping(String restaurant_id, List<SingleMapping> mapping){
         this.restaurant_id = restaurant_id;
