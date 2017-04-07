@@ -8,8 +8,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import cpen391.resty.resty.R;
+import cpen391.resty.resty.activities.HubAuthenticationFragment.HubAuthListener;
+import cpen391.resty.resty.activities.MenuFragment.MenuBackListener;
+import cpen391.resty.resty.dataStore.RestyStore;
 
-public class MainActivity extends AppCompatActivity implements HubAuthenticationFragment.HubAuthListener {
+public class MainActivity extends AppCompatActivity implements HubAuthListener, MenuBackListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +36,19 @@ public class MainActivity extends AppCompatActivity implements HubAuthentication
     }
 
     public void menuClick(View view) {
-        Fragment fragment = new HubAuthenticationFragment();
-        loadFragment(fragment);
+        if(RestyStore.getInstance().getBoolean(RestyStore.Key.HUB_AUTH)) {
+            gotoMenu();
+        } else {
+            gotoAuth();
+        }
     }
 
     public void mapsClick(View view) {
-        Fragment fragment = new MapsFragment();
-        loadFragment(fragment);
-
+        gotoMaps();
     }
 
     public void settingsClick(View view) {
-        // not yet implemented
+        gotoSettings();
     }
 
     private void loadFragment(Fragment newFragment) {
@@ -58,10 +62,33 @@ public class MainActivity extends AppCompatActivity implements HubAuthentication
         transaction.commit();
     }
 
-    @Override
-    public void onAuth() {
+    private void gotoAuth() {
+        Fragment fragment = new HubAuthenticationFragment();
+        loadFragment(fragment);
+    }
+
+    private void gotoMenu() {
         Fragment fragment = new MenuFragment();
         loadFragment(fragment);
     }
 
+    private void gotoMaps() {
+        Fragment fragment = new MapsFragment();
+        loadFragment(fragment);
+    }
+
+    private void gotoSettings() {
+        // not implemented
+    }
+
+    @Override
+    public void onAuth() {
+        gotoMenu();
+    }
+
+    @Override
+    public void backFromMenu() {
+        RestyStore.getInstance().put(RestyStore.Key.HUB_AUTH, false);
+        gotoAuth();
+    }
 }

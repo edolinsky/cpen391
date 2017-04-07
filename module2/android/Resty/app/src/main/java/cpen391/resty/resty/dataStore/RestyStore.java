@@ -38,6 +38,7 @@ public class RestyStore {
         public static final String TABLE_ID = "table_id";
         public static final String ORDER_ID = "order_id";
         public static final String USER_ID = "user_id";
+        public static final String HUB_AUTH = "hub_auth";
 
     }
 

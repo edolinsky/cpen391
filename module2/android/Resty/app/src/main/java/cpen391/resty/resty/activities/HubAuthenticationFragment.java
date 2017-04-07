@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import cpen391.resty.resty.Bluetooth.RestyBluetooth;
 import cpen391.resty.resty.R;
 import cpen391.resty.resty.dataStore.RestyStore;
+import cpen391.resty.resty.utils.TestDataUtils;
 
 public class HubAuthenticationFragment extends Fragment implements View.OnClickListener {
 
@@ -52,6 +54,10 @@ public class HubAuthenticationFragment extends Fragment implements View.OnClickL
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        setHasOptionsMenu(false);
+        ((Toolbar) getActivity().findViewById(R.id.toolbar)).setNavigationIcon(null);
+
         dataStore = RestyStore.getInstance();
 
         setHasOptionsMenu(false);
@@ -117,11 +123,7 @@ public class HubAuthenticationFragment extends Fragment implements View.OnClickL
 
         // For testing purposes without bluetooth: skip straight to menu.
         if (!RestyBluetooth.usingBluetooth) {
-            dataStore.put(RestyStore.Key.TABLE_ID, "0xDEFEC7EDDA7ABA5E");
-            dataStore.put(RestyStore.Key.RESTAURANT_ID, "test_resto");
-
-            closeKeyboard();
-            authListener.onAuth();
+            onAuthSuccess(TestDataUtils.TEST_TABLE, TestDataUtils.TEST_RESTAURANT);
             return;
         }
 
@@ -143,14 +145,19 @@ public class HubAuthenticationFragment extends Fragment implements View.OnClickL
             // Pin entry was successful. Table and Restaurant IDs have been
             // sent back, separated by whitespace.
             String[] info = response.split("\\s+");
-
-            // Store these values in the data store.
-            dataStore.put(RestyStore.Key.TABLE_ID, info[0]);
-            dataStore.put(RestyStore.Key.RESTAURANT_ID, info[1]);
-
-            closeKeyboard();
-            authListener.onAuth();
+            onAuthSuccess(info[0], info[1]);
         }
+    }
+
+    private void onAuthSuccess(String table, String restaurant) {
+        // Store these values in the data store.
+        dataStore.put(RestyStore.Key.TABLE_ID, table);
+        dataStore.put(RestyStore.Key.RESTAURANT_ID, restaurant);
+        dataStore.put(RestyStore.Key.HUB_AUTH, true);
+
+        closeKeyboard();
+        authListener.onAuth();
+
     }
 
     @Override
