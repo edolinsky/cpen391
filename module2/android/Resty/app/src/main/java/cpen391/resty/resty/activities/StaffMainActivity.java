@@ -25,6 +25,7 @@ import cpen391.resty.resty.Objects.respTable;
 import cpen391.resty.resty.R;
 import cpen391.resty.resty.activities.Adapters.OrdersListViewAdapter;
 import cpen391.resty.resty.activities.Fragments.StaffOrderStatusDialog;
+import cpen391.resty.resty.dataStore.RestyStore;
 import cpen391.resty.resty.serverRequests.RestyRSOrdersRequest;
 
 import cpen391.resty.resty.serverRequests.RestyTableRequest;
@@ -187,4 +188,10 @@ public class StaffMainActivity extends AppCompatActivity {
 
         }
     };
+
+    public void onLogout(View view) {
+        RestyStore.getInstance().clear();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
 }
