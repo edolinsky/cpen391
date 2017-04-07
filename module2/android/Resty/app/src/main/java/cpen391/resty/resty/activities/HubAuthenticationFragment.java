@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -119,6 +120,7 @@ public class HubAuthenticationFragment extends Fragment implements View.OnClickL
             dataStore.put(RestyStore.Key.TABLE_ID, "0xDEFEC7EDDA7ABA5E");
             dataStore.put(RestyStore.Key.RESTAURANT_ID, "test_resto");
 
+            closeKeyboard();
             authListener.onAuth();
             return;
         }
@@ -146,6 +148,7 @@ public class HubAuthenticationFragment extends Fragment implements View.OnClickL
             dataStore.put(RestyStore.Key.TABLE_ID, info[0]);
             dataStore.put(RestyStore.Key.RESTAURANT_ID, info[1]);
 
+            closeKeyboard();
             authListener.onAuth();
         }
     }
@@ -162,6 +165,18 @@ public class HubAuthenticationFragment extends Fragment implements View.OnClickL
                 break;
         }
 
+    }
+
+    /**
+     * Closes keyboard if one is currently displayed.
+     */
+    private void closeKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity()
+                    .getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
 }
