@@ -1,17 +1,23 @@
 package cpen391.resty.resty.activities;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import cpen391.resty.resty.R;
 import cpen391.resty.resty.menu.OrderDialog;
+import cpen391.resty.resty.utils.PermissionUtils;
 
 public class MainActivity extends AppCompatActivity implements HubAuthenticationFragment.HubAuthListener {
 
@@ -42,7 +48,8 @@ public class MainActivity extends AppCompatActivity implements HubAuthentication
     }
 
     public void mapsClick(View view) {
-        // not yet implemented
+        Fragment fragment = new MapsActivity();
+        loadFragment(fragment);
 
     }
 
@@ -66,4 +73,5 @@ public class MainActivity extends AppCompatActivity implements HubAuthentication
         Fragment fragment = new MenuFragment();
         loadFragment(fragment);
     }
+
 }
