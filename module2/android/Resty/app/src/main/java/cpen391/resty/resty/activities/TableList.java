@@ -2,6 +2,7 @@ package cpen391.resty.resty.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,16 +12,35 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
+
+import cpen391.resty.resty.Objects.StaffUser;
+import cpen391.resty.resty.Objects.Table;
+import cpen391.resty.resty.Objects.User;
+import cpen391.resty.resty.Objects.respTable;
+import cpen391.resty.resty.Objects.tempTable;
 import cpen391.resty.resty.R;
 import cpen391.resty.resty.activities.Adapters.CustomList;
+import cpen391.resty.resty.dataStore.RestyStore;
+import cpen391.resty.resty.activities.Adapters.MenuItemAdapter;
+import cpen391.resty.resty.serverRequests.RestyTableRequest;
+import cpen391.resty.resty.serverRequests.serverCallbacks.RestyTableCallback;
 
 public class TableList extends AppCompatActivity {
-    int tableCount = 7;
+    //int tableCount = 7;
     ArrayList<String> printList = new ArrayList<String>();
     ListView list;
     Integer imageId = R.mipmap.burger_icon;
+    CustomList adap;
+    private RestyStore dataStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +49,30 @@ public class TableList extends AppCompatActivity {
         setContentView(R.layout.activity_table_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        dataStore = RestyStore.getInstance();
 
         setTitle("Tables");
+        setTitleColor(Color.WHITE);
 
-        setTableCount(tableCount);
+        // START OF SERVER
+        Runnable fetchOrders = new Runnable() {
+            @Override
+            public void run() {
+                RestyTableRequest request = new RestyTableRequest(tablesCallback);
+                request.getTables("test_resto");
+                // ABOVE LINE IS BAD
+            }
+        };
+
+        Thread fetchTablesThread = new Thread(fetchOrders);
+        fetchTablesThread.run();
+
+        // END OF SERVER
+
+        //setTableCount(tableCount);
+        int tableCount = dataStore.getInt("Tables");
+
+        Log.d("Current count", Integer.toString(tableCount));
 
         for (int i = 1; i <= tableCount; i++) {
             //String temp = getElement(i);
@@ -51,17 +91,43 @@ public class TableList extends AppCompatActivity {
                 CustomList(TableList.this, finalList, imageId);
         list=(ListView)findViewById(R.id.list);
         list.setAdapter(adapter);
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(TableList.this, "This is your " + id + "th order"/*finalList[+ position]*/,
+                String server = dataStore.getString(Integer.toString(position + 1), null);
+                String username = dataStore.getString(RestyStore.Key.USER_ID);
+                String temp;
+                if(server.contains(username)){
+                    temp = "";
+                } else {
+                    temp = "not ";
+                }
+                Toast.makeText(TableList.this, "This is your " + temp + "table"/*finalList[+ position]*/,
                         Toast.LENGTH_SHORT).show();
 
             }
         });
     }
+
+
+
+    private RestyTableCallback tablesCallback = new RestyTableCallback() {
+        @Override
+        public void tablesRetrieved(ArrayList<respTable> table) {
+
+        }
+
+        @Override
+        public void tablesError(VolleyError error) {
+
+        }
+    };
+
+
+
 
     public void setTableCount(int i){
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
@@ -77,20 +143,10 @@ public class TableList extends AppCompatActivity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
 
-        int count = pref.getInt("count", 0);
+        int count = pref.getInt("Tables", 0);
 
         Log.d("COUNT: ", Integer.toString(count));
         return count;
-    }
-
-    public void addServer(int i, String order){
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-
-        String newServer = order;
-        editor.putString(Integer.toString(i), order);
-
-        editor.commit();
     }
 
 
@@ -120,10 +176,9 @@ public class TableList extends AppCompatActivity {
 
     public String getElement(int i){
         String element;
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
 
-        element = pref.getString(Integer.toString(i), null);
+        element = dataStore.getString(Integer.toString(i), null);
+        //Log.d("servers", element);
         if(element == null){
             element = "";
         }

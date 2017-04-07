@@ -1,4 +1,4 @@
-package cpen391.resty.resty.menu;
+package cpen391.resty.resty.activities.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import cpen391.resty.resty.Objects.RestaurantMenuItem;
 import cpen391.resty.resty.R;
 
 import static cpen391.resty.resty.utils.PublicConstants.MAX_ORDER;

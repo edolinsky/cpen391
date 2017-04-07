@@ -1,4 +1,4 @@
-package cpen391.resty.resty.activities;
+package cpen391.resty.resty.activities.Fragments;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -18,6 +18,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,7 @@ public class MapsFragment extends Fragment implements View.OnClickListener, OnMa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(false);
+        ((Toolbar) getActivity().findViewById(R.id.toolbar)).setNavigationIcon(null);
         View view = inflater.inflate(R.layout.map_fragment, container, false);
 
         try {

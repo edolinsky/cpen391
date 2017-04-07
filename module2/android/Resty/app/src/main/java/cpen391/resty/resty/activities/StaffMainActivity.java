@@ -21,12 +21,18 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import cpen391.resty.resty.Objects.RSOrder;
 import cpen391.resty.resty.Objects.StaffUser;
 import cpen391.resty.resty.Objects.User;
+import cpen391.resty.resty.Objects.respTable;
 import cpen391.resty.resty.R;
 import cpen391.resty.resty.activities.Adapters.OrdersListViewAdapter;
 import cpen391.resty.resty.activities.Fragments.StaffOrderStatusDialog;
 import cpen391.resty.resty.serverRequests.RestyRSOrdersRequest;
+
+import cpen391.resty.resty.serverRequests.RestyTableRequest;
+
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyOrdersPatchCallback;
+
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyRSOrdersCallback;
+import cpen391.resty.resty.serverRequests.serverCallbacks.RestyTableCallback;
 
 import static android.R.attr.checked;
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
@@ -55,6 +61,19 @@ public class StaffMainActivity extends AppCompatActivity {
 
         ordersView = (ListView) findViewById(R.id.StaffMainOredersListView);
 
+        // Preload the tables
+        Runnable fetchTables = new Runnable() {
+            @Override
+            public void run() {
+                RestyTableRequest request = new RestyTableRequest(tablesCallback);
+                request.getTables("test_resto");
+                // ABOVE LINE IS BAD
+            }
+        };
+
+        Thread fetchTablesThread = new Thread(fetchTables);
+        fetchTablesThread.run();
+
         // fetch orders
         fetchOrders = new Runnable() {
             @Override
@@ -66,6 +85,8 @@ public class StaffMainActivity extends AppCompatActivity {
 
         Thread fetchOrdersThread = new Thread(fetchOrders);
         fetchOrdersThread.run();
+
+
     }
 
     public ListView getOrdersView() {
@@ -132,6 +153,19 @@ public class StaffMainActivity extends AppCompatActivity {
         }
     };
 
+
+    private RestyTableCallback tablesCallback = new RestyTableCallback() {
+        @Override
+        public void tablesRetrieved(ArrayList<respTable> table) {
+
+        }
+
+        @Override
+        public void tablesError(VolleyError error) {
+
+        }
+    };
+
     public void updateDataset(){
         fetchOrders.run();
     }
@@ -149,6 +183,7 @@ public class StaffMainActivity extends AppCompatActivity {
         @Override
         public void ordersUpdateError(VolleyError error) {
             Log.e(TAG, "failure with patching: " + error.getMessage());
+
 
         }
     };

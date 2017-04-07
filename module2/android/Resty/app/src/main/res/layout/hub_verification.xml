@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    tools:context="cpen391.resty.resty.activities.HubAuthenticationFragment">
+    tools:context="cpen391.resty.resty.activities.Fragments.HubAuthenticationFragment">
 
     <EditText
         android:id="@+id/tablePin"
@@ -16,7 +16,7 @@
         android:hint="@string/enterPin"
         android:inputType="phone"
         android:maxLength="4"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +29,7 @@
         android:background="@color/colorPrimaryLight"
         android:text="@string/authenticateTitle"
         android:textColor="@android:color/white"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tablePin" />
@@ -43,7 +43,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/initBluetooth"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.5"
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"
         app:layout_constraintLeft_toLeftOf="parent"

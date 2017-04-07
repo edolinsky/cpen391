@@ -1,6 +1,5 @@
 package cpen391.resty.resty.serverRequests;
 
-
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -13,38 +12,48 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import cpen391.resty.resty.Objects.Order;
+import cpen391.resty.resty.Objects.Mapping;
+import cpen391.resty.resty.Objects.SingleMapping;
 import cpen391.resty.resty.Objects.Table;
+import cpen391.resty.resty.Objects.respTable;
+import cpen391.resty.resty.Objects.tempTable;
 import cpen391.resty.resty.dataStore.RestyStore;
-import cpen391.resty.resty.Objects.RestaurantMenuItem;
-import cpen391.resty.resty.serverRequests.ServerRequestConstants.Endpoint;
-import cpen391.resty.resty.serverRequests.serverCallbacks.RestyOrderCallback;
+import cpen391.resty.resty.serverRequests.serverCallbacks.RestyTableUpdateCallback;
 
-public class RestyOrderRequest {
+/**
+ * Created by anna on 2017-04-06.
+ */
 
-    private final RestyOrderCallback orderCallback;
+public class RestyTableUpdateRequest {
+    private final RestyTableUpdateCallback orderCallback;
     private static final String TAG = "OrderRequest";
     private RestyStore restyStore;
 
-    public RestyOrderRequest(RestyOrderCallback callback){
+    public RestyTableUpdateRequest(RestyTableUpdateCallback callback){
 
         this.orderCallback = callback;
         restyStore = RestyStore.getInstance();
     }
 
-    public void order(List<RestaurantMenuItem> order, String userId, Table table){
+    public void changeServer(List<SingleMapping> mappings){
 
-        final String REQUEST_URL = Endpoint.PLACE_ORDER.getUrl();
+        final String REQUEST_URL = ServerRequestConstants.Endpoint.EDIT_TABLE_ATTENDANTS.getUrl();
         JSONObject requestObject = null;
 
+        //String restaurant_id = restyStore.getString(RestyStore.Key.RESTAURANT_ID);
+        String restaurant_id = "test_resto";
+        //Log.d("restauarant id", restaurant_id);
+
         try{
-            requestObject = new JSONObject(Order.create(order, userId, table).toJson());
+            requestObject = new JSONObject(new Mapping(restaurant_id, mappings).toJson());
         }catch (Exception e) {
             e.printStackTrace();
         }
 
+        Log.d("OBJECT", requestObject.toString());
+
         JsonObjectRequest jsObjRequest = new JsonObjectRequest
-                (Endpoint.PLACE_ORDER.getMethod(), REQUEST_URL, requestObject,
+                (ServerRequestConstants.Endpoint.EDIT_TABLE_ATTENDANTS.getMethod(), REQUEST_URL, requestObject,
                         listener, errorListener);
         jsObjRequest.setRetryPolicy(new DefaultRetryPolicy(50000, 5,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
@@ -57,16 +66,16 @@ public class RestyOrderRequest {
         public void onResponse(JSONObject response) {
             String orderId = "";
             try {
-                orderId = response.getString("order_id");
+                orderId = response.getString("mappings");
             } catch (JSONException e) {
                 Log.e(TAG, "Order ID not included in response.");
             }
 
             // Store Order ID in data store.
-            restyStore.put(RestyStore.Key.ORDER_ID, orderId);
+            //restyStore.put(RestyStore.Key.ORDER_ID, orderId);
 
             // Trigger action in activity.
-            orderCallback.orderComplete();
+            orderCallback.updateRetrieved(orderId);
         }
     };
 
@@ -74,7 +83,7 @@ public class RestyOrderRequest {
         @Override
         public void onErrorResponse(VolleyError error) {
             Log.i("Order Error", error.toString());
-            orderCallback.orderError(error);
+            orderCallback.updateError(error);
         }
     };
 

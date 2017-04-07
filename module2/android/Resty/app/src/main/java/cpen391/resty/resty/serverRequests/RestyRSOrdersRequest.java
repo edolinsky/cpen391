@@ -1,9 +1,6 @@
 package cpen391.resty.resty.serverRequests;
 
 
-import android.support.annotation.Nullable;
-import android.util.Log;
-
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -18,8 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cpen391.resty.resty.Objects.RSOrder;
-import cpen391.resty.resty.menu.MenuItemAdapter;
-import cpen391.resty.resty.menu.RestaurantMenuItem;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyRSOrdersCallback;
 import cpen391.resty.resty.serverRequests.ServerRequestConstants.Endpoint;
 

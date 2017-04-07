@@ -16,15 +16,6 @@ public class HistoryList extends AppCompatActivity {
 
     ArrayList<String> printList = new ArrayList<String>();
     ListView list;
-    String[] web = {
-            "Google Plus",
-            "Twitter",
-            "Windows",
-            "Bing",
-            "Itunes",
-            "Wordpress",
-            "Drupal"
-    } ;
 
     Integer imageId = R.mipmap.burger_icon;
     @Override

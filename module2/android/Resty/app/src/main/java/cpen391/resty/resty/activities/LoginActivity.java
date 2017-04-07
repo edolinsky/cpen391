@@ -35,15 +35,20 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
         // TODO: the request manager singleton needs to be initialized before making requests, is this the best place to do that?
         RestyRequestManager.getInstance().initManager(this);
+        dataStore = RestyStore.getInstance(this);
 
+        if(RestyStore.getInstance().getBoolean(RestyStore.Key.LOGGED_IN)) {
+            signIn(dataStore.getString(RestyStore.Key.USER),
+                    dataStore.getString(RestyStore.Key.PASSWORD));
+            return;
+        }
+
+        setContentView(R.layout.activity_login);
         usernameText = (EditText) findViewById(R.id.loginNameText);
         passwordText = (EditText) findViewById(R.id.loginPasswordText);
-
-        dataStore = RestyStore.getInstance(this);
 
     }
 
@@ -71,9 +76,7 @@ public class LoginActivity extends AppCompatActivity {
         final String hashedPassword = Hashing.sha256()
                 .hashString(password, StandardCharsets.UTF_8)
                 .toString();
-
-        // Store username for later queries.
-        dataStore.put(RestyStore.Key.USER, username);
+        dataStore.put(RestyStore.Key.PASSWORD, hashedPassword);
 
         // Send log in request.
         signIn(username, hashedPassword);
@@ -90,6 +93,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onLoginSuccess(User user){
+        // Store username for later queries.
+        dataStore.put(RestyStore.Key.USER, user.getUser());
+        dataStore.put(RestyStore.Key.HUB_AUTH, false);
+        dataStore.put(RestyStore.Key.LOGGED_IN, true);
+
         String affinity = user.getAffinity();
         Intent intent;
         switch (affinity){
@@ -111,6 +119,9 @@ public class LoginActivity extends AppCompatActivity {
     private void onLoginError(VolleyError error){
         CharSequence text;
         int duration = Toast.LENGTH_LONG;
+
+        // remove incorrectly stored password
+        dataStore.clear();
 
         switch (error.networkResponse.statusCode){
             case SERVER_ERROR:

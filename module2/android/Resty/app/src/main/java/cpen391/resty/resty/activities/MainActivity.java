@@ -8,8 +8,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import cpen391.resty.resty.R;
+import cpen391.resty.resty.activities.Fragments.HubAuthenticationFragment;
+import cpen391.resty.resty.activities.Fragments.HubAuthenticationFragment.HubAuthListener;
+import cpen391.resty.resty.activities.Fragments.MapsFragment;
+import cpen391.resty.resty.activities.Fragments.MenuFragment;
+import cpen391.resty.resty.activities.Fragments.MenuFragment.MenuBackListener;
+import cpen391.resty.resty.activities.Fragments.SettingsFragment;
+import cpen391.resty.resty.dataStore.RestyStore;
 
-public class MainActivity extends AppCompatActivity implements HubAuthenticationFragment.HubAuthListener {
+public class MainActivity extends AppCompatActivity implements HubAuthListener, MenuBackListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,18 +40,19 @@ public class MainActivity extends AppCompatActivity implements HubAuthentication
     }
 
     public void menuClick(View view) {
-        Fragment fragment = new HubAuthenticationFragment();
-        loadFragment(fragment);
+        if(RestyStore.getInstance().getBoolean(RestyStore.Key.HUB_AUTH)) {
+            gotoMenu();
+        } else {
+            gotoAuth();
+        }
     }
 
     public void mapsClick(View view) {
-        Fragment fragment = new MapsFragment();
-        loadFragment(fragment);
-
+        gotoMaps();
     }
 
     public void settingsClick(View view) {
-        // not yet implemented
+        gotoSettings();
     }
 
     private void loadFragment(Fragment newFragment) {
@@ -58,10 +66,30 @@ public class MainActivity extends AppCompatActivity implements HubAuthentication
         transaction.commit();
     }
 
-    @Override
-    public void onAuth() {
-        Fragment fragment = new MenuFragment();
-        loadFragment(fragment);
+    private void gotoAuth() {
+        loadFragment(new HubAuthenticationFragment());
     }
 
+    private void gotoMenu() {
+        loadFragment(new MenuFragment());
+    }
+
+    private void gotoMaps() {
+        loadFragment(new MapsFragment());
+    }
+
+    private void gotoSettings() {
+        loadFragment(new SettingsFragment());
+    }
+
+    @Override
+    public void onAuth() {
+        gotoMenu();
+    }
+
+    @Override
+    public void backFromMenu() {
+        RestyStore.getInstance().put(RestyStore.Key.HUB_AUTH, false);
+        gotoAuth();
+    }
 }

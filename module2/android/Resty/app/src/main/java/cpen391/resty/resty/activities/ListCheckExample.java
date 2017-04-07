@@ -18,24 +18,40 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.android.volley.VolleyError;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cpen391.resty.resty.Objects.SingleMapping;
+import cpen391.resty.resty.Objects.respTable;
 import cpen391.resty.resty.Objects.tempTable;
 import cpen391.resty.resty.R;
+import cpen391.resty.resty.dataStore.RestyStore;
+import cpen391.resty.resty.serverRequests.RestyOrderRequest;
+import cpen391.resty.resty.serverRequests.RestyTableUpdateRequest;
+import cpen391.resty.resty.serverRequests.serverCallbacks.RestyTableCallback;
+import cpen391.resty.resty.serverRequests.serverCallbacks.RestyTableUpdateCallback;
 
 /**
- * Created by annal on 2017-04-01.
+ * Created by anna on 2017-04-01.
  */
 
 public class ListCheckExample extends AppCompatActivity {
 
     MyCustomAdapter dataAdapter = null;
     Intent intent;
+    private RestyStore dataStore;
+    String username;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_check_example);
+
+        dataStore = RestyStore.getInstance();
+
+        username = dataStore.getString(RestyStore.Key.USER_ID);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -53,18 +69,18 @@ public class ListCheckExample extends AppCompatActivity {
     private void displayListView() {
 
         //Array list of countries
-        ArrayList<tempTable> countryList = new ArrayList<tempTable>();
+        ArrayList<tempTable> tableList = new ArrayList<tempTable>();
 
-        int count = getCount();
+        int count = dataStore.getInt("Tables");
 
         for(int i = 1; i <= count; i++){
             tempTable temp = new tempTable(i, "Table " + Integer.toString(i), false);
-            countryList.add(temp);
+            tableList.add(temp);
         }
 
         //create an ArrayAdaptar from the String Array
         dataAdapter = new MyCustomAdapter(this,
-                R.layout.row, countryList);
+                R.layout.row, tableList);
         ListView listView = (ListView) findViewById(R.id.listView1);
         // Assign adapter to ListView
         listView.setAdapter(dataAdapter);
@@ -85,13 +101,13 @@ public class ListCheckExample extends AppCompatActivity {
 
     private class MyCustomAdapter extends ArrayAdapter<tempTable> {
 
-        private ArrayList<tempTable> countryList;
+        private ArrayList<tempTable> tableList;
 
         public MyCustomAdapter(Context context, int textViewResourceId,
-                               ArrayList<tempTable> countryList) {
-            super(context, textViewResourceId, countryList);
-            this.countryList = new ArrayList<tempTable>();
-            this.countryList.addAll(countryList);
+                               ArrayList<tempTable> tableList) {
+            super(context, textViewResourceId, tableList);
+            this.tableList = new ArrayList<tempTable>();
+            this.tableList.addAll(tableList);
         }
 
         private class ViewHolder {
@@ -118,12 +134,12 @@ public class ListCheckExample extends AppCompatActivity {
                 holder.name.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         CheckBox cb = (CheckBox) v;
-                        tempTable country = (tempTable) cb.getTag();
+                        tempTable table = (tempTable) cb.getTag();
                         Toast.makeText(getApplicationContext(),
                                 "Clicked on Checkbox: " + cb.getText() +
                                         " is " + cb.isChecked(),
                                 Toast.LENGTH_LONG).show();
-                        country.setSelected(cb.isChecked());
+                        table.setSelected(cb.isChecked());
 
                     }
                 });
@@ -131,19 +147,20 @@ public class ListCheckExample extends AppCompatActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            tempTable country = countryList.get(position);
+            tempTable table = tableList.get(position);
 
-            holder.name.setText(country.getServers());
-            holder.name.setChecked(country.isSelected());
+            holder.name.setText(table.getServers());
+            holder.name.setChecked(table.isSelected());
             //holder.name.setChecked(getChecked(position));
-            holder.name.setTag(country);
+            holder.name.setTag(table);
             if(getElement(position+1) != null) {
                 String temp;
                 temp = getElement(position+1);
 
-                Log.d("Count:", Integer.toString(position));
-                Boolean b = temp.contains("Jeff");
-                if(temp.contains("Jeff")){
+                Log.d("Current servers:", temp);
+                Log.d("Position", Integer.toString(position));
+                Boolean b = temp.contains(username);
+                if(temp.contains(username)){
                     holder.code.setText(" (You are currently a server for this table)");
                 } else {
                     holder.code.setText(" (Not your table)");
@@ -168,25 +185,27 @@ public class ListCheckExample extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                ArrayList<tempTable> countryList = dataAdapter.countryList;
-                for(int i=1;i<=countryList.size();i++){
-                    tempTable country = countryList.get(i-1);
-                    if(country.isSelected()) {
+                ArrayList<tempTable> tableList = dataAdapter.tableList;
+                for(int i=1;i<=tableList.size();i++){
+                    tempTable table = tableList.get(i-1);
+                    if(table.isSelected()) {
 
+                        addServer(i,username);
+                        /*
                         if(getElement(i) == null || getElement(i) == ""){
-                            addServer(i, "Jeff");
+                            addServer(i, username);
                             Log.d("Test:", "In second else if");
-                        }else if (getElement(i).contains(", Jeff")) {
+                        }else if (getElement(i).contains(", " + username)) {
                             String temp = getElement(i);
-                            temp = temp.replace(", Jeff", "");
+                            temp = temp.replace(", " + username, "");
 
                             Log.d("Test:", "in first else if");
 
                             addServer(i, temp);
                             Log.d("String contents:", getElement(i));
-                        } else if (getElement(i).contains("Jeff")) {
+                        } else if (getElement(i).contains(username)) {
                             String temp = getElement(i);
-                            temp = temp.replace("Jeff", "");
+                            temp = temp.replace(username, "");
                             Log.d("Test:","In if");
                             addServer(i, temp);
                             Log.d("String contents::", getElement(i));
@@ -194,13 +213,13 @@ public class ListCheckExample extends AppCompatActivity {
                         }else{
                             Log.d("test:", "in else");
                             String temp = getElement(i);
-                            String temp1 = temp + ", Jeff";
+                            String temp1 = temp + ", " + username;
 
                             addServer(i, temp1);
 
                             Log.d("String contents::", getElement(i));
                         }
-
+    */
 
                     }
                 }
@@ -212,50 +231,45 @@ public class ListCheckExample extends AppCompatActivity {
     }
 
     public void addServer(int i, String order){
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-
-        String newServer = order;
-        editor.putString(Integer.toString(i), order);
-
-        editor.commit();
+        dataStore.put(Integer.toString(i), order);
+        putServer();
     }
 
     public String getElement(int i){
         String element;
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
 
-        element = pref.getString(Integer.toString(i), null);
-
+        element = dataStore.getString(Integer.toString(i), null);
+        //Log.d("servers", element);
+        if(element == null){
+            element = "";
+        }
         return element;
     }
 
-    public Boolean getChecked(int i){
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
+    private RestyTableUpdateCallback updateCallback = new RestyTableUpdateCallback() {
+        @Override
+        public void updateRetrieved(String table) {
 
-        return pref.getBoolean("Boolean" + Integer.toString(i), false);
-    }
+        }
 
-    public void isItChecked(int i){
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
+        @Override
+        public void updateError(VolleyError error) {
 
+        }
+    };
 
-        editor.putBoolean("Boolean" + Integer.toString(i), !getChecked(i));
+    public void putServer(){
+        RestyTableUpdateRequest orderRequest = new RestyTableUpdateRequest(updateCallback);
 
-        editor.commit();
-    }
+        int count = dataStore.getInt("Tables");
+        List<SingleMapping> mapping = new ArrayList<SingleMapping>();
 
-    public int getCount(){
-        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
+        for(int i = 1; i <= count; i++){
+            SingleMapping temp = new SingleMapping(dataStore.getString(Integer.toString(i)), dataStore.getString("Table id"+Integer.toString(i)));
+            mapping.add(temp);
+        }
 
-        int count = pref.getInt("Tables", 0);
-
-        Log.d("COUNT: ", Integer.toString(count));
-        return count;
+        orderRequest.changeServer(mapping);
     }
 
 }
