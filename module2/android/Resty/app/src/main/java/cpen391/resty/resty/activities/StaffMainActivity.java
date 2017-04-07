@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,16 +16,20 @@ import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import cpen391.resty.resty.Objects.RSOrder;
 import cpen391.resty.resty.Objects.StaffUser;
 import cpen391.resty.resty.Objects.User;
 import cpen391.resty.resty.R;
 import cpen391.resty.resty.activities.Adapters.OrdersListViewAdapter;
+import cpen391.resty.resty.activities.Fragments.StaffOrderStatusDialog;
 import cpen391.resty.resty.serverRequests.RestyRSOrdersRequest;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyOrdersPatchCallback;
 import cpen391.resty.resty.serverRequests.serverCallbacks.RestyRSOrdersCallback;
 
+import static android.R.attr.checked;
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static cpen391.resty.resty.Objects.RSOrder.groupAndSort;
 
 public class StaffMainActivity extends AppCompatActivity {
@@ -32,6 +37,9 @@ public class StaffMainActivity extends AppCompatActivity {
     private static final String TAG = "StaffMain";
     private ListView ordersView;
     private OrdersListViewAdapter listAdapter;
+    private final AtomicBoolean selectModeActivated = new AtomicBoolean(false);
+    private final ArrayList<RSOrder> selectedOrders = new ArrayList<RSOrder>();
+    private Runnable fetchOrders;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +56,7 @@ public class StaffMainActivity extends AppCompatActivity {
         ordersView = (ListView) findViewById(R.id.StaffMainOredersListView);
 
         // fetch orders
-        Runnable fetchOrders = new Runnable() {
+        fetchOrders = new Runnable() {
             @Override
             public void run() {
                 RestyRSOrdersRequest request = new RestyRSOrdersRequest(ordersCallback);
@@ -60,11 +68,51 @@ public class StaffMainActivity extends AppCompatActivity {
         fetchOrdersThread.run();
     }
 
+    public ListView getOrdersView() {
+        return ordersView;
+    }
+
+    public boolean selectModeActivated(){
+        return selectModeActivated.get();
+    }
+
     private void displayOrders(ArrayList<RSOrder> orders){
-        Log.i("COUNT", "" + orders.size());
+        selectedOrders.clear();
         ArrayList<Object> groupedOrders = RSOrder.groupAndSort(orders);
-        listAdapter = new OrdersListViewAdapter(groupedOrders, this, callback);
+
+        listAdapter = new OrdersListViewAdapter(groupedOrders, this, selectedOrders, callback);
         ordersView.setAdapter(listAdapter);
+
+        final OrdersListViewAdapter adapter = listAdapter;
+        final ListView list = ordersView;
+
+        // Select mode button
+        final Button selectModeButton = (Button) findViewById(R.id.RSOrderSelectModeButton);
+        final Button editButton = (Button) findViewById(R.id.RSOrderEditButton);
+        selectModeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (selectModeActivated.get()){
+                    selectModeActivated.set(false);
+                    editButton.setVisibility(View.INVISIBLE);
+                    selectModeButton.setText("Select");
+                }else{
+                    selectModeActivated.set(true);
+                    editButton.setVisibility(View.VISIBLE);
+                    selectModeButton.setText("Cancel");
+                }
+                adapter.toggleCheckBoxVisibility();
+            }
+        });
+
+        // edit button
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                StaffOrderStatusDialog dialog = new StaffOrderStatusDialog();
+                dialog.show(getFragmentManager(), "update-status");
+            }
+        });
     }
 
     public void manageTablesOnClick(View view){
@@ -85,7 +133,7 @@ public class StaffMainActivity extends AppCompatActivity {
     };
 
     public void updateDataset(){
-        listAdapter.notifyDataSetChanged();
+        fetchOrders.run();
     }
 
     final RestyOrdersPatchCallback callback = new RestyOrdersPatchCallback() {

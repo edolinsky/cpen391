@@ -62,4 +62,16 @@
         android:textColor="@color/colorDarkText"
         app:layout_constraintLeft_toRightOf="@+id/OrdersListItemStatus"
         app:layout_constraintTop_toBottomOf="@+id/OrdersListItemName" />
+
+    <CheckBox
+        android:id="@+id/RSOrderListItemSelectAllCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/OrdersListCustomerName"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
